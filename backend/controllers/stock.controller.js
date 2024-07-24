@@ -33,7 +33,18 @@ export async function postStock(req, res){
 }
 export async function updateStock(req, res){
     try{
+        const {
+            name, qty, invoice_no, desc, reciever, date, expiration_date, scan_copy, done_by, price
+        } = req.body;
 
+        const setUpdate = await Stock.findOne({ invoice_no: invoice_no });
+        const id = setUpdate.id
+
+        const updateStock = await PerformanceResourceTiming.findByIdAndUpdate(id,
+            name, qty, invoice_no, desc, reciever, date, expiration_date, scan_copy, done_by, price
+        )
+
+        res.status(200).json({ success: true, message: "Record updated successfully"})
     }
     catch(error){
         console.log("updateStock Controller Error", error.message);
@@ -42,7 +53,7 @@ export async function updateStock(req, res){
 }
 export async function destroyStock(req, res){
     try{
-
+        
     }
     catch(error){
         console.log("destroyStock Controller Error", error.message);
