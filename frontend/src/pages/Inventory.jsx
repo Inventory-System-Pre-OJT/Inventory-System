@@ -6,8 +6,8 @@ import { initialCreateProdValues } from "../data";
 import { Formik, Form } from "formik";
 import { RiAddFill } from "react-icons/ri";
 import Button from '../components/Button';
-import Balance from '../balance/Balance';
-import Incoming from '../incoming/Incoming';
+import Balance from '../components/balance/Balance';
+import Incoming from '../components/incoming/Incoming';
 import { useNavigate } from "react-router-dom";
 import Sidebar from '../components/Sidebar';
 

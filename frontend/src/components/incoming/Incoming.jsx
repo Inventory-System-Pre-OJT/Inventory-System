@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from '../components/Button'
+import Button from '../Button.jsx'
 
 const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckboxChange }) => {
   return (
