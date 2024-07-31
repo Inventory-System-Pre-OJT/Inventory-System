@@ -26,7 +26,7 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
                     </tr>
                 </thead>
                 <tbody>
-                    {[0, 1].map((index) => (
+                    {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
                         <tr key={index} className="odd:bg-gray-50 even:bg-white">
                             <td className="px-4 py-4 border border-gray-200">
                                 <input type="checkbox" className="w-4 h-4" checked={selectedRows.includes(index)} onChange={() => handleCheckboxChange(index)} />
@@ -40,7 +40,7 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
                             <td className="px-6 py-4 border border-gray-200"><Button text="View" onClick={() => {}} /></td>
                             <td className="px-6 py-4 border border-gray-200">8</td>
                             <td className="px-6 py-4 border border-gray-200">9</td>
-                            <td className="px-6 py-4 border border-gray-200">10</td>
+                            <td className="px-6 py-4 border border-gray-200"><Button text="View" onClick={() => {}} /></td>
                             <td className="px-6 py-4 border border-gray-200">11</td>
                             <td className="px-6 py-4 border border-gray-200">12</td>
                         </tr>
