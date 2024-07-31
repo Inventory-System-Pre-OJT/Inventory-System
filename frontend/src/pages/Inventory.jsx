@@ -133,7 +133,7 @@ export const Inventory = () => {
 
 
   return (
-    <main className="grid grid-rows-[auto_1fr] grid-cols-[auto_1fr] text-black relative h-screen w-full">
+    <main className="grid grid-rows-[auto_1fr] grid-cols-[auto_1fr] bg-gray-100 text-black relative h-screen w-full">
       <aside className="row-span-full border-[0.2px] border-gray-400 p-5 w-[15rem] max-w-full"></aside>
       <section className="border-[0.2px] border-gray-400 p-5 h-[5rem] max-h-full">
         <h1 className="text-2xl font-medium">General Inventory</h1>
