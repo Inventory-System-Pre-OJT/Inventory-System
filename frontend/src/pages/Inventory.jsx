@@ -10,6 +10,7 @@ import Balance from '../components/balance/Balance';
 import Incoming from '../components/incoming/Incoming';
 import { useNavigate } from "react-router-dom";
 import Sidebar from '../components/Sidebar';
+import Outgoing from "../components/outgoing/Outgoing";
 
 const steps = [
   {
@@ -175,29 +176,11 @@ export const Inventory = () => {
               </div>
             </div>
 
-            <div className="flex flex-row gap-x-3 w-full">
-              <div className="flex flex-col gap-y-3 w-40">
-                <select className="w-full h-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" name="" id="">
-                  <option value="" disabled selected>Filter type</option>
-                  <option value="incoming">Incoming</option>
-                  <option value="outcoming">Outcoming</option>
-                  <option value="balance">Balance</option>
-                </select>
-              </div>
-              <div className="flex flex-col gap-y-3 w-40">
-              <select className="w-full h-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" name="" id="">
-                  <option value="" disabled selected>Filter categories</option>
-                  <option value="incoming">Incoming</option>
-                  <option value="outcoming">Outcoming</option>
-                  <option value="balance">Balance</option>
-                </select>
-              </div>
-              
-            </div>
+            
 
             {/* Content based on activePage */}
             {activePage === 'incoming' && (
-              <div>
+              <div className="">
                 <Incoming 
                   selectAll={selectAll}
                   handleSelectAllChange={handleSelectAllChange}
@@ -206,9 +189,14 @@ export const Inventory = () => {
                 />
               </div>
             )}
-            {activePage === 'outcoming' && (
+            {activePage === 'outgoing' && (
               <div>
-                {/* Outcoming page content */}
+                <Outgoing 
+                  selectAll={selectAll}
+                  handleSelectAllChange={handleSelectAllChange}
+                  selectedRows={selectedRows}
+                  handleCheckboxChange={handleCheckboxChange}
+                />
               </div>
             )}
             {activePage === 'balance' && (
