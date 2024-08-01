@@ -27,6 +27,7 @@ export const OrderInfo = () => {
       isImportant={data.name === 'color' ? false : true}
     />
   ));
+  console.log(ProdAddInfoFieldElement)
 
   return (
     <div className="mt-5">
