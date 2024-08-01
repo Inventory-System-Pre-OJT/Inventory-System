@@ -1,7 +1,7 @@
 import React from 'react'
-import Button from '../components/Button'
+import Button from '../Button.jsx'
 
-const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckboxChange }) => {
+const Outgoing = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckboxChange }) => {
   return (
     <div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -26,7 +26,7 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
                     </tr>
                 </thead>
                 <tbody>
-                    {[0, 1].map((index) => (
+                    {[0, 1, 2].map((index) => (
                         <tr key={index} className="odd:bg-gray-50 even:bg-white">
                             <td className="px-4 py-4 border border-gray-200">
                                 <input type="checkbox" className="w-4 h-4" checked={selectedRows.includes(index)} onChange={() => handleCheckboxChange(index)} />
@@ -40,7 +40,7 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
                             <td className="px-6 py-4 border border-gray-200"><Button text="View" onClick={() => {}} /></td>
                             <td className="px-6 py-4 border border-gray-200">8</td>
                             <td className="px-6 py-4 border border-gray-200">9</td>
-                            <td className="px-6 py-4 border border-gray-200">10</td>
+                            <td className="px-6 py-4 border border-gray-200"><Button text="View" onClick={() => {}} /></td>
                             <td className="px-6 py-4 border border-gray-200">11</td>
                             <td className="px-6 py-4 border border-gray-200">12</td>
                         </tr>
@@ -52,4 +52,4 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
   )
 }
 
-export default Incoming
+export default Outgoing

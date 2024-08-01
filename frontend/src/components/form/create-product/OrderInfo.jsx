@@ -4,7 +4,7 @@ import { RiArrowDropUpLine } from "react-icons/ri";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { UseToggle } from "../../../hooks";
 export const OrderInfo = () => {
-  const [isOpenAddInfo, setOpenAddInfo] = UseToggle(true);
+  const [isOpenAddInfo, setOpenAddInfo] = UseToggle(false);
 
   const ProdInfoFieldElement = ProdInfoFieldsData?.map((data, index) => (
     <TextField
@@ -33,20 +33,20 @@ export const OrderInfo = () => {
       <div className={` grid grid-cols-4 gap-5`}>{ProdInfoFieldElement}</div>
       <div className="mt-3">
         <div className="flex flex-row items-center gap-1 mb-3" >
-          <div className="h-auto flex cursor-pointer select-none">
-            <h2 className="text-2xl text-blue-500 font-semibold select-none" onClick={() => setOpenAddInfo(preval => !preval)}>
+          <div className="h-auto flex items-center cursor-pointer select-none">
+            <h5 className="text-lg text-blue-500 font-semibold select-none" onClick={() => setOpenAddInfo(preval => !preval)}>
               Additional Information
-            </h2>
+            </h5>
             
             {isOpenAddInfo ? (
               <RiArrowDropUpLine
-                className="text-blue-500 w-9 h-10 select-none"
+                className="text-blue-500 w-9 h-9 select-none"
                 type="button"
                 tabIndex={0}
               />
             ) : (
               <RiArrowDropDownLine 
-                className="text-blue-500 w-9 h-10 select-none"
+                className="text-blue-500 w-9 h-9 select-none"
                 type="button"
                 tabIndex={0}
               />

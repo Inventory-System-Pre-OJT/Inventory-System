@@ -123,8 +123,9 @@ export const ProductAdd = () => {
                         <button
                           onClick={() => navigate('/inventory')}
                           type="button"
-                          className="border-b-2 border-black"
+                          className="relative group"
                         >
+                          <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full group-hover:right-auto group-hover:left-0 "></span>
                           Cancel
                         </button>
                         <button

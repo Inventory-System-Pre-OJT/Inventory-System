@@ -4,11 +4,13 @@ import { UseToggle } from "../hooks";
 import { CreateProdSchema } from "../schema";
 import { initialCreateProdValues } from "../data";
 import { Formik, Form } from "formik";
-import { FaCheck, FaPlus } from "react-icons/fa6";
+import { RiAddFill } from "react-icons/ri";
 import Button from '../components/Button';
-import Balance from '../balance/Balance';
-import Incoming from '../incoming/Incoming';
+import Balance from '../components/balance/Balance';
+import Incoming from '../components/incoming/Incoming';
 import { useNavigate } from "react-router-dom";
+import Sidebar from '../components/Sidebar';
+import Outgoing from "../components/outgoing/Outgoing";
 
 const steps = [
   {
@@ -73,9 +75,13 @@ export const Inventory = () => {
   const balanceTabRef = useRef(null);
   const navigate = useNavigate();
   const openModal = () => setOpenModal(true);
-
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const handleTabClick = (index) => setActiveTab(index);
-
+  const [isFilterDropdownOpen, setFilterDropdownOpen] = useState(false);
+  
+  const toggleFilterDropdown = () => {
+    setFilterDropdownOpen(!isFilterDropdownOpen);
+  };
   const handleBack = () => {
     setActiveStep((step) => step - 1);
   };
@@ -131,75 +137,111 @@ export const Inventory = () => {
   }, [activePage]);
   console.log('Rendering Inventory component');
 
-
   return (
-    <main className="grid grid-rows-[auto_1fr] grid-cols-[auto_1fr] text-black relative h-screen w-full">
-      <aside className="row-span-full border-[0.2px] border-gray-400 p-5 w-[15rem] max-w-full"></aside>
-      <section className="border-[0.2px] border-gray-400 p-5 h-[5rem] max-h-full">
-        <h1 className="text-2xl font-medium">General Inventory</h1>
-      </section>
-      <section className="border-[0.2px] border-gray-400 p-5 w-3/4 bg-white">
-        <div className="flex flex-col gap-y-3 w-">
-          <div className="flex justify-between items-center w-full">
-            <div ref={containerRef} className='flex flex-row gap-x-3 w-full border-b-2 border-green-200'>
-              <div className="relative flex flex-row gap-x-3 ">
-                {['incoming', 'outcoming', 'balance'].map((page) => (
+    <div className="flex">
+      <Sidebar />
+      <main className="flex flex-col bg-gray-100 text-black h-full w-screen m-0 mt-14 lg:ml-64 lg:mr-10">
+        <section className="border-gray-400 p-5 w-full bg-white">
+          <div className="flex flex-col gap-y-3 w-full">
+            <div className="flex justify-between gap-x-3 items-center w-full">
+              <div ref={containerRef} className='flex flex-row gap-x-3 w-full border-b-2 border-green-200'>
+                <div className="relative flex flex-row gap-x-3 ">
+                  {['incoming', 'outgoing', 'balance'].map((page) => (
+                    <div 
+                      key={page}
+                      ref={page === 'balance' ? balanceTabRef : null}
+                      className={`pb-2 cursor-pointer tab-${page} ${activePage === page ? 'text-green-500 font-semibold' : 'text-gray-500'}`} 
+                      onClick={() => setActivePage(page)}
+                    >
+                      {page.charAt(0).toUpperCase() + page.slice(1)}
+                    </div>
+                  ))}
                   <div 
-                    key={page}
-                    ref={page === 'balance' ? balanceTabRef : null}
-                    className={`pb-2 cursor-pointer tab-${page} ${activePage === page ? 'text-green-500 font-semibold' : 'text-gray-500'}`} 
-                    onClick={() => setActivePage(page)}
-                  >
-                    {page.charAt(0).toUpperCase() + page.slice(1)}
+                    ref={underlineRef}
+                    className="absolute bottom-0 left-0 h-0.5 bg-green-500 transition-all duration-300 ease-in-out"
+                    style={{ bottom: '-2px' }}
+                  ></div>
+                </div>
+              </div>
+              <div className="flex justify-between md:justify-end md:w-full ml-2 md:ml-0 gap-x-2 h-8">
+                <div className="hidden md:flex flex-grow w-2/3 items-center">
+                <select className="w-full h-full rounded-md border border-gray-300 shadow-sm px-2 py-1 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" id="options-menu" aria-haspopup="true" aria-expanded="true">
+                <option  value="" disabled selected>Filter Category</option>
+                    <option value="active">Active Material</option>
+                    <option value="non_active">Non-Active Material</option>
+                  </select>
+                </div>
+                <input 
+                  type="text" 
+                  placeholder="Search" 
+                  className="hidden md:flex flex-grow h-full px-2 py-2 focus:border-b-2 focus:border-green-500 focus:outline-none focus:ring-0 focus:ring-blue-500" 
+                />
+                <Button text="Add" icon={<RiAddFill />} className="hidden md:flex flex-shrink-0 h-full" onClick={handleAdd} />
+                <div className="md:hidden flex items-center relative ml-auto">
+                  <button className="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                  </button>
+                  {dropdownOpen && (
+                    <div className="absolute right-0 mt-2 top-8 w-48 bg-white rounded-md text-start shadow-lg py-1 z-20">
+                    <div className="relative">
+                      <a href="javascript:void(0)" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={toggleFilterDropdown}>
+                        Filter categories
+                        <svg className="w-4 h-4 inline-block ml-1" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M6.293 6.293a1 1 0 011.414 0L10 8.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                      </a>
+                      
+                    </div>
+                    <div className={`w-48 bg-white rounded-md py-1 ${isFilterDropdownOpen ? '' : 'hidden'}`}>
+                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Active Material</a>
+                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Non-Active Material</a>
+                      <hr />
+                    </div>
+                  
+                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Search</a>
+                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Add</a>
                   </div>
-                ))}
-                <div 
-                  ref={underlineRef}
-                  className="absolute bottom-0 left-0 h-0.5 bg-green-500 transition-all duration-300 ease-in-out"
-                  style={{ bottom: '-2px' }}
-                ></div>
+                  )}
+                </div>
               </div>
             </div>
-            <div className="flex justify-between w-[60%] gap-x-2 h-8">
-              <div className="flex-grow">
-                <select className="w-full h-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" id="options-menu" aria-haspopup="true" aria-expanded="true">
-                  <option value="" disabled selected>Filter categories</option>
-                  <option value="incoming">Incoming</option>
-                  <option value="outcoming">Outcoming</option>
-                  <option value="balance">Balance</option>
-                </select>
+
+            
+
+            {/* Content based on activePage */}
+            {activePage === 'incoming' && (
+              <>
+                <Incoming 
+                  selectAll={selectAll}
+                  handleSelectAllChange={handleSelectAllChange}
+                  selectedRows={selectedRows}
+                  handleCheckboxChange={handleCheckboxChange}
+                />
+              </>
+            )}
+            {activePage === 'outgoing' && (
+              <>
+                <Outgoing 
+                  selectAll={selectAll}
+                  handleSelectAllChange={handleSelectAllChange}
+                  selectedRows={selectedRows}
+                  handleCheckboxChange={handleCheckboxChange}
+                />
+              </>
+            )}
+            {activePage === 'balance' && (
+              <div>
+                <Balance />
               </div>
-              <input type="text" placeholder="Search" className="flex-grow h-full px-2 py-2 border rounded" />
-              <Button text="Add" icon={<FaPlus />} className="flex-shrink-0 h-full" onClick={handleAdd} />
-            </div>
+            )}
           </div>
 
-          {/* Content based on activePage */}
-          {activePage === 'incoming' && (
-            <div>
-              <Incoming 
-                selectAll={selectAll}
-                handleSelectAllChange={handleSelectAllChange}
-                selectedRows={selectedRows}
-                handleCheckboxChange={handleCheckboxChange}
-              />
-            </div>
-          )}
-          {activePage === 'outcoming' && (
-            <div>
-              {/* Outcoming page content */}
-            </div>
-          )}
-          {activePage === 'balance' && (
-            <div>
-              <Balance />
-            </div>
-          )}
-        </div>
-
-        {/* Modal for creating product */}
-        
-      </section>
-    </main>
+          {/* Modal for creating product */}
+          
+        </section>
+      </main>
+    </div>
   );
 };
