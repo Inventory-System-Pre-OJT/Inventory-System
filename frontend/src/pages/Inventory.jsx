@@ -11,6 +11,7 @@ import Incoming from '../components/incoming/Incoming';
 import { useNavigate } from "react-router-dom";
 import Sidebar from '../components/Sidebar';
 import Outgoing from "../components/outgoing/Outgoing";
+import SearchProduct from "../components/modal/SearchProduct";
 
 const steps = [
   {
@@ -78,13 +79,18 @@ export const Inventory = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const handleTabClick = (index) => setActiveTab(index);
   const [isFilterDropdownOpen, setFilterDropdownOpen] = useState(false);
-  
+  const [isSearchProductModalOpen, setSearchProductModalOpen] = useState(false);
   const toggleFilterDropdown = () => {
     setFilterDropdownOpen(!isFilterDropdownOpen);
   };
   const handleBack = () => {
     setActiveStep((step) => step - 1);
   };
+
+  const toggleSearchProductModal = () => {
+    setSearchProductModalOpen(!isSearchProductModalOpen);
+    setDropdownOpen(false);
+  }
 
   function handleSubmit(values, actions) {
     if (isLastStep) {
@@ -200,10 +206,14 @@ export const Inventory = () => {
                       <hr />
                     </div>
                   
-                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Search</a>
-                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Add</a>
+                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={toggleSearchProductModal}>Search</a>
+                    <a href="" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={handleAdd}>Add</a>
                   </div>
                   )}
+                  {isSearchProductModalOpen && (
+                    <SearchProduct onClose={toggleSearchProductModal} />
+                  )}
+
                 </div>
               </div>
             </div>

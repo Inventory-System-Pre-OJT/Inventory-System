@@ -4,7 +4,7 @@ import Button from '../Button.jsx'
 const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckboxChange }) => {
   return (
     <div className='flex flex-col min-w-screen'>
-        <div className="flex flex-col sm:flex-row gap-x-3 mb-3 w-full">
+        <div className="flex flex-col sm:flex-row gap-3 mb-3 w-full">
               <div className="flex flex-col gap-y-3 w-full sm:w-1/2 lg:w-1/4">
                 <select className="w-full h-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" name="" id="">
                   <option value="" disabled selected>Filter type</option>
@@ -20,8 +20,8 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
                   <option value="outcoming">Outcoming</option>
                   <option value="balance">Balance</option>
                 </select>
-              </div>
             </div>
+        </div>
         <div className="flex-grow overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 border border-gray-200 border-collapse">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50">
