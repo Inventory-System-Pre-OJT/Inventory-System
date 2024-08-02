@@ -13,7 +13,7 @@ const CreateVoucherSchema = Yup.object().shape({
   subclass: Yup.string().required("subclass is required"),
   preparedBy: Yup.string().required("Prepared By  is required"),
   accounting: Yup.string().required("Accounting  is required"),
-  descOfPayment : Yup.string().required('Description of payment is Required'),
+  approvedBy : Yup.string().required('Approved By is Required'),
 });
 
 export { CreateVoucherSchema };

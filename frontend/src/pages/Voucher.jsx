@@ -29,9 +29,10 @@ export const Voucher = () => {
     ["voucher"]
   );
 
-  const voucherTableRowElement = voucherData?.data?.voucher?.map(
+  const voucherTableRowElement = voucherData?.data?.map(
     (data, index) => <TableRow key={index} tableRowData={Object(data)} />
   );
+  console.log(voucherData)
 
   const CreateVoucherElements = VoucherInfoFieldsData?.map((data, index) => (
     <TextField

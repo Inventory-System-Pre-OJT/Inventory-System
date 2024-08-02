@@ -35,7 +35,7 @@ const FetchVoucherData = () => {
     () =>
       axiosRequest(
         "get",
-        `/api/v1/voucher/get`
+        `api/v1/voucher/get`
       ),
     {
       retry: 3,

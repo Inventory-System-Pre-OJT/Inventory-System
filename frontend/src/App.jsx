@@ -22,7 +22,7 @@ function App() {
           <Route 
             index 
             element={<Voucher />} 
-            // errorElement={<CustomError />}
+            errorElement={<CustomError />}
           />
         </Route>
       </>
