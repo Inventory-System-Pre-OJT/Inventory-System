@@ -10,6 +10,20 @@ export async function getStocks(req, res){
         res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
+
+export async function searchStock(req, res){
+    try{
+        const query = req.body;
+
+        const stock = await Stock.find(query);
+        return res.json(stock);
+    }
+    catch(error){
+        console.log("search Controller Error", error.message);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+}
+
 export async function postStock(req, res){
     try{
         const {
