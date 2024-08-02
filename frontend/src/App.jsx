@@ -1,43 +1,40 @@
 import "./App.css";
 import { Toaster } from "react-hot-toast";
 import { LandingLayout } from "./layout";
-import { Login, Inventory, ProductAdd ,Voucher, VoucherAdd } from "./pages";
+import { Voucher } from "./pages";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { CustomError } from "./components";
+
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
   RouterProvider,
 } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
 
-const roles = {
-  USER: "user",
-  ADMIN: "admin",
-  SUPERADMIN: "superadmin",
-};
-
-const client = new QueryClient();
-
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <>
-      <Route path="/" element={<LandingLayout />}>
-        <Route index element={<Login />} />
-        <Route path="/inventory" element={<Inventory />} />
-        <Route path="/inventory/add" element={<ProductAdd />} />
-        <Route path="/voucher" element={<Voucher />} />
-        <Route path="/voucher/add" element={<VoucherAdd />} />
-      </Route>
-    </>
-  )
-);
 function App() {
+  const client = new QueryClient();
+
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <>
+        <Route path="/" element={<LandingLayout />}>
+          <Route 
+            index 
+            element={<Voucher />} 
+            // errorElement={<CustomError />}
+          />
+        </Route>
+      </>
+    )
+  );
+
   return (
     <>
-        <QueryClientProvider client={client}>
-          <Toaster position="top-center" />
-          <RouterProvider router={router} />
-        </QueryClientProvider>
+      <QueryClientProvider client={client}>
+        <Toaster position="top-center" />
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </>
   );
 }

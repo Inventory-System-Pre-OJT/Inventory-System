@@ -1,13 +1,13 @@
+import { Section } from "./Section";
+import { TableHead , TableRow , TableCont } from "./table";
 import { TextField } from "./form";
-import { Links } from "./Links";
-import { Tab } from "./Tab";
-import { OrderInfo , PriceInfo , ProductInfo , Review } from "./form";
+import { CustomError } from "./errors";
 export {
+
+	Section,
+	TableHead,
+	TableRow,
+	TableCont,
 	TextField,
-	Links,
-	Tab,
-	OrderInfo,
-	PriceInfo,
-	ProductInfo,
-	Review
+	CustomError
 }

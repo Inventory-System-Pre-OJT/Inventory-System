@@ -25,6 +25,10 @@ const voucherSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    checkNum: {
+        type: Number,
+        required: true,
+    },
     invoiceNo: {
         type: Number,
         required: true,

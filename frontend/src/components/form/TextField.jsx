@@ -7,20 +7,16 @@ export const TextField = ({
   label,
   placeholder,
   options,
-  isImportant = true 
+  isImportant = true,
 }) => {
   return (
-    <div
-      className={`flex flex-col gap-2 ${
-        type === "number" || type === "select" ? `${label === 'Pricing Model' ? 'col-span-4' : label === 'Price' ? 'col-span-3' : label === 'Quantity' ? 'col-span-2' :  label === 'Invoice No.' ? 'col-span-4' : 'col-span-1' }` : "col-span-4"
-      }`}
-    >
-     <div className="flex flex-row items-center gap-2">
-     <label className={`font-medium`} htmlFor={name}>
-        {label}
-      </label>
-     {isImportant &&  <LuAsterisk className="text-red-400 w-4 h-4"/>}
-     </div>
+    <div className={`flex flex-col gap-2 `}>
+      <div className="flex flex-row items-center gap-2">
+        <label className={`font-medium`} htmlFor={name}>
+          {label}
+        </label>
+        {isImportant && <LuAsterisk className="text-red-400 w-4 h-4" />}
+      </div>
       {type === "select" ? (
         <Field
           as="select"
@@ -35,7 +31,7 @@ export const TextField = ({
           ))}
         </Field>
       ) : (
-       <Field
+        <Field
           type={type}
           name={name}
           id={name}
@@ -43,14 +39,10 @@ export const TextField = ({
           placeholder={placeholder}
         />
       )}
-        
 
-
-      <ErrorMessage
-        name={name}
-      >
+      <ErrorMessage name={name}>
         {(msg) => (
-          <div title={msg} className="text-start">
+          <div title={msg}>
             <span className=" text-red-400 text-[0.9rem] font-bold ">
               {msg}
             </span>
@@ -65,7 +57,7 @@ TextField.propTypes = {
   type: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
-  isImportant : PropTypes.string,
+  isImportant: PropTypes.string,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string,

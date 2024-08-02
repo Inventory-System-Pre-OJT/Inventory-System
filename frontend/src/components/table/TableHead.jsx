@@ -1,9 +1,20 @@
+import PropTypes from "prop-types";
 
-export const TableHead = () => {
+export const TableHead = ({
+	tableData
+}) => {
+
   return (
-	<table className="p-[2.5rem] border-collapse bg-white shadow-[#00000038] backdrop-blur-md">
+    <tr className={` flex flex-col md:flex-row justify-between `}>
+      {tableData?.map((head) => (
+        <th key={head.name} className="table__head w-full text-[0.75rem] font-medium  uppercase text-light-gray-3  border-r-[0.002rem] border-light-gray-2 border-b-[0.002rem] ">
+          {head.name}
+        </th>
+      ))}
+    </tr>
+  );
+};
 
-	</table>
-  )
-}
-
+TableHead.propTypes = {
+  tableData: PropTypes.array,
+};

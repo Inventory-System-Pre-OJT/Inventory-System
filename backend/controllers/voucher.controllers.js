@@ -2,10 +2,10 @@ import Voucher from '../models/voucher.model.js';
 
 // Create a new voucher
 export const createVoucher = async (req, res) => {
-    const { no, amount, date, address, descOfPayment, bankAcc, invoiceNo, classExp, subclass, preparedBy, accounting, approvedBy } = req.body;
+    const { no, amount, date, address, descOfPayment, bankAcc, checkNum, invoiceNo, classExp, subclass, preparedBy, accounting, approvedBy } = req.body;
 
     try {
-        const voucher = new Voucher({ no, amount, date, address, descOfPayment, bankAcc, invoiceNo, classExp, subclass, preparedBy, accounting, approvedBy });
+        const voucher = new Voucher({ no, amount, date, address, descOfPayment, bankAcc,checkNum, invoiceNo, classExp, subclass, preparedBy, accounting, approvedBy });
         await voucher.save();
         res.status(201).json(voucher);
     } catch (error) {

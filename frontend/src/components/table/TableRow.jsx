@@ -1,20 +1,22 @@
 import PropTypes from 'prop-types';
 
-export const TableRow = () => {
+export const TableRow = ({
+	tableRowData
+}) => {
+  const { _id, createdAt, updatedAt, __v, ...filteredData } = tableRowData
+  const tableRowValues = Object.values(filteredData);
   return (
     <tr
-      className={`flex  flex-col border-2 border-black md:border-0 md:flex-row justify-between text-start w-full text-sm ${
-        isDark ? "bg-white text-black" : "bg-[#00000041] text-white "
-      }  backdrop-blur-md`}
+      className={`flex  flex-col  md:flex-row justify-between text-start text-sm    `}
     >
-      <td></td>
+     {tableRowValues?.map((data, index) => (
+        <td key={index} className=' border-r-[0.002rem] border-light-gray-2 border-b-[0.002rem]' >
+          {data}
+        </td>
+      ))}
     </tr>
   );
 };
 TableRow.propTypes = {
-	index : PropTypes.number , 
-	name : PropTypes.string,
-	handleTabClick : PropTypes.func,
-	activeTab : PropTypes.number,
-
+  tableRowData: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

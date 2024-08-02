@@ -1,9 +1,6 @@
-import { TextField } from "./TextField";
-import { OrderInfo , PriceInfo , ProductInfo , Review } from "./create-product";
+import { TextField } from "./Textfield";
+
 export {
-	TextField,
-	OrderInfo,
-	PriceInfo,
-	ProductInfo,
-	Review
+
+	TextField
 }

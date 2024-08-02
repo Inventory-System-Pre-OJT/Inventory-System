@@ -1,150 +1,131 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { initialCreateProdValues } from "../data";
+import { useState } from "react";
+import {
+  Section,
+  TableHead,
+  TableRow,
+  TableCont,
+  TextField,
+} from "../components";
+import {
+  tableHeadData,
+  initialCreateVoucherValues,
+  VoucherInfoFieldsData,
+} from "../data";
 import { Formik, Form } from "formik";
-import { FaCheck } from "react-icons/fa6";
-import { OrderInfo, PriceInfo, ProductInfo, Review } from "../components";
-import { CreateProdSchema } from "../schema";
-import { FaArrowRight } from "react-icons/fa6";
-import axios from "axios";
+import { CreateVoucherSchema } from "../schema";
+import { useMutationAsync, FetchVoucherData } from "../function";
 import toast from "react-hot-toast";
-const steps = [
-    { name: "Product Information" },
-    { name: "Price Information" },
-    { name: "Order Information" },
-    { name: "Review" },
-];
 
 export const Voucher = () => {
-    const [activeStep, setActiveStep] = useState(0);
-    const isLastStep = activeStep === steps.length - 1;
-    const currentValidationSchema = CreateProdSchema[activeStep];
-    const navigate = useNavigate();
+  const [openCreateVoucher, setCreateVoucher] = useState(false);
 
-    const handleBack = () => {
-        setActiveStep((step) => step - 1);
-    };
+  const { voucherData, voucherFetching, voucherLoading } = FetchVoucherData();
 
+  const { mutationAsync } = useMutationAsync(
+    {
+      method: "post",
+      url: "api/v1/voucher/create",
+    },
+    ["voucher"]
+  );
 
+  const voucherTableRowElement = voucherData?.data?.voucher?.map(
+    (data, index) => <TableRow key={index} tableRowData={Object(data)} />
+  );
 
-    function renderStepContent(step, formValues) {
-        switch (step) {
-            case 0:
-                return <OrderInfo />;
-            case 1:
-                return <PriceInfo />;
-            case 2:
-                return <ProductInfo />;
-            case 3:
-                return <Review {...formValues} />;
-            default:
-                return <div>Not Found</div>;
-        }
-    }
+  const CreateVoucherElements = VoucherInfoFieldsData?.map((data, index) => (
+    <TextField
+      key={index}
+      label={data.label}
+      name={data.name}
+      type={data.type}
+      placeholder={data.placeholder}
+    />
+  ));
 
-    return (
-        <div className="p-5">
-            <h2 className="text-2xl font-medium w-full mb-5">Create Product</h2>
-            <div className="flex flex-row gap-10 w-full">
-                <ul className="p-5 list-none flex flex-col gap-3 mt-20">
-                    {steps.map((data, index) => (
-                        <li
-                            key={index}
-                            className={`flex flex-row gap-2 items-center ${index === activeStep
-                                    ? "font-semibold text-[1.08rem]"
-                                    : "text-gray-400 font-medium"
-                                }`}
-                        >
-                            {index < activeStep ? (
-                                <FaCheck className="text-accent-dark text-lg" />
-                            ) : (
-                                <span
-                                    className={`${index === activeStep
-                                            ? "bg-accent-dark w-6 h-1"
-                                            : "w-5 h-1 bg-accent"
-                                        }`}
-                                ></span>
-                            )}
-                            {data.name}
-                        </li>
-                    ))}
-                </ul>
-                <div className="p-5 flex-1">
-                    <h3
-                        className={`text-3xl font-medium ${activeStep === 3 ? "w-full md:w-[90%] m-auto" : ""
-                            }`}
+  return (
+    <main className="grid grid-rows-[auto_1fr] grid-cols-[auto_1fr] text-black w-full relative ">
+      {openCreateVoucher && (
+        <div className="absolute left-0 right-0 top-0 bottom-0 bg-white z-10 p-5">
+          <h1 className="text-2xl font-semibold">Create Voucher</h1>
+
+          <Formik
+            initialValues={initialCreateVoucherValues}
+            validationSchema={CreateVoucherSchema}
+            onSubmit={async (values, actions) => {
+              try {
+                console.log("Form values:", values); // Debugging log
+                const response = await mutationAsync.mutateAsync(values);
+                console.log("Response:", response); // Debugging log
+                if (response.status === 200) {
+                  toast.success("Voucher created successfully");
+                }
+                actions.resetForm();
+                setCreateVoucher(false);
+              } catch (error) {
+                console.log(error);
+              }
+            }}
+          >
+            {(formik) => {
+              return (
+                <Form onSubmit={formik.handleSubmit}>
+                  <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
+                    {CreateVoucherElements}
+                    <button
+                      type="submit"
+                      onClick={() => console.log("im clicked")}
+                      className="bg-primary  text-black font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
                     >
-                        {steps[activeStep].name}
-                    </h3>
-                    {activeStep !== 3 && (
-                        <div className="border-[2px] border-[#AAAA] mt-3"></div>
-                    )}
-                    <Formik
-                        onSubmit={async (values) => {
-                            if (isLastStep) {
-                                const response = await axios.post('/api/v1/voucher/createVoucher' , values)
-                                if(response.status === 200) {
-                                    toast.success('Created Voucher .....')
-                                }
-                            } else {
-                                setActiveStep((prev) => prev + 1);
-                                actions.setTouched({});
-                                actions.setSubmitting(false);
-                            }
-                        }}
-                        initialValues={initialCreateProdValues}
-                        validationSchema={currentValidationSchema}
-                        validateOnChange={true}
-                        validateOnBlur={true}
-                    >
-                        {(formik) => {
-                            const formValues = formik.values;
-                            return (
-                                <Form>
-                                    {renderStepContent(activeStep, formValues)}
-                                    <div className="flex flex-row justify-between font-bold mb-6 mt-5">
-                                        {activeStep !== 0 ? (
-                                            <>
-                                                <button
-                                                    onClick={handleBack}
-                                                    type="button"
-                                                    className="border-b-2 border-black"
-                                                >
-                                                    Previous
-                                                </button>
-                                                <button
-                                                    type="submit"
-                                                    className="bg-green-700 p-2 rounded-md text-white"
-                                                >
-                                                    {isLastStep ? "Create Product" : "Continue"}
-                                                </button>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <button
-                                                    onClick={() => navigate('/inventory')}
-                                                    type="button"
-                                                    className="relative group"
-                                                >
-                                                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full group-hover:right-auto group-hover:left-0 "></span>
-                                                    Cancel
-                                                </button>
-                                                <button
-                                                    type="submit"
-                                                    className="bg-green-700 p-2 rounded-md text-white flex flex-row items-center"
-                                                >
-                                                    Continue
-                                                    <FaArrowRight className="ml-2" />
-                                                </button>
-                                            </>
-                                        )}
-                                    </div>
-                                </Form>
-                            );
-                        }}
-                    </Formik>
-                </div>
-            </div>
+                      Create Voucher
+                    </button>
+                  </div>
+                </Form>
+              );
+            }}
+          </Formik>
         </div>
-    );
-}
+      )}
+      <Section style="row-span-full w-[15rem] max-w-full"></Section>
+      <Section style="h-[5rem] max-h-full">
+        <h1 className="text-2xl font-semibold">Disbursement Voucher</h1>
+      </Section>
+      <Section style="bg-white flex flex-col gap-5 w-full overflow-x-auto">
+        <div className="flex flex-row gap-5 self-end mb-6">
+          <select className="w-fit p-2 rounded-md bg-transparent border-2 border-gray-400">
+            <option defaultValue>Filter Categories</option>
+            <option value="">Product 1</option>
+            <option value="">Product 2</option>
+            <option value="">Product 3</option>
+            <option value="">Product 4</option>
+          </select>
+          <input
+            type="text"
+            placeholder="Search"
+            className="rounded-md bg-transparent border-2 border-gray-400 p-2"
+          />
+          <div
+            className="bg-accent-dark py-1 px-2 items-center justify-center gap-1 rounded-md flex w-24 flex-row text-white font-medium"
+            aria-label="Add Product"
+            role="button"
+            tabIndex={0}
+            onClick={() => setCreateVoucher((preval) => !preval)}
+          >
+            <span>Add</span>
+          </div>
+        </div>
+
+        {voucherFetching || voucherLoading ? (
+          <div className=" text-center">
+            <h1 className=" text-2xl uppercase">Loading</h1>
+          </div>
+        ) : (
+          <TableCont>
+            <TableHead tableData={tableHeadData} />
+            {voucherTableRowElement}
+          </TableCont>
+        )}
+      </Section>
+    </main>
+  );
+};

@@ -1,153 +1,153 @@
-const initialCreateProdValues = {
-    productName: "",
-    description: "",
-    quantity: "",
-    color: "",
-    arrivalDate: "",
-    expirationDate: "",
-    lotNo: "",
-    pricingModel: "",
-    price: "",
-    invoiceNo: "",
-    DeliveredBy: "",
-    DoneBy: "",
+const tableHeadData = [
+  {
+    name: "No",
+  },
+  {
+    name: "Amount",
+  },
+  {
+    name: "Date",
+  },
+  {
+    name: "Address",
+  },
+  {
+    name: "Payment Desc",
+  },
+  {
+    name: "Bank Account",
+  },
+  {
+    name: "Check Number",
+  },
+  {
+    name: "Invoice No.",
+  },
+  {
+    name: "Class",
+  },
+  {
+    name: "subclass",
+  },
+  {
+    name: "Prepared By",
+  },
+  {
+    name: "Accounting",
+  },
+  {
+    name: "Approved By",
+  },
+
+];
+
+const initialCreateVoucherValues = {
+  no: "",
+  amount: "",
+  date: "",
+  address: "",
+  descOfPayment: "",
+  paymentTo: "",
+  bankAcc:"",
+  checkNum: "",
+  invoiceNo: "",
+  classExp: "",
+  subclass: "",
+  preparedBy: "",
+  accounting: "",
+  approvedBy: "",
+
 };
-const ProdAddInfoFieldsData = [{
-        name: "color",
-        type: "string",
-        label: "Color (Optional)",
-        placeholder: '#EEEE'
-    },
-    {
-        name: "arrivalDate",
-        type: "date",
-        label: "Arrival Date",
-        placeholder: "2/25/2003"
-    },
-    {
-        name: "expirationDate",
-        type: "date",
-        label: "Expiration Date",
-        placeholder: "2/26/2003"
-    },
-    {
-        name: "lotNo",
-        type: "number",
-        label: "Lot No.",
-        placeholder: "44552"
-    },
-];
-const ProdInfoFieldsData = [{
-        name: "productName",
-        type: "text",
-        label: "Product Name",
-        placeholder: "Protec Zinc"
-    },
-    {
-        name: "description",
-        type: "textarea",
-        label: "Description",
-        placeholder: "To boost immunity system"
-    },
-    {
-        name: "quantity",
-        type: "number",
-        label: "Quantity",
-        placeholder: "99",
-    },
-    {
-        name: "metrics",
-        type: "select",
-        label: "Metrics",
-        option: [
-            { value: "kg", label: "kg" },
-            { value: "per piece/s", label: "per piece/s" },
-            { value: "g", label: "g" },
-            { value: "mg", label: "mg" },
-        ],
-    },
-    {
-        name: "category",
-        type: "select",
-        label: "Category",
-        option: [
-            { value: "amox", label: "Amox" },
-            { value: "rifabutin", label: "Rifabutin" },
-            { value: "bexarotene", label: "Bexarotene" },
-            { value: "lorlatinib", label: "Lorlatinib" },
-        ],
-    },
-    {
-        name: "type",
-        type: "select",
-        label: "Type",
-        option: [
-            { value: "Active Materials", label: "Active Materials" },
-            { value: "Non Active", label: "None Active" },
-            { value: "Chemical", label: "Chemical" },
-        ],
-    },
-];
 
-const PricingInfoFieldsData = [{
-        name: "pricingModel",
-        type: "select",
-        label: "Pricing Model",
-        option: [
-            { value: "standard", label: "Standard" },
-            { value: "hourly", label: "Hourly" },
-            { value: "fixed", label: "Fixed" },
-            { value: "equity", label: "Equity" },
-        ],
-    },
-    {
-        name: "price",
-        type: "number",
-        label: "Price",
-        placeholder: "$300"
-    },
-    {
-        name: "currency",
-        type: "select",
-        label: "Currency",
-        option: [
-            { value: "usd", label: "USD" },
-            { value: "php", label: "PHP" },
-            { value: "aed", label: "AED" },
-        ],
-    },
+const VoucherInfoFieldsData = [
+  {
+    name: "no",
+    type: "number",
+    label: "Number #",
+    placeholder: "#12345",
+  },
+  {
+    name: "amount",
+    type: "string",
+    label: "Amount",
+    placeholder: "$99M",
+  },
+  {
+    name: "date",
+    type: "date",
+    label: "Date",
+    placeholder: "08/07/2004",
+  },
+  {
+    name: "address",
+    type: "string",
+    label: "Address",
+    placeholder: "1234 Asawa Ni Marie NE",
+  },
+  {
+    name: "descOfPayment",
+    type: "string",
+    label: "Description of Payment",
+    placeholder: "Zinc Supplies",
+  },
+  {
+    name : "bankAcc",
+    type: "string",
+    label: "Bank Account",
+    placeholder: "Landbank",
+  },
+  {
+    name: "invoiceNo",
+    type: "number",
+    label: "Invoice No",
+    placeholder: "24425",
+  },
+  {
+    name: "classExp",
+    type: "number",
+    label: "Class",
+    placeholder: "101",
+  },
+  {
+    name: "subclass",
+    type: "text",
+    label: "subclass",
+    placeholder: "raw_material",
+  },
+  {
+    name: "checkNum",
+    type: "number",
+    label: "Check Number",
+    placeholder: "22244455",
+  },
+  {
+    name: "preparedBy",
+    type: "string",
+    label: "Prepared By",
+    placeholder: "Mr Solis",
+  },
+  {
+    name: "accounting",
+    type: "string",
+    label: "Accounting",
+    placeholder: "Mrs Solis",
+  },
+  {
+    name: "approvedBy",
+    type: "string",
+    label: "Approved By",
+    placeholder: "Mrs Solis",
+  },
 ];
 
-const OrderInfoFieldsData = [{
-        name: "invoiceNo",
-        type: "number",
-        label: "Invoice No.",
-        placeholder: "44556677"
-    },
+//   name: "type",
+//   type: "select",
+//   label: "Type",
+//   option: [
+//     { value: "Active Materials", label: "Active Materials" },
+//     { value: "Non Active", label: "None Active" },
+//     { value: "Chemical", label: "Chemical" },
+//   ],
+// },
 
-    {
-        name: "deliveredBy",
-        type: "string",
-        label: "Delivered By",
-        placeholder: "Jerome Gabriel Gaspar"
-    },
-    {
-        name: "doneBy",
-        type: "string",
-        label: "Done By",
-        placeholder: "Karl Solis"
-    },
-    {
-        name: "image",
-        type: "file",
-        label: "Select Image",
-    },
-];
-
-export {
-    initialCreateProdValues,
-    OrderInfoFieldsData,
-    ProdInfoFieldsData,
-    PricingInfoFieldsData,
-    ProdAddInfoFieldsData
-};
+export { initialCreateVoucherValues, VoucherInfoFieldsData, tableHeadData };
