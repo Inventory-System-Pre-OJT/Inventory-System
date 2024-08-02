@@ -1,7 +1,7 @@
 import { TextField } from "./form";
 import { Links } from "./Links";
 import { Tab } from "./Tab";
-import { OrderInfo , PriceInfo , ProductInfo , Review } from "./form";
+import { OrderInfo , PriceInfo , ProductInfo , Review, Payment } from "./form";
 export {
 	TextField,
 	Links,
@@ -9,5 +9,6 @@ export {
 	OrderInfo,
 	PriceInfo,
 	ProductInfo,
-	Review
+	Review,
+	Payment
 }

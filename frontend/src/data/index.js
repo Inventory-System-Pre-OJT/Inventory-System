@@ -1,4 +1,10 @@
 const initialCreateProdValues = {
+    paymentto: "",
+    amount: "",
+    address: "",
+    descofpayment: "",
+    class: "",
+    subclass: "",
     productName: "",
     description: "",
     quantity: "",
@@ -11,6 +17,7 @@ const initialCreateProdValues = {
     invoiceNo: "",
     DeliveredBy: "",
     DoneBy: "",
+
 };
 const ProdAddInfoFieldsData = [{
         name: "color",
@@ -143,11 +150,92 @@ const OrderInfoFieldsData = [{
         label: "Select Image",
     },
 ];
+const PaymentData = [{
+    name: "preparedby",
+    type: "string",
+    label: "Prepared By",
+    placeholder: ''
+},
+{
+    name: "accounting",
+    type: "text",
+    label: "Accounting",
+    placeholder: ""
+},
+{
+    name: "approvedby",
+    type: "text",
+    label: "Approved By",
+    placeholder: "Louie Lacanilao"
+},
+{
+    name: "approvedby",
+    type: "text",
+    label: "",
+    placeholder: "Jaicel Lacanilao"
+},
+{
+    name: "paymentto",
+    type: "text",
+    label: "Payment To",
+    placeholder: "MDLD"
+},
+
+{
+    name: "address",
+    type: "text",
+    label: "Address",
+    placeholder: "San Leonardo",
+},
+{
+    name: "descofpayment",
+    type: "text",
+    label: "Description of Payment",
+    placeholder: "Sodium Ascorbate Bulk USP",
+},
+{
+    name: "bank",
+    type: "text",
+    label: "Bank",
+    placeholder: "RCBC",
+},
+{
+    name: "amount",
+    type: "number",
+    label: "Amount",
+    placeholder: "PHP"
+},
+{
+    name: "checkno",
+    type: "number",
+    label: "Check Number",
+    placeholder: ""
+},
+{
+    name: "class",
+    type: "select",
+    label: "Class",
+    option: [
+        { value: "101", label: "101" },
+        { value: "102", label: "102" },
+        { value: "103", label: "103" },
+        { value: "104", label: "104" },
+    ],
+},
+{
+    name: "sublass",
+    type: "text",
+    label: "Subclass",
+    placeholder: "Raw Materials",
+},
+
+];
 
 export {
     initialCreateProdValues,
     OrderInfoFieldsData,
     ProdInfoFieldsData,
     PricingInfoFieldsData,
-    ProdAddInfoFieldsData
+    ProdAddInfoFieldsData,
+    PaymentData
 };
