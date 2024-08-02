@@ -145,11 +145,11 @@ export const Inventory = () => {
   console.log('Rendering Inventory component');
 
   return (
-    <div className="flex h-screen">
+    <div className="flex">
       <Sidebar />
-      <main className="flex flex-col bg-gray-100 text-black flex-grow m-0 mt-14 lg:ml-64">
+      <main className="flex flex-col bg-gray-100 text-black flex-grow m-0 mt-14 w-full lg:ml-64">
         <section className="p-5">
-          <div className="flex flex-col gap-y-3 w-full">
+          <div className="flex flex-col gap-y-3">
             <div className="flex justify-between gap-x-3 items-center w-full">
               <div ref={containerRef} className='flex flex-row gap-x-3 w-full border-b-2 border-green-200'>
                 <div className="relative flex flex-row gap-x-3 ">

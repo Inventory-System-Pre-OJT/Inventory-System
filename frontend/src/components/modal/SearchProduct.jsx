@@ -20,7 +20,7 @@ function SearchProduct({ onClose }) {
 
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex backdrop-blur-sm justify-center items-start">
+      <div className="fixed inset-0 z-20 bg-black bg-opacity-50 flex backdrop-blur-sm justify-center items-start">
         <div ref={modalRef} className="dark:bg-gray-800 bg-white flex flex-col w-full mx-10 py-2 mt-24 rounded-md">
           <div className="flex w-full items-center py-2 border-b-[1px] border-gray-200 dark:border-gray-600">
             <div className='pl-3 text-gray-500 dark:text-gray-400 pr-3'>
