@@ -1,7 +1,7 @@
 import React from 'react'
 import Button from '../Button.jsx'
 
-const VoucherRecord = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckboxChange }) => {
+const Class = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckboxChange }) => {
   return (
     <div className=''>
         <div className="flex flex-row gap-x-3 mb-3 w-full">
@@ -51,4 +51,4 @@ const VoucherRecord = ({ selectAll, handleSelectAllChange, selectedRows, handleC
   )
 }
 
-export default VoucherRecord
+export default Class

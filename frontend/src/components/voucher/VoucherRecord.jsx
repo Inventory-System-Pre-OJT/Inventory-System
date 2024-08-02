@@ -10,7 +10,6 @@ const VoucherRecord = ({ selectAll, handleSelectAllChange, selectedRows, handleC
                   <option value="" disabled selected>Filter type</option>
                   <option value="incoming">Voucher Record</option>
                   <option value="outcoming">Class</option>
-                  <option value="balance">Balance</option>
                 </select>
               </div>
               <div className="flex flex-col gap-y-3 w-40">
@@ -18,7 +17,6 @@ const VoucherRecord = ({ selectAll, handleSelectAllChange, selectedRows, handleC
                   <option value="" disabled selected>Filter categories</option>
                   <option value="incoming">Voucher Record</option>
                   <option value="outcoming">Class</option>
-                  <option value="balance">Balance</option>
                 </select>
               </div>
             </div>
