@@ -51,7 +51,7 @@ function Home() {
     return (
         <div className="flex flex-col gap-y-3">
             <div className="flex justify-between items-center">
-                <div ref={containerRef} className='flex flex-row w-2/3 gap-x-3 w-full border-b-2 border-green-200'>
+                <div ref={containerRef} className='flex flex-row w-2/3 gap-x-3 border-b-2 border-green-200'>
                     <div className="relative flex flex-row gap-x-3 ">
                         <div 
                             className={`pb-2 cursor-pointer tab-incoming ${activePage === 'incoming' ? 'text-green-500 font-semibold' : 'text-gray-500'}`} 

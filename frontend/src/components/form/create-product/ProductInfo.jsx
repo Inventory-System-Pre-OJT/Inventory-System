@@ -1,20 +1,42 @@
 import { TextField } from "../TextField";
 import { OrderInfoFieldsData } from "../../../data";
+import { useState } from "react";
+
 export const ProductInfo = () => {
-  const OrderFieldElement = OrderInfoFieldsData?.map((data, index) => (
-    <TextField
-      key={index}
-      name={data.name}
-      type={data.type}
-      label={data.label}
-      options={data.option}
-      placeholder={data.placeholder}
-    />
-  ));
+  const [metrics, setMetrics] = useState("");
+
+  const handleMetricsChange = (event) => {
+    setMetrics(event.target.value);
+  };
+
+  const getOrderFieldElement = () => {
+    const fields = [...OrderInfoFieldsData];
+    if (metrics === "mg") {
+      fields.push({
+        name: "grams",
+        type: "number",
+        label: "Grams",
+        placeholder: "100mg",
+      });
+    }
+    return fields.map((data, index) => (
+      <TextField
+        key={index}
+        name={data.name}
+        type={data.type}
+        label={data.label}
+        options={data.option}
+        placeholder={data.placeholder}
+        onChange={data.name === "metrics" ? handleMetricsChange : undefined}
+      />
+    ));
+  };
 
   return (
     <div className="mt-5">
-      <div className={` grid grid-cols-4 gap-5`}>{OrderFieldElement}</div>
+      <div className="flex flex-col md:flex-row gap-5">
+        {getOrderFieldElement()}
+      </div>
     </div>
   );
 };

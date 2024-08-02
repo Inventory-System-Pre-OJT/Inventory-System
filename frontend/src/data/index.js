@@ -62,29 +62,21 @@ const ProdInfoFieldsData = [{
         option: [
             { value: "kg", label: "kg" },
             { value: "per piece/s", label: "per piece/s" },
-            { value: "g", label: "g" },
-            { value: "mg", label: "mg" },
         ],
     },
-    {
-        name: "category",
-        type: "select",
-        label: "Category",
-        option: [
-            { value: "amox", label: "Amox" },
-            { value: "rifabutin", label: "Rifabutin" },
-            { value: "bexarotene", label: "Bexarotene" },
-            { value: "lorlatinib", label: "Lorlatinib" },
-        ],
-    },
+    // {
+    //     name: "grams",
+    //     type: "number",
+    //     label: "Grams",
+    //     placeholder: "100mg per capsule",
+    // },
     {
         name: "type",
         type: "select",
         label: "Type",
         option: [
-            { value: "Active Materials", label: "Active Materials" },
-            { value: "Non Active", label: "None Active" },
-            { value: "Chemical", label: "Chemical" },
+            { value: "active-materials", label: "Active Materials" },
+            { value: "non-active-materials", label: "Non Active" },
         ],
     },
 ];
@@ -95,9 +87,6 @@ const PricingInfoFieldsData = [{
         label: "Pricing Model",
         option: [
             { value: "standard", label: "Standard" },
-            { value: "hourly", label: "Hourly" },
-            { value: "fixed", label: "Fixed" },
-            { value: "equity", label: "Equity" },
         ],
     },
     {
@@ -117,6 +106,19 @@ const PricingInfoFieldsData = [{
         ],
     },
 ];
+
+const getProdInfoFieldsData = (metrics) => {
+    const fields = [...ProdInfoFieldsData];
+    if (metrics === "mg") {
+        fields.push({
+            name: "grams",
+            type: "number",
+            label: "Grams",
+            placeholder: "100mg",
+        });
+    }
+    return fields;
+};
 
 const OrderInfoFieldsData = [{
         name: "invoiceNo",

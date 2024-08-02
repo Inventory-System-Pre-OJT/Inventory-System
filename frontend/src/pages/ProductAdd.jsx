@@ -50,27 +50,27 @@ export const ProductAdd = () => {
   }
 
   return (
-    <div className="p-5">
-      <h2 className="text-2xl font-medium w-full mb-5">Create Product</h2>
-      <div className="flex flex-row gap-10 w-full">
-        <ul className="p-5 list-none flex flex-col gap-3 mt-20">
+    <div className="p-5 dark:bg-gray-800 w-screen h-full">
+      <h2 className="text-2xl text-start dark:text-slate-300 font-medium w-full mb-5">Create Product</h2>
+      <div className="flex flex-row gap-5 w-full h-auto">
+        <ul className="p-5 list-none flex flex-col gap-3 dark:bg-gray-900 rounded-xl">
           {steps.map((data, index) => (
             <li
               key={index}
-              className={`flex flex-row gap-2 items-center ${
+              className={`flex flex-row gap-2 bg-light_mode-primary items-center dark:text-slate-400 ${
                 index === activeStep
                   ? "font-semibold text-[1.08rem]"
                   : "text-gray-400 font-medium"
               }`}
             >
               {index < activeStep ? (
-                <FaCheck className="text-accent-dark text-lg" />
+                <FaCheck className="text-accent-dark dark:text-green-500 text-lg" />
               ) : (
                 <span
                   className={`${
                     index === activeStep
-                      ? "bg-accent-dark w-6 h-1"
-                      : "w-5 h-1 bg-accent"
+                      ? "bg-accent-dark dark:bg-green-500 rounded-xl w-6 h-1 "
+                      : "w-5 h-1 bg-accent dark:bg-green-300 rounded-xl"
                   }`}
                 ></span>
               )}
@@ -78,16 +78,16 @@ export const ProductAdd = () => {
             </li>
           ))}
         </ul>
-        <div className="p-5 flex-1">
+        <div className="p-5 dark:bg-gray-900 rounded-xl flex-1 min-h-[600px] flex flex-col">
           <h3
-            className={`text-3xl font-medium ${
+            className={`text-3xl text-start dark:text-slate-300 font-medium ${
               activeStep === 3 ? "w-full md:w-[90%] m-auto" : ""
             }`}
           >
             {steps[activeStep].name}
           </h3>
           {activeStep !== 3 && (
-            <div className="border-[2px] border-[#AAAA] mt-3"></div>
+            <div className="border-[1px] dark:border-[#AAAA] mt-3"></div>
           )}
           <Formik
             onSubmit={handleSubmit}
@@ -107,8 +107,9 @@ export const ProductAdd = () => {
                         <button
                           onClick={handleBack}
                           type="button"
-                          className="border-b-2 border-black"
+                          className="relative group text-black dark:text-slate-300"
                         >
+                          <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black dark:bg-white transition-all duration-300 group-hover:w-full group-hover:right-auto group-hover:left-0 "></span>
                           Previous
                         </button>
                         <button
@@ -123,17 +124,16 @@ export const ProductAdd = () => {
                         <button
                           onClick={() => navigate('/inventory')}
                           type="button"
-                          className="relative group"
+                          className="relative group text-black dark:text-slate-300"
                         >
-                          <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full group-hover:right-auto group-hover:left-0 "></span>
+                          <span className="absolute bottom-0 left-0 w-0 h-0.5  bg-black dark:bg-white transition-all duration-300 group-hover:w-full group-hover:right-auto group-hover:left-0 "></span>
                           Cancel
                         </button>
                         <button
                           type="submit"
-                          className="bg-green-700 p-2 rounded-md text-white flex flex-row items-center"
+                          className="bg-green-700 text-regular p-2 rounded-md text-white flex flex-row items-center"
                         >
                           Continue
-                          <FaArrowRight className="ml-2" />
                         </button>
                       </>
                     )}

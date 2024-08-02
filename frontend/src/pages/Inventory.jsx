@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from '../components/Sidebar';
 import Outgoing from "../components/outgoing/Outgoing";
 import SearchProduct from "../components/modal/SearchProduct";
+import { Button as BtnShadCN} from "@/components/ui/button";
 
 const steps = [
   {
@@ -144,10 +145,10 @@ export const Inventory = () => {
   console.log('Rendering Inventory component');
 
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <Sidebar />
-      <main className="flex flex-col bg-gray-100 text-black h-full w-screen m-0 mt-14 lg:ml-64 lg:mr-10">
-        <section className="border-gray-400 p-5 w-full bg-white">
+      <main className="flex flex-col bg-gray-100 text-black flex-grow m-0 mt-14 lg:ml-64">
+        <section className="p-5">
           <div className="flex flex-col gap-y-3 w-full">
             <div className="flex justify-between gap-x-3 items-center w-full">
               <div ref={containerRef} className='flex flex-row gap-x-3 w-full border-b-2 border-green-200'>
@@ -180,7 +181,7 @@ export const Inventory = () => {
                 <input 
                   type="text" 
                   placeholder="Search" 
-                  className="hidden md:flex flex-grow h-full px-2 py-2 focus:border-b-2 focus:border-green-500 focus:outline-none focus:ring-0 focus:ring-blue-500" 
+                  className="hidden md:flex flex-grow bg-transparent border-b h-full px-2 py-2 focus:border-b-2 focus:border-green-500 focus:outline-none focus:ring-0 focus:ring-blue-500" 
                 />
                 <Button text="Add" icon={<RiAddFill />} className="hidden md:flex flex-shrink-0 h-full" onClick={handleAdd} />
                 <div className="md:hidden flex items-center relative ml-auto">
