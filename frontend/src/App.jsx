@@ -1,7 +1,7 @@
 import "./App.css";
 import { Toaster } from "react-hot-toast";
 import { LandingLayout } from "./layout";
-import { Voucher } from "./pages";
+import { Voucher,Expenditure } from "./pages";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { CustomError } from "./components";
 
@@ -24,6 +24,12 @@ function App() {
             element={<Voucher />} 
             errorElement={<CustomError />}
           />
+           <Route 
+            path="expenditure" 
+            element={<Expenditure />} 
+            errorElement={<CustomError />}
+          />
+
         </Route>
       </>
     )

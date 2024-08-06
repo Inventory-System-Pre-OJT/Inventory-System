@@ -1,22 +1,32 @@
+// components/table/TableRow.jsx
+
 import PropTypes from 'prop-types';
 
-export const TableRow = ({
-	tableRowData
-}) => {
-  const { _id, createdAt, updatedAt, __v, ...filteredData } = tableRowData
+export const TableRow = ({ tableRowData, onEditClick, onDeleteClick }) => {
+  const { _id, createdAt, updatedAt, __v, ...filteredData } = tableRowData;
   const tableRowValues = Object.values(filteredData);
+
   return (
-    <tr
-      className={`flex  flex-col  md:flex-row justify-between text-start text-sm    `}
-    >
-     {tableRowValues?.map((data, index) => (
-        <td key={index} className=' border-r-[0.002rem] border-light-gray-2 border-b-[0.002rem]' >
+    <tr className="flex flex-col md:flex-row justify-between text-start text-sm">
+      {tableRowValues.map((data, index) => (
+        <td key={index} className="border-r-[0.002rem] border-light-gray-2 border-b-[0.002rem]">
           {data}
         </td>
       ))}
+      <td>
+        <button onClick={onEditClick} className="text-blue-500 hover:underline mr-2">
+          Edit
+        </button>
+        <button onClick={onDeleteClick} className="text-red-500 hover:underline">
+          Delete
+        </button>
+      </td>
     </tr>
   );
 };
+
 TableRow.propTypes = {
-  tableRowData: PropTypes.arrayOf(PropTypes.string).isRequired,
+  tableRowData: PropTypes.object.isRequired,
+  onEditClick: PropTypes.func.isRequired,
+  onDeleteClick: PropTypes.func.isRequired,
 };

@@ -140,6 +140,35 @@ const VoucherInfoFieldsData = [
   },
 ];
 
+const tableHeadDataExpenditure = [
+  {
+    name: "classExp",
+  },
+  {
+    name: "subclass",
+  },
+];
+
+const initialCreateExpenditureValues = {
+  classExp: "",
+  subclass: "",
+};
+
+const ExpenditureInfoFieldsData = [
+  {
+    name: "classExp",
+    type: "number",
+    label: "Class",
+    placeholder: "101",
+  },
+  {
+    name: "subclass",
+    type: "string",
+    label: "subclass",
+    placeholder: "utilities",
+  },
+];
+
 //   name: "type",
 //   type: "select",
 //   label: "Type",
@@ -150,4 +179,4 @@ const VoucherInfoFieldsData = [
 //   ],
 // },
 
-export { initialCreateVoucherValues, VoucherInfoFieldsData, tableHeadData };
+export { initialCreateVoucherValues, VoucherInfoFieldsData, tableHeadData, initialCreateExpenditureValues, ExpenditureInfoFieldsData, tableHeadDataExpenditure };

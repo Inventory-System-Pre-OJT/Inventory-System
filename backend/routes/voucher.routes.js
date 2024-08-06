@@ -11,8 +11,7 @@ router.get('/get', getAllVouchers);
 // Get a single voucher by ID
 router.get('/get/:id', getVoucherById);
 
-// Update a voucher by ID
-router.put('/update/:id', updateVoucherById);
+router.patch('/update/:id', updateVoucherById);
 
 // Delete a voucher by ID
 router.delete('/delete/:id', deleteVoucherById);

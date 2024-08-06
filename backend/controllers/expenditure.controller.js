@@ -51,6 +51,7 @@ export const updateExpenditureById = async (req, res) => {
     }
 };
 
+
 // Delete an expenditure by ID
 export const deleteExpenditureById = async (req, res) => {
     try {
