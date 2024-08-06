@@ -1,13 +1,11 @@
-import { TextField } from "./form";
-import { Links } from "./Links";
-import { Tab } from "./Tab";
-import { OrderInfo , PriceInfo , ProductInfo , Review } from "./form";
+import { TextField } from "./TextField";
+import { OrderInfo , PriceInfo , ProductInfo , Review } from "./create-product";
+import { Payment } from "./createVoucher";
 export {
 	TextField,
-	Links,
-	Tab,
 	OrderInfo,
 	PriceInfo,
 	ProductInfo,
-	Review
+	Review,
+	Payment
 }
