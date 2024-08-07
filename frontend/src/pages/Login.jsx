@@ -1,7 +1,7 @@
 import { GiMedicines } from "react-icons/gi";
-import { TextField } from "../components";  // Changed from "../src/components"
+import { TextField , Links } from "../components";  // Changed from "../src/components"
 import { Form, Formik } from "formik";
-import { Links } from "../components";  // Changed from "../src/components"
+
 import { GoDotFill } from "react-icons/go";
 import { LoginSchema } from "../schema";
 

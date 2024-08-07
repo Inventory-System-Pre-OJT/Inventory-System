@@ -1,7 +1,7 @@
 import { Login } from './Login'
 import { Inventory } from './Inventory'
 import { ProductAdd } from './ProductAdd';
-export {
+export { 
     Login,
     Inventory,
     ProductAdd

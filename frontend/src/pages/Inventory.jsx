@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Tab, OrderInfo, PriceInfo, ProductInfo, Review } from "../components";
+import {  OrderInfo, PriceInfo, ProductInfo, Review } from "../components";
 import { UseToggle } from "../hooks";
 import { CreateProdSchema } from "../schema";
 import { initialCreateProdValues } from "../data";
