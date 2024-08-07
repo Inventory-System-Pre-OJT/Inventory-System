@@ -6,45 +6,57 @@ export async function getStocks(req, res){
         return res.json(stocks);
     }
     catch(error){
-        console.log("getStock Controller Error", error.message);
-        res.status(500).json({ success: false, message: "Internal Server Error" });
+        console.log("getStocks Controller Error", error.message);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
+
+// export async function filterStock(req, res){
+//     try{
+
+//     }
+//     catch(error){
+//         console.log("filterStock Controller Error", error.message);
+//         res.status(500).json({ success: false, message: "Internal Server Error"})
+//     }
+// }
 
 export async function searchStock(req, res){
     try{
         const query = req.body;
 
-        const stock = await Stock.find(query);
-        return res.json(stock);
+        const stocks = await Stock.find(query);
+        return res.json(stocks);
     }
     catch(error){
-        console.log("search Controller Error", error.message);
-        res.status(500).json({ success: false, message: "Internal Server Error" });
+        console.log("searchStock Controller Error", error.message);
+        return res.status(500).json({ success: false, message: "Internal Server Error"});
     }
 }
 
-export async function postStock(req, res){
-    try{
+export async function postStock(req, res) {
+    try {
         const {
-            name, qty, invoice_no, desc, reciever, date, expiration_date, scan_copy, done_by, price
+            name, qty, invoice_no, desc, receiver, date, expiration_date, scan_copy, done_by, price
         } = req.body;
 
-        if (!name || !qty || !desc || !invoice_no || !date || !expiration_date || !scan_copy || !done_by || !reciever || !price ){
-            return res.status(400).json({ message: false, message: "All fields are required" });
+        if (!name || !qty || !desc || !invoice_no || !date || !expiration_date || !scan_copy || !done_by || !receiver || !price) {
+            return res.status(400).json({ success: false, message: "All fields are required" });
         }
 
         const newStock = new Stock({
-            name, qty, invoice_no, desc, reciever, date, expiration_date, scan_copy, done_by, price
+            name, qty, invoice_no, receiver, desc, date, expiration_date, scan_copy, done_by, price
         });
-        
-        res.req(200).json({ success: true, message: "Entry successfully added" }) 
-    }
-    catch(error){
-        console.log("postStock Controller Error", error.message);
-        res.status(500).json({ success: false, message: "Internal Server Error" });
+
+        await newStock.save();
+
+        return res.status(200).json({ success: true, message: "Entry successfully added" });
+    } catch (error) {
+        console.error("postStock Controller Error:", error.message);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
+
 export async function updateStock(req, res){
     try{
         const {
@@ -58,19 +70,32 @@ export async function updateStock(req, res){
             name, qty, invoice_no, desc, reciever, date, expiration_date, scan_copy, done_by, price
         )
 
-        res.status(200).json({ success: true, message: "Record updated successfully"})
+        return res.status(200).json({ success: true, message: "Record updated successfully"})
     }
     catch(error){
         console.log("updateStock Controller Error", error.message);
-        res.status(500).json({ success: false, message: "Internal Server Error" });
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
+
 export async function destroyStock(req, res){
     try{
-        
+        const { invoice_no } = req.body;
+
+        if (!invoice_no) {
+            return res.status(400).json({ success: false, message: "Invoice number is required" });
+        }
+
+        const result = await Stock.deleteOne({ invoice_no });
+
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ success: false, message: "Record not found" });
+        }
+
+        return res.status(200).json({ success: true, message: "Record successfully deleted" });
     }
     catch(error){
         console.log("destroyStock Controller Error", error.message);
-        res.status(500).json({ success: false, message: "Internal Server Error" });
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
