@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Tab, OrderInfo, PriceInfo, ProductInfo, Review } from "../components";
+import { Tab, OrderInfo, PriceInfo, ProductInfo, Review , Button as ShadCnButton  } from "../components";
 import { UseToggle } from "../hooks";
 import { CreateProdSchema } from "../schema";
 import { initialCreateProdValues } from "../data";
@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from '../components/Sidebar';
 import Outgoing from "../components/outgoing/Outgoing";
 import SearchProduct from "../components/modal/SearchProduct";
-import { Button as BtnShadCN} from "@/components/ui/button";
 
 const steps = [
   {
@@ -183,7 +182,7 @@ export const Inventory = () => {
                   placeholder="Search" 
                   className="hidden md:flex flex-grow bg-transparent border-b h-full px-2 py-2 focus:border-b-2 focus:border-green-500 focus:outline-none focus:ring-0 focus:ring-blue-500" 
                 />
-                <Button text="Add" icon={<RiAddFill />} className="hidden md:flex flex-shrink-0 h-full" onClick={handleAdd} />
+                <ShadCnButton text="Add" icon={<RiAddFill />} className="hidden md:flex flex-shrink-0 h-full" onClick={handleAdd} />
                 <div className="md:hidden flex items-center relative ml-auto">
                   <button className="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700" onClick={() => setDropdownOpen(!dropdownOpen)}>
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
