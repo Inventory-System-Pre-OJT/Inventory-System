@@ -1,7 +1,7 @@
 import "./App.css";
 import { Toaster } from "react-hot-toast";
 import { LandingLayout } from "./layout";
-import { Login, Inventory, ProductAdd, Voucher, VoucherAdd } from "./pages";
+import { Login, Inventory, ProductAdd, Voucher, VoucherAdd, Expenditure, ExpenditureAdd } from "./pages";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -27,6 +27,8 @@ const router = createBrowserRouter(
         <Route path="/inventory/add" element={<ProductAdd />} />
         <Route path="/voucher" element={<Voucher />} />
         <Route path="/voucher/add" element={<VoucherAdd />} />
+        <Route path="/expenditure" element={<Expenditure />} />
+        <Route path="/expenditure/add" element={<ExpenditureAdd />} />
       </Route>
     </>
   )

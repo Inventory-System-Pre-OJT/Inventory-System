@@ -7,7 +7,7 @@ import { Formik, Form } from "formik";
 import { RiAddFill } from "react-icons/ri";
 import Button from '../components/Button';
 import Balance from '../components/balance/Balance';
-import VoucherRecord from '../components/voucher/VoucherRecord';
+import Class from '../components/class/Class';
 import { useNavigate } from "react-router-dom";
 import SidebarV from '../components/SidebarV';
 import Outgoing from "../components/outgoing/Outgoing";
@@ -60,13 +60,13 @@ function renderStepContent(step, formValues) {
   }
 }
 
-export const Voucher = () => {
+export const Expenditure = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [isOpenModal, setOpenModal] = UseToggle(false);
   const [activeStep, setActiveStep] = useState(0);
   const currentValidationSchema = CreateProdSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;
-  const [activePage, setActivePage] = useState('VoucherRecord');
+  const [activePage, setActivePage] = useState('Expenditure');
   const [filter, setFilter] = useState('');
   const [selectAll, setSelectAll] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
@@ -99,7 +99,7 @@ export const Voucher = () => {
   }
 
   const handleAdd = () => {
-    navigate('/voucher/add');
+    navigate('/expenditure/add');
   }
 
   const handleCheckboxChange = (index) => {
@@ -146,7 +146,7 @@ export const Voucher = () => {
             <div className="flex justify-between gap-x-3 items-center w-full">
               <div ref={containerRef} className='flex flex-row gap-x-3 w-full border-b-2 border-green-200'>
                 <div className="relative flex flex-row gap-x-3 ">
-                  {['VoucherRecord'].map((page) => (
+                  {['Expenditure'].map((page) => (
                     <div 
                       key={page}
                       ref={page === 'balance' ? balanceTabRef : null}
@@ -164,7 +164,6 @@ export const Voucher = () => {
                 </div>
               </div>
               <div className="flex justify-between md:justify-end md:w-full ml-2 md:ml-0 gap-x-2 h-8">
-                
                 <input 
                   type="text" 
                   placeholder="Search" 
@@ -204,10 +203,10 @@ export const Voucher = () => {
 
             
 
-            {/* Content based on activePage */}
-            {activePage === 'VoucherRecord' && (
+        
+            {activePage === 'Expenditure' && (
               <>
-                < VoucherRecord
+                <Class 
                   selectAll={selectAll}
                   handleSelectAllChange={handleSelectAllChange}
                   selectedRows={selectedRows}
@@ -215,7 +214,6 @@ export const Voucher = () => {
                 />
               </>
             )}
-            
             
           </div>
 

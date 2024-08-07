@@ -4,15 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { initialCreateProdValues } from "../data";
 import { Formik, Form } from "formik";
 import { FaCheck } from "react-icons/fa6";
-import { Payment } from "../components";
+import { ExpAdd } from "../components";
+import SidebarV from '../components/SidebarV';
 import { CreateProdSchema } from "../schema";
 import { FaArrowRight } from "react-icons/fa6";
-import SidebarV from '../components/SidebarV';
 const steps = [
-  { name: "Disbursement Voucher" },
+  { name: "Expenditure" },
 ];
 
-export const VoucherAdd = () => {
+export const ExpenditureAdd = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [isOpenModal, setOpenModal] = UseToggle(false);
   const [activePage, setActivePage] = useState('VoucherRecord');
@@ -38,11 +38,20 @@ export const VoucherAdd = () => {
   function handleSubmit(values, actions) {
     if (isLastStep) {
       alert(`Voucher Created Successfully`);
-      navigate('/voucher');
+      navigate('/expenditure');
     } else {
       setActiveStep((prev) => prev + 1);
       actions.setTouched({});
       actions.setSubmitting(false);
+    }
+  }
+
+  function renderStepContent(step, formValues) {
+    switch (step) {
+      case 0:
+        return <ExpAdd />;
+      default:
+        return <div>Not Found</div>;
     }
   }
   useEffect(() => {
@@ -63,12 +72,11 @@ export const VoucherAdd = () => {
   function renderStepContent(step, formValues) {
     switch (step) {
       case 0:
-        return <Payment />;
+        return <ExpAdd />;
       default:
         return <div>Not Found</div>;
     }
   }
-
   return (
     <div className="flex">
       <SidebarV />
@@ -140,13 +148,13 @@ export const VoucherAdd = () => {
                           type="submit"
                           className="bg-green-700 p-2 rounded-md text-white"
                         >
-                          {isLastStep ? "Create Voucher" : "Continue"}
+                          {isLastStep ? "Create Expenditure" : "Continue"}
                         </button>
                       </>
                     ) : (
                       <>
                         <button
-                          onClick={() => navigate('/voucher')}
+                          onClick={() => navigate('/expenditure')}
                           type="button"
                           className="relative group"
                         >
@@ -168,9 +176,6 @@ export const VoucherAdd = () => {
             }}
           </Formik>
           </div></div></div></div></div>
-        </section></main></div>
-      
-   
-    
+          </section></main></div>
   );
 }

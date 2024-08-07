@@ -171,7 +171,7 @@ const PaymentData = [{
 {
     name: "approvedby",
     type: "text",
-    label: "",
+    label: "Approved By",
     placeholder: "Jaicel Lacanilao"
 },
 {
@@ -211,7 +211,11 @@ const PaymentData = [{
     label: "Check Number",
     placeholder: ""
 },
-{
+
+
+];
+
+const ExpData = [{
     name: "class",
     type: "select",
     label: "Class",
@@ -237,5 +241,6 @@ export {
     ProdInfoFieldsData,
     PricingInfoFieldsData,
     ProdAddInfoFieldsData,
-    PaymentData
+    PaymentData,
+    ExpData
 };
