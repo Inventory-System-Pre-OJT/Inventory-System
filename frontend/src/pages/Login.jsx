@@ -4,9 +4,17 @@ import { Form, Formik } from "formik";
 import { Links } from "../components";  // Changed from "../src/components"
 import { GoDotFill } from "react-icons/go";
 import { LoginSchema } from "../schema";
+import toast from "react-hot-toast";
+import { useAuthStore } from "@/store/authUser.js";
 
 export const Login = () => {
   const getYear = new Date();
+  const { login } = useAuthStore();
+
+  const loginHandler = async () => {
+    const success = await login(values);
+  }
+
   return (
     <section className=" grid grid-rows-[50px_1fr] md:grid-rows-1 md:grid-cols-2  w-full h-full gap-5 p-5 md:p-0 text-center ">
       <div className=" bg-transparent md:bg-secondary  md:order-1 flex justify-center md:items-center relative ">
@@ -34,7 +42,7 @@ export const Login = () => {
           <Formik initialValues={{
             email: '',
             password : ''
-          }} onSubmit={() => console.log('Submitted')} validationSchema={LoginSchema}>
+          }} onSubmit={loginHandler} validationSchema={LoginSchema}>
             <Form className="flex flex-col gap-3 text-start ">
               <TextField
                 type="text"
