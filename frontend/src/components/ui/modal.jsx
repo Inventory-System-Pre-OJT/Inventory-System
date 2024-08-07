@@ -12,7 +12,7 @@ import {
   import { Button } from "@/components/ui/button"
 import { Input } from "./input"
   
-  export function Modal({ title, description, label, contentType, placeholder }) {
+  export function Modal({ title, titleModal, description, label, contentType, placeholder }) {
     return (
       <AlertDialog>
         <AlertDialogTrigger asChild>
@@ -20,7 +20,7 @@ import { Input } from "./input"
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{title}</AlertDialogTitle>
+            <AlertDialogTitle>{titleModal}</AlertDialogTitle>
             <AlertDialogDescription>
               {contentType === 'form' ? (
                 <form>

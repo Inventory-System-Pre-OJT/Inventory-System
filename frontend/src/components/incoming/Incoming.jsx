@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '../ui/button.jsx';
 import { ComboboxComponent } from '../ui/combobox.jsx';
 import { Modal } from '../ui/modal.jsx';
 import { ArrowTopRightIcon, Pencil2Icon } from '@radix-ui/react-icons';
 
 const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckboxChange }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
   const frameworks = [
     { value: "Amox", label: "Amox" },
     { value: "ProteCee", label: "Protec Cee" },
@@ -27,6 +29,14 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
 
   const handleView = (index) => {
     console.log(`View item at index ${index}`);
+    return (
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={`View Item ${selectedItem?.index}`}
+      />
+
+    );
   };
 
   const handleFunctionalities = [
@@ -77,10 +87,10 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
                 <td className="px-2 py-4 border border-gray-200">4</td>
                 <td className="px-2 py-4 border border-gray-200">5</td>
                 <td className="px-2 py-4 border border-gray-200">6</td>
-                <td className="px-2 py-4 border border-gray-200"><Modal title="View" description="Authentication here" label="Password" placeholder="Enter admin password" contentType="form" /></td>
+                <td className="px-2 py-4 border border-gray-200"><Modal title="View" titleModal="View Price" description="Authentication here" label="Password" placeholder="Enter admin password" contentType="form" /></td>
                 <td className="px-2 py-4 border border-gray-200">8</td>
                 <td className="px-2 py-4 border border-gray-200">9</td>
-                <td className="px-2 py-4 border border-gray-200"><Modal title="View" description="Image here" contentType="image" /></td>
+                <td className="px-2 py-4 border border-gray-200"><Modal title="View" titleModal="View Scan copy" description="Image here" contentType="image" /></td>
                 <td className="px-2 py-4 border border-gray-200">11</td>
                 <td className="px-2 py-4 border border-gray-200">
                   <div className="flex flex-row gap-x-2">
