@@ -10,7 +10,6 @@ export const TextField = ({
   placeholder,
   options,
   isImportant = true,
-  onChange,
 }) => {
   return (
     <div
@@ -42,7 +41,7 @@ export const TextField = ({
           id={name}
           name={name}
           className={`border-2 border-dark_mode-lighter dark:border-slate-600 dark:text-slate-300  dark:bg-slate-600 p-2 rounded-md bg-transparent `}
-          onChange={onChange}
+      
         >
           {options.map((option) => (
             <option key={option.value} value={option.value} >
@@ -102,5 +101,4 @@ TextField.propTypes = {
       label: PropTypes.string,
     })
   ),
-  onChange: PropTypes.func,
 };

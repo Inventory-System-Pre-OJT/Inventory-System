@@ -87,6 +87,7 @@ const PricingInfoFieldsData = [{
         label: "Pricing Model",
         option: [
             { value: "standard", label: "Standard" },
+            { value: "Hourly", label: "Hourly" },
         ],
     },
     {

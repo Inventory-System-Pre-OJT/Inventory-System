@@ -27,8 +27,7 @@ const stockSchema = mongoose.Schema({
         required: true
     },
     color: {
-        type: String,
-        required: true
+        type: String
     },
     price_model: {
         type: String,
