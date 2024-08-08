@@ -6,11 +6,11 @@ const stockSchema = mongoose.Schema({
         required: true
     },
     qty: {
-        type: Number,
+        type: String,
         required: true
     },
     invoice_no: {
-        type: Number,
+        type: String,
         required: true,
         unique: true
     },
@@ -18,20 +18,20 @@ const stockSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    reciever: {
+    receiver: {
         type: String,
         required: true
     },
     price: {
-        type: Number,
+        type: String,
         required: true
     },
     date: {
-        type: Number,
+        type: String,
         required: true
     },
     expiration_date: {
-        type: Number,
+        type: String,
         required: true
     },
     scan_copy: {
