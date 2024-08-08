@@ -37,15 +37,15 @@ export async function searchStock(req, res){
 export async function postStock(req, res) {
     try {
         const {
-            name, qty, invoice_no, desc, receiver, date, expiration_date, scan_copy, done_by, price
+            name, qty, invoice_no, desc, receiver, date, expiration_date, scan_copy, done_by, price, lot_no
         } = req.body;
 
-        if (!name || !qty || !desc || !invoice_no || !date || !expiration_date || !scan_copy || !done_by || !receiver || !price) {
+        if (!name || !qty || !desc || !invoice_no || !date || !expiration_date || !scan_copy || !done_by || !receiver || !price || !lot_no) {
             return res.status(400).json({ success: false, message: "All fields are required" });
         }
 
         const newStock = new Stock({
-            name, qty, invoice_no, receiver, desc, date, expiration_date, scan_copy, done_by, price
+            name, qty, invoice_no, receiver, desc, date, expiration_date, scan_copy, done_by, price, lot_no
         });
 
         await newStock.save();
