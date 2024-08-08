@@ -13,7 +13,7 @@ import Sidebar from '../components/Sidebar';
 import Outgoing from "../components/outgoing/Outgoing";
 import SearchProduct from "../components/modal/SearchProduct";
 import { Button as BtnShadCN} from "@/components/ui/button";
-
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 const steps = [
   {
     name: "Product Information",
@@ -147,7 +147,7 @@ export const Inventory = () => {
   return (
     <div className="flex">
       <Sidebar />
-      <main className="flex flex-col bg-gray-100 text-black flex-grow m-0 mt-14 w-full lg:ml-64">
+      <main className="flex flex-col  text-black flex-grow m-0 mt-14 w-full lg:ml-64">
         <section className="p-5">
           <div className="flex flex-col gap-y-3">
             <div className="flex justify-between gap-x-3 items-center w-full">
@@ -178,11 +178,15 @@ export const Inventory = () => {
                     <option value="non_active">Non-Active Material</option>
                   </select>
                 </div>
-                <input 
-                  type="text" 
-                  placeholder="Search" 
-                  className="hidden md:flex flex-grow bg-transparent border-b h-full px-2 py-2 focus:border-b-2 focus:border-green-500 focus:outline-none focus:ring-0 focus:ring-blue-500" 
-                />
+                <div className="hidden md:flex items-center px-2 border border-slate-200 rounded-md">
+                  <MagnifyingGlassIcon className="text-gray-500 " />
+                  <input 
+                    type="text" 
+                    placeholder="Search" 
+                    className="hidden md:flex flex-grow bg-transparent h-full ml-2 pr-2 py-1 focus:outline-none focus:ring-0 focus:ring-blue-500" 
+                  />
+                </div>
+                
                 <Button text="Add" icon={<RiAddFill />} className="hidden md:flex flex-shrink-0 h-full" onClick={handleAdd} />
                 <div className="md:hidden flex items-center relative ml-auto">
                   <button className="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700" onClick={() => setDropdownOpen(!dropdownOpen)}>
@@ -243,7 +247,7 @@ export const Inventory = () => {
               </>
             )}
             {activePage === 'balance' && (
-              <div>
+              <div className="">
                 <Balance />
               </div>
             )}
