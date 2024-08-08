@@ -1,16 +1,19 @@
+// frontend/src/components/form/Textfield.jsx
+
 import { Field, ErrorMessage } from "formik";
 import PropTypes from "prop-types";
 import { LuAsterisk } from "react-icons/lu";
+
 export const TextField = ({
   type,
   name,
   label,
   placeholder,
-  options,
+  options = [], // Default to empty array
   isImportant = true,
 }) => {
   return (
-    <div className={`flex flex-col gap-2 `}>
+    <div className={`flex flex-col gap-2`}>
       <div className="flex flex-row items-center gap-2">
         <label className={`font-medium`} htmlFor={name}>
           {label}
@@ -22,7 +25,7 @@ export const TextField = ({
           as="select"
           id={name}
           name={name}
-          className={` border-2  border-dark_mode-lighter  p-2 rounded-md bg-transparent `}
+          className={`border-2 border-dark_mode-lighter p-2 rounded-md bg-transparent`}
         >
           {options.map((option) => (
             <option key={option.value} value={option.value}>
@@ -35,7 +38,7 @@ export const TextField = ({
           type={type}
           name={name}
           id={name}
-          className={`  bg-light_mode-primary border-2  p-2 rounded-md `}
+          className={`bg-light_mode-primary border-2 p-2 rounded-md`}
           placeholder={placeholder}
         />
       )}
@@ -43,7 +46,7 @@ export const TextField = ({
       <ErrorMessage name={name}>
         {(msg) => (
           <div title={msg}>
-            <span className=" text-red-400 text-[0.9rem] font-bold ">
+            <span className="text-red-400 text-[0.9rem] font-bold">
               {msg}
             </span>
           </div>
@@ -52,16 +55,17 @@ export const TextField = ({
     </div>
   );
 };
+
 TextField.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
-  isImportant: PropTypes.string,
+  isImportant: PropTypes.bool,
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      value: PropTypes.string,
-      label: PropTypes.string,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      label: PropTypes.string.isRequired,
     })
   ),
 };

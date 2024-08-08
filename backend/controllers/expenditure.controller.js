@@ -65,3 +65,17 @@ export const deleteExpenditureById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const getOptions = async (req, res) => {
+    try {
+      const classExpOptions = await Expenditure.distinct('classExp');
+      const subclassOptions = await Expenditure.distinct('subclass');
+  
+      res.json({
+        classExpOptions: classExpOptions.map(value => ({ value, label: value })),
+        subclassOptions: subclassOptions.map(value => ({ value, label: value }))
+      });
+    } catch (error) {
+      res.status(500).json({ error: 'Error fetching options' });
+    }
+  };

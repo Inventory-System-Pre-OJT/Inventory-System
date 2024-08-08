@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Section,
   TableHead,
@@ -13,13 +13,16 @@ import {
 } from "../data";
 import { Formik, Form } from "formik";
 import { CreateVoucherSchema } from "../schema";
-import { useMutationAsync, FetchVoucherData, useUpdateVoucher, useDeleteVoucher } from "../function";
+import { useMutationAsync, FetchVoucherData, useUpdateVoucher, useDeleteVoucher, useFetchOptions } from "../function";
 import toast from "react-hot-toast";
 
 export const Voucher = () => {
   const [openCreateVoucher, setCreateVoucher] = useState(false);
   const [openEditVoucher, setEditVoucher] = useState(false);
   const [editVoucherData, setEditVoucherData] = useState(null);
+  const [selectedClassExp, setSelectedClassExp] = useState("");
+  const [filteredSubclassOptions, setFilteredSubclassOptions] = useState([]);
+  const [selectedSubclass, setSelectedSubclass] = useState("");
 
   const { voucherData, voucherFetching, voucherLoading, voucherError } = FetchVoucherData();
   const { mutationAsync: createVoucherMutation } = useMutationAsync(
@@ -31,6 +34,31 @@ export const Voucher = () => {
   );
   const { mutationAsync: updateVoucherMutation } = useUpdateVoucher();
   const { mutationAsync: deleteVoucherMutation } = useDeleteVoucher();
+  const { data: optionsData = {}, isLoading: optionsLoading, isError: optionsError } = useFetchOptions();
+
+  useEffect(() => {
+    if (optionsData.classExpOptions && optionsData.subclassOptions) {
+      // Filter subclass options based on the selected classExp
+      const filteredOptions = optionsData.subclassOptions.filter(option => option.classExp === selectedClassExp);
+      setFilteredSubclassOptions(filteredOptions);
+
+      // Auto-select the first subclass if available
+      if (filteredOptions.length > 0) {
+        setSelectedSubclass(filteredOptions[0].subclass);
+      } else {
+        setSelectedSubclass(""); // Clear subclass if no match is found
+      }
+    }
+  }, [selectedClassExp, optionsData.classExpOptions, optionsData.subclassOptions]);
+
+  const handleClassExpChange = (event) => {
+    const classExp = event.target.value;
+    setSelectedClassExp(classExp);
+  };
+
+  const handleSubclassChange = (event) => {
+    setSelectedSubclass(event.target.value);
+  };
 
   const handleEditClick = (voucher) => {
     setEditVoucherData(voucher);
@@ -51,13 +79,29 @@ export const Voucher = () => {
     }
   };
 
-  const CreateVoucherElements = VoucherInfoFieldsData?.map((data, index) => (
+  if (optionsLoading) {
+    return <div>Loading options...</div>;
+  }
+
+  if (optionsError) {
+    return <div>Error loading options</div>;
+  }
+
+  const voucherInfoFields = VoucherInfoFieldsData(
+    optionsData.classExpOptions || [],
+    filteredSubclassOptions
+  );
+
+  const CreateVoucherElements = voucherInfoFields.map((data, index) => (
     <TextField
       key={index}
       label={data.label}
       name={data.name}
       type={data.type}
       placeholder={data.placeholder}
+      options={data.options} // Pass options for select fields
+      onChange={data.name === "classExp" ? handleClassExpChange : data.name === "subclass" ? handleSubclassChange : undefined} // Handle classExp and subclass change
+      value={data.name === "classExp" ? selectedClassExp : data.name === "subclass" ? selectedSubclass : ""} // Set value for select fields
     />
   ));
 
@@ -68,7 +112,7 @@ export const Voucher = () => {
           <h1 className="text-2xl font-semibold">Create Voucher</h1>
 
           <Formik
-            initialValues={initialCreateVoucherValues}
+            initialValues={{ ...initialCreateVoucherValues, subclass: selectedSubclass }}
             validationSchema={CreateVoucherSchema}
             onSubmit={async (values, actions) => {
               try {
@@ -106,7 +150,7 @@ export const Voucher = () => {
           <h1 className="text-2xl font-semibold">Update Voucher</h1>
 
           <Formik
-            initialValues={editVoucherData}
+            initialValues={{ ...editVoucherData, subclass: selectedSubclass }}
             validationSchema={CreateVoucherSchema}
             onSubmit={async (values, actions) => {
               try {

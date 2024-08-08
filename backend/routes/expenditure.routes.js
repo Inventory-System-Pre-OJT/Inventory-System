@@ -6,6 +6,7 @@ import {
     getExpenditureById, 
     updateExpenditureById, 
     deleteExpenditureById,
+    getOptions,
  
 } from '../controllers/expenditure.controller.js';
 
@@ -23,6 +24,8 @@ router.patch('/update/:id', updateExpenditureById);
 
 // Delete an expenditure by ID
 router.delete('/delete/:id', deleteExpenditureById);
+
+router.get('/options', getOptions);
 
 
 

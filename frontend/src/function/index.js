@@ -233,4 +233,18 @@ const useDeleteExpenditure = () => {
 // const findSelectedItemById = (dataArray, itemId) => {
 // 	return dataArray?.find((item) => itemId === item._id);
 //   };
-export { useMutationAsync, FetchVoucherData , useUpdateVoucher, useDeleteVoucher, useExpenditureMutationAsync,useUpdateExpenditure, FetchExpenditureData, useDeleteExpenditure};
+
+const useFetchOptions = () => {
+  return useQuery('fetchOptions', async () => {
+    try {
+      const response = await axiosRequest('get', 'api/v1/expenditure/options');
+      return response.data; // Ensure response.data contains classExpOptions and subclassOptions
+    } catch (error) {
+      console.error('Error fetching options:', error);
+      return { classExpOptions: [], subclassOptions: [] }; // Return default empty arrays
+    }
+  });
+};
+
+
+export { useMutationAsync, FetchVoucherData , useUpdateVoucher, useDeleteVoucher, useExpenditureMutationAsync,useUpdateExpenditure, FetchExpenditureData, useDeleteExpenditure, useFetchOptions};
