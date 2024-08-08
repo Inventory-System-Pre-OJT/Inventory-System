@@ -6,10 +6,11 @@ const initialCreateProdValues = {
     arrivalDate: "",
     expirationDate: "",
     lotNo: "",
-    pricingModel: "",
+    pricingModel: "Standard",
     price: "",
     invoiceNo: "",
     DeliveredBy: "",
+    currency: "PHP",
     DoneBy: "",
 };
 const ProdAddInfoFieldsData = [{

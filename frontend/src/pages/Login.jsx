@@ -63,8 +63,8 @@ export const Login = () => {
                 name="Forget Password"
                 style="self-end text-[0.8rem] text-accent font-semibold border-b-[1px] border-gray-400 "
               />
-              <button type="submit" className="dark:bg-green-500 bg-accent p-2 text-white rounded-md font-bold">
-                Login
+              <button type="submit" className="dark:bg-green-500 bg-accent p-2 text-white rounded-md font-bold" disabled={isLoggingIn}>
+                {isLoggingIn ? 'Logging in...' : 'Login'}
               </button>
             </Form>
           </Formik>

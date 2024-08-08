@@ -16,14 +16,13 @@ const CreateProdSchema = [
             .positive()
             .integer(),
         color: Yup.string().nullable(true),
-        arrivalDate: Yup.date().required("Arrival date is required"),
+        arrivalDate: Yup.date().nullable(true),
         expirationDate: Yup.date()
-            .required("Expiration date is required")
             .min(
                 Yup.ref("arrivalDate"),
                 "Expiration date must be after arrival date"
-            ),
-        lotNo: Yup.string().required("Lot number is required"),
+            ).nullable(true),
+        lotNo: Yup.string().nullable(true),
     }),
 
     Yup.object().shape({
