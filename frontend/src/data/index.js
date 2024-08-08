@@ -63,7 +63,7 @@ const VoucherInfoFieldsData = [
   {
     name: "no",
     type: "number",
-    label: "Number #",
+    label: "No",    
     placeholder: "#12345",
   },
   {

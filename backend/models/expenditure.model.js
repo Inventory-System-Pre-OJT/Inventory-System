@@ -5,10 +5,12 @@ const expenditureSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    subclass: {
-        type: String,
-        required: true,
-    },
+    subclasses: [{
+        name: {
+            type: String,
+            required: true,
+        }
+    }],
 }, { timestamps: true });
 
 const Expenditure = mongoose.model('Expenditure', expenditureSchema);

@@ -47,7 +47,7 @@ const useExpenditureMutationAsync = (request, queryKeys = []) => {
 };
 
 const useUpdateVoucher = () => {
-  const queryClient = useQueryClient(); // Ensure this is correctly defined
+  const queryClient = useQueryClient();
 
   const mutationAsync = useMutation(
     async ({ id, data }) => {
@@ -56,7 +56,7 @@ const useUpdateVoucher = () => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["voucher"]); // This should work if queryClient is defined
+        queryClient.invalidateQueries(["voucher"]);
       },
       onError: (error) => {
         console.error("Error updating voucher:", error);
@@ -68,7 +68,7 @@ const useUpdateVoucher = () => {
 };
 
 const useUpdateExpenditure = () => {
-  const queryClient = useQueryClient(); // Ensure this is correctly defined
+  const queryClient = useQueryClient();
 
   const mutationAsync = useMutation(
     async ({ id, data }) => {
@@ -77,7 +77,7 @@ const useUpdateExpenditure = () => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["expenditure"]); // This should work if queryClient is defined
+        queryClient.invalidateQueries(["expenditure"]);
       },
       onError: (error) => {
         console.error("Error updating expenditure:", error);
@@ -104,11 +104,9 @@ const FetchVoucherData = () => {
       ),
     {
       retry: 3,
-      // staleTime ,
-      // cacheTime ,
-      // refetchOnWindowFocus
     }
   );
+
   if (voucherError) {
     throw new Error("Couldn't fetch voucher data");
   }
@@ -138,11 +136,9 @@ const FetchExpenditureData = () => {
       ),
     {
       retry: 3,
-      // staleTime ,
-      // cacheTime ,
-      // refetchOnWindowFocus
     }
   );
+
   if (expenditureError) {
     throw new Error("Couldn't fetch expenditure data");
   }
@@ -155,7 +151,6 @@ const FetchExpenditureData = () => {
     refetchExpenditure,
   };
 };
-
 
 const useDeleteVoucher = () => {
   const queryClient = useQueryClient();
@@ -191,7 +186,7 @@ const useDeleteExpenditure = () => {
         queryClient.invalidateQueries(["expenditure"]);
       },
       onError: (error) => {
-        console.error("Error deleting voucher:", error);
+        console.error("Error deleting expenditure:", error);
       },
     }
   );
@@ -199,38 +194,41 @@ const useDeleteExpenditure = () => {
   return { mutationAsync };
 };
 
+export const FetchClassesAndSubclasses = () => {
+  const fetchClassesAndSubclasses = async () => {
+    try {
+      const response = await fetch("/api/v1/classes-and-subclasses");
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch data");
+      }
+      console.log("Fetched data:", data); // Log fetched data
+      return data;
+    } catch (error) {
+      console.error("Error fetching classes and subclasses:", error); // Log error
+      throw error;
+    }
+  };
 
-// const useDeleteResource = (endpoint, options = {}) => {
-// 	const queryClient = useQueryClient();
-// 	const mutation = useMutation(
-// 	  async (id) => {
-// 		const response = await axiosRequest("delete", `api/v1/voucher/delete/${id}`);
-// 		return response.data;
-// 	  },
-// 	  {
-// 		onSuccess: () => {
-// 		  queryClient.invalidateQueries(options.queryKey || []);
-// 		},
-// 		...options.mutationOptions,
-// 	  }
-// 	);
+  return useQuery("classesAndSubclasses", fetchClassesAndSubclasses);
+};
 
-// 	const deleteResource = async (id) => {
-// 	  try {
-// 		await toast.promise(mutation.mutateAsync(id), {
-// 		  loading: options.loadingMessage || `${location.pathname.includes('pending') ? 'Cancelling...' : 'Deleting...'}`,
-// 		  success: options.successMessage || `${location.pathname.includes('pending') ? 'Order Cancel' : 'Deleted'}`,
-// 		  error: options.errorMessage || "Error when Deleting",
-// 		});
-// 	  } catch (error) {
-// 		toast.error(error);
-// 	  }
-// 	};
 
-// 	return { deleteResource };
-//   };
+export const FetchExpendituresData = () => {
+  return useQuery('expenditures', async () => {
+    const response = await axios.get('api/v1/expenditure');
+    return response.data;
+  });
+};
 
-// const findSelectedItemById = (dataArray, itemId) => {
-// 	return dataArray?.find((item) => itemId === item._id);
-//   };
-export { useMutationAsync, FetchVoucherData , useUpdateVoucher, useDeleteVoucher, useExpenditureMutationAsync,useUpdateExpenditure, FetchExpenditureData, useDeleteExpenditure};
+
+export {
+  useMutationAsync,
+  FetchVoucherData,
+  useUpdateVoucher,
+  useDeleteVoucher,
+  useExpenditureMutationAsync,
+  useUpdateExpenditure,
+  FetchExpenditureData,
+  useDeleteExpenditure
+};

@@ -2,10 +2,11 @@ import Expenditure from '../models/expenditure.model.js';
 
 // Create a new expenditure
 export const createExpenditure = async (req, res) => {
-    const { classExp, subclass } = req.body;
+    const { classExp, subclasses } = req.body;
 
     try {
-        const expenditure = new Expenditure({ classExp, subclass });
+        // Ensure subclasses is an array of objects
+        const expenditure = new Expenditure({ classExp, subclasses });
         await expenditure.save();
         res.status(201).json(expenditure);
     } catch (error) {
@@ -16,8 +17,8 @@ export const createExpenditure = async (req, res) => {
 // Get all expenditures
 export const getAllExpenditure = async (req, res) => {
     try {
-        const expenditure = await Expenditure.find();
-        res.status(200).json(expenditure);
+        const expenditures = await Expenditure.find();
+        res.status(200).json(expenditures);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -40,6 +41,7 @@ export const getExpenditureById = async (req, res) => {
 // Update an expenditure by ID
 export const updateExpenditureById = async (req, res) => {
     try {
+        // Use `findByIdAndUpdate` with `req.body` containing updated fields
         const expenditure = await Expenditure.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (expenditure) {
             res.status(200).json(expenditure);
@@ -50,7 +52,6 @@ export const updateExpenditureById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
 
 // Delete an expenditure by ID
 export const deleteExpenditureById = async (req, res) => {
@@ -65,3 +66,5 @@ export const deleteExpenditureById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+

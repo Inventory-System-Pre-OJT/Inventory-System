@@ -11,7 +11,7 @@ import {
   initialCreateExpenditureValues,
   ExpenditureInfoFieldsData,
 } from "../data";
-import { Formik, Form } from "formik";
+import { Formik, Form, FieldArray } from "formik";
 import { CreateExpenditureSchema } from "../schema";
 import { useExpenditureMutationAsync, FetchExpenditureData, useUpdateExpenditure, useDeleteExpenditure } from "../function";
 import toast from "react-hot-toast";
@@ -68,7 +68,10 @@ export const Expenditure = () => {
           <h1 className="text-2xl font-semibold">Create Expenditure</h1>
 
           <Formik
-            initialValues={initialCreateExpenditureValues}
+            initialValues={{
+              ...initialCreateExpenditureValues,
+              subclasses: [{ name: "" }] // Initialize with one subclass
+            }}
             validationSchema={CreateExpenditureSchema}
             onSubmit={async (values, actions) => {
               try {
@@ -84,10 +87,43 @@ export const Expenditure = () => {
               }
             }}
           >
-            {(formik) => (
-              <Form onSubmit={formik.handleSubmit}>
+            {({ values }) => (
+              <Form>
                 <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
                   {CreateExpenditureElements}
+
+                  <FieldArray name="subclasses">
+                    {({ remove, push }) => (
+                      <div>
+                        {values.subclasses.length > 0 &&
+                          values.subclasses.map((subclass, index) => (
+                            <div key={index} className="mb-4">
+                              <TextField
+                                label={`Subclass ${index + 1}`}
+                                name={`subclasses.${index}.name`}
+                                type="text"
+                                placeholder="Enter subclass"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => remove(index)}
+                                className="bg-red-500 text-white p-2 rounded mt-2"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          ))}
+                        <button
+                          type="button"
+                          onClick={() => push({ name: "" })}
+                          className="bg-primary text-white p-2 rounded mt-4"
+                        >
+                          Add Subclass
+                        </button>
+                      </div>
+                    )}
+                  </FieldArray>
+
                   <button
                     type="submit"
                     className="bg-primary text-black font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
@@ -106,7 +142,10 @@ export const Expenditure = () => {
           <h1 className="text-2xl font-semibold">Update Expenditure</h1>
 
           <Formik
-            initialValues={editExpenditureData}
+            initialValues={{
+              ...editExpenditureData,
+              subclasses: editExpenditureData.subclasses || [{ name: "" }] // Initialize with one subclass if not present
+            }}
             validationSchema={CreateExpenditureSchema}
             onSubmit={async (values, actions) => {
               try {
@@ -123,10 +162,43 @@ export const Expenditure = () => {
               }
             }}
           >
-            {(formik) => (
-              <Form onSubmit={formik.handleSubmit}>
+            {({ values }) => (
+              <Form>
                 <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
                   {CreateExpenditureElements}
+
+                  <FieldArray name="subclasses">
+                    {({ remove, push }) => (
+                      <div>
+                        {values.subclasses.length > 0 &&
+                          values.subclasses.map((subclass, index) => (
+                            <div key={index} className="mb-4">
+                              <TextField
+                                label={`Subclass ${index + 1}`}
+                                name={`subclasses.${index}.name`}
+                                type="text"
+                                placeholder="Enter subclass"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => remove(index)}
+                                className="bg-red-500 text-white p-2 rounded mt-2"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          ))}
+                        <button
+                          type="button"
+                          onClick={() => push({ name: "" })}
+                          className="bg-primary text-white p-2 rounded mt-4"
+                        >
+                          Add Subclass
+                        </button>
+                      </div>
+                    )}
+                  </FieldArray>
+
                   <button
                     type="submit"
                     className="bg-primary text-black font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
@@ -183,7 +255,10 @@ export const Expenditure = () => {
             {expenditureData?.data?.map((expenditure) => (
               <TableRow
                 key={expenditure._id}
-                tableRowData={expenditure}
+                tableRowData={{
+                  ...expenditure,
+                  subclasses: expenditure.subclasses.map(subclass => subclass.name).join(', ') // Join subclass names into a string
+                }}
                 onEditClick={() => handleEditClick(expenditure)}
                 onDeleteClick={() => handleDeleteClick(expenditure._id)}
               />
