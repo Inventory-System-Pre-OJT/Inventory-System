@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const stockSchema = mongoose.Schema({
-    name: {
+    product_name: {
         type: String,
         required: true
     },
@@ -15,6 +15,26 @@ const stockSchema = mongoose.Schema({
         unique: true
     },
     desc: {
+        type: String,
+        required: true
+    },
+    metrics: {
+        type: String,
+        required: true
+    },
+    type: {
+        type: String,
+        required: true
+    },
+    color: {
+        type: String,
+        required: true
+    },
+    price_model: {
+        type: String,
+        required: true
+    },
+    currency: {
         type: String,
         required: true
     },
@@ -40,6 +60,10 @@ const stockSchema = mongoose.Schema({
     },
     done_by: {
         type: String,
+        required: true
+    },
+    lot_no: {
+        type: Number,
         required: true
     },
     rt_status: {
