@@ -53,7 +53,7 @@ export const ProductAdd = () => {
     <div className="p-5 dark:bg-gray-800 w-screen h-full">
       <h2 className="text-2xl text-start dark:text-slate-300 font-medium w-full mb-5">Create Product</h2>
       <div className="flex flex-row gap-5 w-full h-auto">
-        <ul className="p-5 list-none flex flex-col gap-3 dark:bg-gray-900 rounded-xl">
+        <ul className="p-5 list-none flex flex-col gap-3 dark:bg-gray-900 bg-gray-100 rounded-xl">
           {steps.map((data, index) => (
             <li
               key={index}
@@ -78,7 +78,7 @@ export const ProductAdd = () => {
             </li>
           ))}
         </ul>
-        <div className="p-5 dark:bg-gray-900 rounded-xl flex-1 min-h-[600px] flex flex-col">
+        <div className="p-5 dark:bg-gray-900 bg-gray-100 rounded-xl flex-1 min-h-[600px] flex flex-col">
           <h3
             className={`text-3xl text-start dark:text-slate-300 font-medium ${
               activeStep === 3 ? "w-full md:w-[90%] m-auto" : ""
