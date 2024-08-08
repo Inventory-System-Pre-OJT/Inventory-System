@@ -12,12 +12,7 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from '../components/Sidebar';
 import Outgoing from "../components/outgoing/Outgoing";
 import SearchProduct from "../components/modal/SearchProduct";
-<<<<<<< HEAD
-import { Button as BtnShadCN} from "@/components/ui/button";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-=======
-
->>>>>>> 7752a4a9cc6358b984b5fe8709a57851ff682bbf
 const steps = [
   {
     name: "Product Information",
@@ -182,7 +177,6 @@ export const Inventory = () => {
                     <option value="non_active">Non-Active Material</option>
                   </select>
                 </div>
-<<<<<<< HEAD
                 <div className="hidden md:flex items-center px-2 border border-slate-200 rounded-md">
                   <MagnifyingGlassIcon className="text-gray-500 " />
                   <input 
@@ -193,14 +187,6 @@ export const Inventory = () => {
                 </div>
                 
                 <Button text="Add" icon={<RiAddFill />} className="hidden md:flex flex-shrink-0 h-full" onClick={handleAdd} />
-=======
-                <input 
-                  type="text" 
-                  placeholder="Search" 
-                  className="hidden md:flex flex-grow bg-transparent border-b h-full px-2 py-2 focus:border-b-2 focus:border-green-500 focus:outline-none focus:ring-0 focus:ring-blue-500" 
-                />
-                <ShadCnButton text="Add" icon={<RiAddFill />} className="hidden md:flex flex-shrink-0 h-full" onClick={handleAdd} />
->>>>>>> 7752a4a9cc6358b984b5fe8709a57851ff682bbf
                 <div className="md:hidden flex items-center relative ml-auto">
                   <button className="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700" onClick={() => setDropdownOpen(!dropdownOpen)}>
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

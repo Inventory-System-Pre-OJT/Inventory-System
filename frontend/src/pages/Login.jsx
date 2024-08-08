@@ -27,29 +27,17 @@ export const Login = () => {
       </div>
 
       <div className="mt-3 md:mt-0 self-start  flex flex-col justify-between p-0 md:p-5 h-full ">
-<<<<<<< HEAD
-        
-      <div className=" opacity-0 md:opacity-100 flex flex-row items-center gap-1">
-          <GoDotFill className=" text-accent text-md dark:text-green-500"/>
-          <p className="  self-start font-semibold text-[0.8rem] dark:text-slate-400">
-=======
 
         <div className=" opacity-0 md:opacity-100 flex flex-row items-center gap-1">
           <GoDotFill className=" text-accent text-md" />
           <p className="  self-start font-semibold text-[0.8rem] ">
->>>>>>> 7752a4a9cc6358b984b5fe8709a57851ff682bbf
             Eurasia Research Pharma Corp
           </p>
         </div>
         <div className="text-center w-full md:w-[80%] m-auto flex flex-col justify-start md:justify-around  h-full gap-16 md:gap-0 md:h-[30rem] ">
           <div>
-<<<<<<< HEAD
-            <h1 className=" text-3xl font-medium dark:text-slate-500 mb-1">Welcome Eurasia Inventory</h1>
-            <p className=" text-gray-600 dark:text-slate-500 text-[1.1rem]">
-=======
             <h1 className=" text-3xl font-medium mb-1">Welcome HK Inventory</h1>
             <p className=" text-gray-600 text-[1.1rem]">
->>>>>>> 7752a4a9cc6358b984b5fe8709a57851ff682bbf
               Welcome back! Please enter your details.
             </p>
           </div>
@@ -68,24 +56,15 @@ export const Login = () => {
                 type="text"
                 label="Password"
                 name="password"
-<<<<<<< HEAD
-                placeholder="*********"
-=======
                 placeholder="*******"
->>>>>>> 7752a4a9cc6358b984b5fe8709a57851ff682bbf
               />
               <Links
                 to="forgetpass"
                 name="Forget Password"
                 style="self-end text-[0.8rem] text-accent font-semibold border-b-[1px] border-gray-400 "
               />
-<<<<<<< HEAD
               <button type="submit" className="dark:bg-green-500 bg-accent p-2 text-white rounded-md font-bold">
                 Login
-=======
-              <button type="submit" className=" bg-accent p-2 text-white rounded-md font-bold" disabled={isLoggingIn}>
-                {isLoggingIn ? 'Logging in...' : 'Login'}
->>>>>>> 7752a4a9cc6358b984b5fe8709a57851ff682bbf
               </button>
             </Form>
           </Formik>
