@@ -64,13 +64,13 @@ export const ProductAdd = () => {
               }`}
             >
               {index < activeStep ? (
-                <FaCheck className="text-accent-dark dark:text-green-500 text-lg" />
+                <FaCheck className="text-accent-dark dark:text-green-500 text-green-500 text-lg" />
               ) : (
                 <span
                   className={`${
                     index === activeStep
-                      ? "bg-accent-dark dark:bg-green-500 rounded-xl w-6 h-1 "
-                      : "w-5 h-1 bg-accent dark:bg-green-300 rounded-xl"
+                      ? "bg-accent-dark dark:bg-green-500 bg-green-300 rounded-xl w-6 h-1 "
+                      : "w-5 h-1 bg-accent dark:bg-green-300 bg-slate-300 rounded-xl"
                   }`}
                 ></span>
               )}
