@@ -6,6 +6,7 @@ import { FaCheck } from "react-icons/fa6";
 import { OrderInfo, PriceInfo, ProductInfo, Review } from "../components";
 import { CreateProdSchema } from "../schema";
 import { FaArrowRight } from "react-icons/fa6";
+import { useStockStore } from "@/store/stockUser.js";
 const steps = [
   { name: "Product Information" },
   { name: "Price Information" },
@@ -18,14 +19,15 @@ export const ProductAdd = () => {
   const isLastStep = activeStep === steps.length - 1;
   const currentValidationSchema = CreateProdSchema[activeStep];
   const navigate = useNavigate();
+  const { postStock, isPosting } = useStockStore();
 
   const handleBack = () => {
     setActiveStep((step) => step - 1);
   };
 
-  function handleSubmit(values, actions) {
+  async function handleSubmit(values, actions) {
     if (isLastStep) {
-      alert(`Product Created Successfully`);
+      await postStock(values);
       navigate('/inventory');
     } else {
       setActiveStep((prev) => prev + 1);

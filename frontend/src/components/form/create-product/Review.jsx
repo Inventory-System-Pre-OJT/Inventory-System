@@ -35,41 +35,41 @@ ReviewList.propTypes = {
 };
 
 export const Review = ({
-  productName,
-  description,
-  quantity,
-  category,
+  product_name,
+  desc,
+  qty,
+  metrics,
   color,
   type,
-  arrivalDate,
-  expirationDate,
-  lotNo,
-  pricingModel,
+  date,
+  expiration_date,
+  lot_no,
+  pricing_model,
   price,
   currency,
-  invoiceNo,
-  deliveredBy,
-  doneBy,
+  invoice_no,
+  receiver,
+  done_by,
 }) => {
 
   const OrderInformationData = [
     {
       name: "Invoice No.",
-      value: invoiceNo,
+      value: invoice_no,
     },
     {
       name: "Delivered By",
-      value: deliveredBy,
+      value: receiver,
     },
     {
       name: "Done By",
-      value: doneBy,
+      value: done_by,
     },
   ];
   const PricingInformationData = [
     {
       name: "Pricing Model",
-      value: pricingModel,
+      value: pricing_model,
     },
     {
       name: "Price",
@@ -83,19 +83,19 @@ export const Review = ({
   const ProductInformationData = [
     {
       name: "Product Name",
-      value: productName,
+      value: product_name,
     },
     {
       name: "Description",
-      value: description,
+      value: desc,
     },
     {
       name: "Quantity",
-      value: quantity,
+      value: qty,
     },
     {
       name: "Category",
-      value: category,
+      value: metrics,
     },
     {
       name: "Type",
@@ -107,15 +107,15 @@ export const Review = ({
     },
     {
       name: "Arrival Date",
-      value: moment(arrivalDate).format('ddd MMM DD YYYY'),
+      value: moment(date).format('ddd MMM DD YYYY'),
     },
     {
       name: "Expiration Date",
-      value:  `${moment(expirationDate).format('ddd MMM DD YYYY')} - ${moment(expirationDate).fromNow()}`,
+      value:  `${moment(expiration_date).format('ddd MMM DD YYYY')} - ${moment(expiration_date).fromNow()}`,
     },
     {
       name: "Lot No.",
-      value: lotNo,
+      value: lot_no,
     },
   ];
 
@@ -138,19 +138,19 @@ export const Review = ({
 };
 
 Review.propTypes = {
-  productName: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  quantity: PropTypes.number.isRequired,
-  category: PropTypes.string.isRequired,
+  product_name: PropTypes.string.isRequired,
+  desc: PropTypes.string.isRequired,
+  qty: PropTypes.number.isRequired,
+  metrics: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
-  arrivalDate: PropTypes.string.isRequired,
-  expirationDate: PropTypes.string.isRequired,
-  lotNo: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+  expiration_date: PropTypes.string.isRequired,
+  lot_no: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  pricingModel: PropTypes.string.isRequired,
+  pricing_model: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   currency: PropTypes.string.isRequired,
-  invoiceNo: PropTypes.string.isRequired,
-  deliveredBy: PropTypes.string.isRequired,
-  doneBy: PropTypes.string.isRequired,
+  invoice_no: PropTypes.string.isRequired,
+  receiver: PropTypes.string.isRequired,
+  done_by: PropTypes.string.isRequired,
 };
