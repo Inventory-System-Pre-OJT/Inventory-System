@@ -1,17 +1,20 @@
 const initialCreateProdValues = {
-    productName: "",
-    description: "",
-    quantity: "",
+    product_name: "",
+    desc: "",
+    qty: "",
     color: "",
-    arrivalDate: "",
-    expirationDate: "",
-    lotNo: "",
-    pricingModel: "Standard",
+    date: "",
+    expiration_date: "",
+    lot_no: "",
+    pricing_model: "Standard",
     price: "",
-    invoiceNo: "",
-    DeliveredBy: "",
-    currency: "PHP",
-    DoneBy: "",
+    type: "Active Materials",
+    metrics: "kg",
+    invoice_no: "",
+    receiver: "",
+    currency: "USD",
+    done_by: "",
+    scan_copy: "",
 };
 const ProdAddInfoFieldsData = [{
         name: "color",
@@ -20,38 +23,38 @@ const ProdAddInfoFieldsData = [{
         placeholder: '#EEEE'
     },
     {
-        name: "arrivalDate",
+        name: "date",
         type: "date",
         label: "Arrival Date",
         placeholder: "2/25/2003"
     },
     {
-        name: "expirationDate",
+        name: "expiration_date",
         type: "date",
         label: "Expiration Date",
         placeholder: "2/26/2003"
     },
     {
-        name: "lotNo",
+        name: "lot_no",
         type: "number",
         label: "Lot No.",
         placeholder: "44552"
     },
 ];
 const ProdInfoFieldsData = [{
-        name: "productName",
+        name: "product_name",
         type: "text",
         label: "Product Name",
         placeholder: "Protec Zinc"
     },
     {
-        name: "description",
+        name: "desc",
         type: "textarea",
         label: "Description",
         placeholder: "To boost immunity system"
     },
     {
-        name: "quantity",
+        name: "qty",
         type: "number",
         label: "Quantity",
         placeholder: "99",
@@ -83,7 +86,7 @@ const ProdInfoFieldsData = [{
 ];
 
 const PricingInfoFieldsData = [{
-        name: "pricingModel",
+        name: "pricing_model",
         type: "select",
         label: "Pricing Model",
         option: [
@@ -123,26 +126,26 @@ const getProdInfoFieldsData = (metrics) => {
 };
 
 const OrderInfoFieldsData = [{
-        name: "invoiceNo",
+        name: "invoice_no",
         type: "number",
         label: "Invoice No.",
         placeholder: "44556677"
     },
 
     {
-        name: "deliveredBy",
+        name: "receiver",
         type: "string",
         label: "Delivered By",
         placeholder: "Jerome Gabriel Gaspar"
     },
     {
-        name: "doneBy",
+        name: "done_by",
         type: "string",
         label: "Done By",
         placeholder: "Karl Solis"
     },
     {
-        name: "image",
+        name: "scan_copy",
         type: "file",
         label: "Select Image",
     },

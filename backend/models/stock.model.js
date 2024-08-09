@@ -6,11 +6,11 @@ const stockSchema = mongoose.Schema({
         required: true
     },
     qty: {
-        type: String,
+        type: Number,
         required: true
     },
     invoice_no: {
-        type: String,
+        type: Number,
         required: true,
         unique: true
     },
@@ -29,7 +29,7 @@ const stockSchema = mongoose.Schema({
     color: {
         type: String
     },
-    price_model: {
+    pricing_model: {
         type: String,
         required: true
     },
@@ -46,16 +46,15 @@ const stockSchema = mongoose.Schema({
         required: true
     },
     date: {
-        type: String,
+        type: Date,
         required: true
     },
     expiration_date: {
-        type: String,
+        type: Date,
         required: true
     },
     scan_copy: {
-        type: String,
-        required: true
+        type: String
     },
     done_by: {
         type: String,
@@ -64,10 +63,10 @@ const stockSchema = mongoose.Schema({
     lot_no: {
         type: Number,
         required: true
-    },
-    rt_status: {
-        type: Boolean,
     }
+    // rt_status: {
+    //     type: Boolean
+    // }
 });
 
 export const Stock = mongoose.model('Stock', stockSchema);

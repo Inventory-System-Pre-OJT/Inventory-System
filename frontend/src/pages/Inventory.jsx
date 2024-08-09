@@ -39,12 +39,12 @@ function renderStepContent(step, formValues) {
     case 3:
       return (
         <Review
-          productName={formValues.productName}
-          description={formValues.description}
+          productName={formValues.product_name}
+          description={formValues.desc}
           quantity={formValues.quantity}
           type={formValues.type}
           color={formValues.color}
-          category={formValues.category}
+          category={formValues.metrics}
           arrivalDate={formValues.arrivalDate}
           expirationDate={formValues.expirationDate}
           lotNo={formValues.lotNo}
