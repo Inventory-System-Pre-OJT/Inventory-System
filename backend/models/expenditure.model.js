@@ -8,7 +8,7 @@ const expenditureSchema = new mongoose.Schema({
     subclasses: [{
         name: {
             type: String,
-            required: true,
+            
         }
     }],
 }, { timestamps: true });

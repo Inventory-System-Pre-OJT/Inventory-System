@@ -3,7 +3,7 @@ import { Section, TableHead, TableRow, TableCont, TextField } from "../component
 import { tableHeadData, initialCreateVoucherValues, VoucherInfoFieldsData } from "../data";
 import { Formik, Form } from "formik";
 import { CreateVoucherSchema } from "../schema";
-import { useMutationAsync, FetchVoucherData, useUpdateVoucher, useDeleteVoucher, FetchExpendituresData } from "../function";
+import { useMutationAsync, FetchVoucherData, useUpdateVoucher, useDeleteVoucher } from "../function";
 import toast from "react-hot-toast";
 import { generateVoucherNumber } from "../function/generateVoucherNumber"; // Import the function
 
@@ -13,7 +13,6 @@ export const Voucher = () => {
   const [editVoucherData, setEditVoucherData] = useState(null);
 
   const { voucherData, voucherFetching, voucherLoading, voucherError } = FetchVoucherData();
-  const { data: expendituresData, isLoading: expendituresLoading, error: expendituresError } = FetchExpendituresData();
   
   const { mutationAsync: createVoucherMutation } = useMutationAsync(
     {
@@ -51,6 +50,7 @@ export const Voucher = () => {
       name={data.name}
       type={data.type}
       placeholder={data.placeholder}
+      options={data.options} // Pass options to the TextField component
     />
   ));
 
@@ -61,7 +61,12 @@ export const Voucher = () => {
           <h1 className="text-2xl font-semibold">Create Voucher</h1>
 
           <Formik
-            initialValues={{ ...initialCreateVoucherValues, no: generateVoucherNumber() }} // Add generated voucher number here
+            initialValues={{ 
+              ...initialCreateVoucherValues, 
+              no: generateVoucherNumber(),
+              classExp: '', // Initialize with empty or default value
+              subclass: '', // Initialize with empty or default value
+            }}
             validationSchema={CreateVoucherSchema}
             onSubmit={async (values, actions) => {
               try {
@@ -77,33 +82,10 @@ export const Voucher = () => {
               }
             }}
           >
-            {(formik) => (
-              <Form onSubmit={formik.handleSubmit}>
+            {({ values }) => (
+              <Form>
                 <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
                   {CreateVoucherElements}
-                  <div>
-                    <label htmlFor="expenditure" className="block text-sm font-medium text-gray-700">
-                      Expenditure
-                    </label>
-                    <select
-                      id="expenditure"
-                      name="expenditure"
-                      className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-                    >
-                      <option value="">Select Expenditure</option>
-                      {expendituresLoading ? (
-                        <option>Loading...</option>
-                      ) : expendituresError ? (
-                        <option>Error loading expenditures</option>
-                      ) : (
-                        expendituresData?.map((expenditure) => (
-                          <option key={expenditure._id} value={expenditure._id}>
-                            {expenditure.classExp} - {expenditure.subclasses.join(", ")}
-                          </option>
-                        ))
-                      )}
-                    </select>
-                  </div>
                   <button
                     type="submit"
                     className="bg-primary text-black font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
@@ -139,8 +121,8 @@ export const Voucher = () => {
               }
             }}
           >
-            {(formik) => (
-              <Form onSubmit={formik.handleSubmit}>
+            {({ values }) => (
+              <Form>
                 <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
                   {CreateVoucherElements}
                   <button
@@ -195,7 +177,7 @@ export const Voucher = () => {
           </div>
         ) : (
           <TableCont>
-            <TableHead tableData={tableHeadData} />
+            <TableHead tableData={tableHeadData} /> 
             {voucherData?.data?.map((voucher) => (
               <TableRow
                 key={voucher._id}

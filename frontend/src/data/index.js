@@ -91,7 +91,7 @@ const VoucherInfoFieldsData = [
     placeholder: "Zinc Supplies",
   },
   {
-    name : "bankAcc",
+    name: "bankAcc",
     type: "string",
     label: "Bank Account",
     placeholder: "Landbank",
@@ -104,15 +104,19 @@ const VoucherInfoFieldsData = [
   },
   {
     name: "classExp",
-    type: "number",
+    type: "select",
     label: "Class",
-    placeholder: "101",
+    options: [
+     
+    ],
   },
   {
     name: "subclass",
-    type: "text",
-    label: "subclass",
-    placeholder: "raw_material",
+    type: "select",
+    label: "Subclass",
+    options: [
+     
+    ],
   },
   {
     name: "checkNum",
@@ -135,10 +139,11 @@ const VoucherInfoFieldsData = [
   {
     name: "approvedBy",
     type: "string",
-    label: "Approved By",
+    label: "Approved By", 
     placeholder: "Mrs Solis",
   },
 ];
+
 
 const tableHeadDataExpenditure = [
   {
@@ -160,13 +165,7 @@ const ExpenditureInfoFieldsData = [
     type: "number",
     label: "Class",
     placeholder: "101",
-  },
-  {
-    name: "subclass",
-    type: "string",
-    label: "subclass",
-    placeholder: "utilities",
-  },
+  } 
 ];
 
 //   name: "type",

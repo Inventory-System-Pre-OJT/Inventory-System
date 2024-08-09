@@ -18,7 +18,7 @@ const CreateVoucherSchema = Yup.object().shape({
 
 const CreateExpenditureSchema = Yup.object().shape({
   classExp: Yup.number().required("Class  is required"),
-  subclass: Yup.string().required("Subclass  is required"),
+  subclass: Yup.string(),
 });
 
 export { CreateVoucherSchema ,CreateExpenditureSchema };

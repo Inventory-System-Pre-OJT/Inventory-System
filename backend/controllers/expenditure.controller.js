@@ -1,3 +1,5 @@
+// expenditureController.js
+
 import Expenditure from '../models/expenditure.model.js';
 
 // Create a new expenditure
@@ -5,7 +7,6 @@ export const createExpenditure = async (req, res) => {
     const { classExp, subclasses } = req.body;
 
     try {
-        // Ensure subclasses is an array of objects
         const expenditure = new Expenditure({ classExp, subclasses });
         await expenditure.save();
         res.status(201).json(expenditure);
@@ -41,7 +42,6 @@ export const getExpenditureById = async (req, res) => {
 // Update an expenditure by ID
 export const updateExpenditureById = async (req, res) => {
     try {
-        // Use `findByIdAndUpdate` with `req.body` containing updated fields
         const expenditure = await Expenditure.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (expenditure) {
             res.status(200).json(expenditure);
@@ -66,5 +66,50 @@ export const deleteExpenditureById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// Get subclasses by classExp
+export const getSubclassesByClass = async (req, res) => {
+    try {
+        const expenditures = await Expenditure.find({ classExp: req.params.classExp });
+        if (expenditures.length > 0) {  
+            const subclasses = expenditures.map(exp => exp.subclasses).flat();
+            res.status(200).json(subclasses);
+        } else {
+            res.status(404).json({ message: 'Expenditures with specified class not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Get a specific expenditure by classExp and subclass name
+export const getExpenditureByClassAndSubclass = async (req, res) => {
+    try {
+        const classExp = parseInt(req.params.classExp, 10);
+        const subclass = req.params.subclass;
+
+        const expenditure = await Expenditure.findOne({
+            classExp: classExp,
+            'subclasses.name': subclass
+        });
+
+        if (expenditure) {
+            const matchedSubclass = expenditure.subclasses.find(sub => sub.name === subclass);
+            if (matchedSubclass) {
+                res.status(200).json({
+                    classExp: expenditure.classExp,
+                    subclass: matchedSubclass
+                });
+            } else {
+                res.status(404).json({ message: 'Subclass not found in the specified classExp' });
+            }
+        } else {
+            res.status(404).json({ message: 'Expenditure with specified classExp not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 
 
