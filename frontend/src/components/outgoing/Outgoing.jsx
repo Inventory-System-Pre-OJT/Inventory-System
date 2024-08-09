@@ -29,14 +29,36 @@ const Outgoing = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
     console.log(`View item at index ${index}`);
   };
 
+  const ProfileForm = ({ className }) => (
+    <form className={`grid items-start gap-4 ${className}`}>
+      <div className="grid gap-2">
+        <Label htmlFor="email">Email</Label>
+        <Input type="email" id="email" defaultValue="example@example.com" />
+      </div>
+      <div className="grid gap-2">
+        <Label htmlFor="username">Username</Label>
+        <Input id="username" defaultValue="@username" />
+      </div>
+      <Button type="submit">Save changes</Button>
+    </form>
+  );
+
   const handleFunctionalities = [
     { icon: Pencil2Icon, label: "Edit", action: handleEdit },
-    { icon: ArrowTopRightIcon, label: "View", action: handleView },
+    { 
+      icon: ArrowTopRightIcon, 
+      label: "Confirm", 
+      title: "Confirm", 
+      contentType: "description",
+      description: "Do you wish to confirm this item?",
+      btnPlaceholder: "Save", 
+      content: <ProfileForm />
+    },
   ];
 
   return (
     <div className='flex flex-col min-w-screen'>
-      <div className="flex flex-col sm:flex-row gap-3 lg:gap-8 mb-3 w-full">
+      <div className="flex flex-col sm:flex-row gap-3 lg:gap-1 mb-3 w-full">
         <div className="flex flex-col gap-y-3 w-full sm:w-1/2 lg:w-1/4">
           <ComboboxComponent options={frameworks} placeholder="Select Product..." />
         </div>
@@ -77,17 +99,41 @@ const Outgoing = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
                 <td className="px-2 py-4 border border-gray-200">4</td>
                 <td className="px-2 py-4 border border-gray-200">5</td>
                 <td className="px-2 py-4 border border-gray-200">6</td>
-                <td className="px-2 py-4 border border-gray-200"><Modal title="View" description="Authentication here" label="Password" placeholder="Enter admin password" contentType="form" /></td>
+                <td className="px-2 py-4 border border-gray-200">
+                  <Modal title="View" description="Authentication here" label="Password" placeholder="Enter admin password" contentType="form_password">
+                    <Button variant="outline">View Price</Button>
+                  </Modal>
+                </td>
                 <td className="px-2 py-4 border border-gray-200">8</td>
                 <td className="px-2 py-4 border border-gray-200">9</td>
-                <td className="px-2 py-4 border border-gray-200"><Modal title="View" description="Image here" contentType="image" /></td>
+                <td className="px-2 py-4 border border-gray-200">
+                  <Modal title="View Scan copy" description="Image here" contentType="image">
+                    <Button variant="outline">View Scan</Button>
+                  </Modal>
+                </td>
                 <td className="px-2 py-4 border border-gray-200">11</td>
                 <td className="px-2 py-4 border border-gray-200">
-                  <div className="flex flex-row gap-x-2">
+                <div className="flex flex-row gap-x-2">
                     {handleFunctionalities.map((functionality, idx) => (
-                      <Button key={idx} variant="outline" size="icon" onClick={() => functionality.action(index)}>
-                        <functionality.icon />
-                      </Button>
+                      functionality.label === "Edit" ? (
+                        <Button key={idx} variant="outline" size="icon" onClick={() => functionality.action(index)}>
+                          <functionality.icon />
+                        </Button>
+                      ) : (
+                        <Modal
+                          key={idx}
+                          title={functionality.title}
+                          titleModal={functionality.title}
+                          btnPlaceholder={functionality.btnPlaceholder}
+                          contentType={functionality.contentType}
+                          description="Are you sure to move this nigga up?"
+                          content={functionality.content}
+                        >
+                          <Button variant="outline" size="icon">
+                            <functionality.icon />
+                          </Button>
+                        </Modal>
+                      )
                     ))}
                   </div>
                 </td>

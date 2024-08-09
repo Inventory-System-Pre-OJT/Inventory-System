@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "./input"
 
-export function Modal({ title, titleModal, description, label, contentType, placeholder, children }) {
+export function Modal({ title, titleModal, description, label, contentType, placeholder, children, action, btnPlaceholder }) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -59,11 +59,19 @@ export function Modal({ title, titleModal, description, label, contentType, plac
               </div>
             )}
             {contentType === 'description' && description}
+            {contentType === 'content' && content}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Continue</AlertDialogAction>
+          {action && 
+          <AlertDialogAction onClick={action}>
+            {btnPlaceholder}
+          </AlertDialogAction>
+          }
+          <AlertDialogAction>
+            Continue
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
