@@ -1,38 +1,36 @@
-import React from 'react';
-import { Button } from '../ui/button.jsx';
-import { ComboboxComponent } from '../ui/combobox.jsx';
-import { Modal } from '../ui/modal.jsx';
-import { ArrowTopRightIcon, Pencil2Icon } from '@radix-ui/react-icons';
+import React, { useState } from 'react';
+import { Button } from '../ui/button';
+import { ComboboxComponent } from '../ui/combobox';
+import { Modal } from '../ui/modal';
+import { ResponsiveActionsMenu } from '../ui/responsive-actions-menu';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { GoFilter } from 'react-icons/go';
 
 const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckboxChange }) => {
+  const [position, setPosition] = useState('bottom');
   const frameworks = [
-    { value: "Amox", label: "Amox" },
-    { value: "ProteCee", label: "Protec Cee" },
-    { value: "Highermin", label: "Highermin" },
-    { value: "Raniclub", label: "Raniclub" },
-    { value: "Anin", label: "Anin" },
-  ];
-  
-  const fruits = [
-    { value: "100mg", label: "100mg" },
-    { value: "200mg", label: "200mg" },
-    { value: "300mg", label: "300mg" },
-    { value: "400mg", label: "400mg" },
-    { value: "500mg", label: "500mg" },
+    { value: 'Amox', label: 'Amox' },
+    { value: 'ProteCee', label: 'Protec Cee' },
+    { value: 'Highermin', label: 'Highermin' },
+    { value: 'Raniclub', label: 'Raniclub' },
+    { value: 'Anin', label: 'Anin' },
   ];
 
-  const handleEdit = (index) => {
-    console.log(`Edit item at index ${index}`);
-    // Add your edit logic here
+  const fruits = [
+    { value: '100mg', label: '100mg' },
+    { value: '200mg', label: '200mg' },
+    { value: '300mg', label: '300mg' },
+    { value: '400mg', label: '400mg' },
+    { value: '500mg', label: '500mg' },
+  ];
+
+  const handleActionSelected = (action) => {
+    console.log(`Selected action: ${action.label}`);
+    // Add your action handling logic here
   };
 
-  const handleFunctionalities = [
-    { icon: Pencil2Icon, label: "Edit", action: handleEdit },
-    { icon: ArrowTopRightIcon, label: "Confirm", contentType: "description", title: "Confirmation" },
-  ];
-
   return (
-    <div className='flex flex-col min-w-screen'>
+    <div className="flex flex-col min-w-screen">
       <div className="flex flex-col sm:flex-row gap-3 lg:gap-1 mb-3 w-full">
         <div className="flex flex-col gap-y-3 w-full sm:w-1/2 lg:w-1/4">
           <ComboboxComponent options={frameworks} placeholder="Select Product..." />
@@ -87,30 +85,8 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
                   </Modal>
                 </td>
                 <td className="px-2 py-4 border border-gray-200">11</td>
-                <td className="px-2 py-4 border border-gray-200">
-                  <div className="flex flex-row gap-x-2">
-                    {handleFunctionalities.map((functionality, idx) => (
-                      functionality.label === "Edit" ? (
-                        <Button key={idx} variant="outline" size="icon" onClick={() => functionality.action(index)}>
-                          <functionality.icon />
-                        </Button>
-                      ) : (
-                        <Modal
-                          key={idx}
-                          title={`${functionality.title}`}
-                          titleModal={`${functionality.title}`}
-                          contentType={functionality.contentType}
-                          description="Are you sure to move this item to outgoing?"
-                          label={functionality.label}
-                          placeholder={`Enter ${functionality.label.toLowerCase()} details`}
-                        >
-                          <Button variant="outline" size="icon">
-                            <functionality.icon />
-                          </Button>
-                        </Modal>
-                      )
-                    ))}
-                  </div>
+                <td className="px-2 py-4 border border-gray-200 text-center">
+                  <ResponsiveActionsMenu onActionSelected={handleActionSelected} />
                 </td>
               </tr>
             ))}
