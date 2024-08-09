@@ -41,10 +41,12 @@ export const useAuthStore = create((set) => ({
             const response = await axios.post("/api/v1/auth/logout", credentials);
             set({ user:response.data.user, isLoggingOut:false });
             toast.success("Logout successfully");
+            return true;
         }
         catch(error){
             toast.error(error.response.data.message || "Logout Failed" );
             set({ isLoggingOut:false });
+            return false;
         }
     },
 
