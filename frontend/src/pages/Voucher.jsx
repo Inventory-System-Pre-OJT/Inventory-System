@@ -82,19 +82,24 @@ export const Voucher = () => {
               }
             }}
           >
-            {({ values }) => (
-              <Form>
-                <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
-                  {CreateVoucherElements}
-                  <button
-                    type="submit"
-                    className="bg-primary text-black font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
-                  >
-                    Create Voucher
-                  </button>
-                </div>
-              </Form>
-            )}
+            {({ values }) => {
+              console.log('classExp:', values.classExp);
+              console.log('subclass:', values.subclass);
+
+              return (
+                <Form>
+                  <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
+                    {CreateVoucherElements}
+                    <button
+                      type="submit"
+                      className="bg-primary text-black font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
+                    >
+                      Create Voucher
+                    </button>
+                  </div>
+                </Form>
+              );
+            }}
           </Formik>
         </div>
       )}

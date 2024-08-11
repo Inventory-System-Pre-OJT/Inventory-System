@@ -19,4 +19,4 @@ router.delete('/:id', deleteExpenditureById);
 router.get('/class/:classExp', getSubclassesByClass);
 router.get('/class/:classExp/subclass/:subclass', getExpenditureByClassAndSubclass); // New route
 
-export default router;
+export default router;  

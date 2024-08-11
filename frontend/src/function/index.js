@@ -106,10 +106,14 @@ const FetchVoucherData = () => {
       retry: 3,
     }
   );
-
+  
   if (voucherError) {
+    console.error("Error fetching voucher data:", voucherError);
     throw new Error("Couldn't fetch voucher data");
   }
+
+  console.log("Fetched voucher data:", voucherData); // Log fetched voucher data
+
 
   return {
     voucherData,
@@ -132,7 +136,7 @@ const FetchExpenditureData = () => {
     () =>
       axiosRequest(
         "get",
-        `api/v1/expenditure/get`
+        `api/v1/expenditure/`
       ),
     {
       retry: 3,
@@ -192,7 +196,7 @@ const useDeleteExpenditure = () => {
   );
 
   return { mutationAsync };
-};
+};    
 
 export const FetchClassesAndSubclasses = () => {
   const fetchClassesAndSubclasses = async () => {
@@ -214,12 +218,6 @@ export const FetchClassesAndSubclasses = () => {
 };
 
 
-export const FetchExpendituresData = () => {
-  return useQuery('expenditures', async () => {
-    const response = await axios.get('api/v1/expenditure');
-    return response.data;
-  });
-};
 
 
 export {
