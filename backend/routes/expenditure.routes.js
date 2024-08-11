@@ -6,6 +6,10 @@ import {
     getExpenditureById, 
     updateExpenditureById, 
     deleteExpenditureById,
+    //getOptions,
+    getClassExpOptions,
+    getSubclassesByClassExp
+
  
 } from '../controllers/expenditure.controller.js';
 
@@ -24,6 +28,12 @@ router.patch('/update/:id', updateExpenditureById);
 // Delete an expenditure by ID
 router.delete('/delete/:id', deleteExpenditureById);
 
+//router.get('/options', getOptions);
 
+// Get all classExp options
+router.get('/class', getClassExpOptions);
+
+// Get subclasses by classExp
+router.get('/subclasses/:classExp', getSubclassesByClassExp);
 
 export default router;

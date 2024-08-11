@@ -1,36 +1,57 @@
-import { useState } from "react";
-import {
-  Section,
-  TableHead,
-  TableRow,
-  TableCont,
-  TextField,
-} from "../components";
-import {
-  tableHeadData,
-  initialCreateVoucherValues,
-  VoucherInfoFieldsData,
-} from "../data";
+import React, { useState, useEffect } from "react";
+import { Section, TableHead, TableRow, TableCont, TextField } from "../components";
+import { tableHeadData, initialCreateVoucherValues, VoucherInfoFieldsData } from "../data";
 import { Formik, Form } from "formik";
 import { CreateVoucherSchema } from "../schema";
-import { useMutationAsync, FetchVoucherData, useUpdateVoucher, useDeleteVoucher } from "../function";
+import { 
+  useMutationAsync, 
+  useUpdateVoucher, 
+  useDeleteVoucher,
+  FetchVoucherData,
+  useFetchOptions
+} from "../function";
 import toast from "react-hot-toast";
 
 export const Voucher = () => {
   const [openCreateVoucher, setCreateVoucher] = useState(false);
   const [openEditVoucher, setEditVoucher] = useState(false);
   const [editVoucherData, setEditVoucherData] = useState(null);
+  const [selectedClassExp, setSelectedClassExp] = useState(""); 
+  const [selectedSubclass, setSelectedSubclass] = useState("");
 
   const { voucherData, voucherFetching, voucherLoading, voucherError } = FetchVoucherData();
   const { mutationAsync: createVoucherMutation } = useMutationAsync(
-    {
-      method: "post",
-      url: "api/v1/voucher/create",
-    },
+    { method: "post", url: "api/v1/voucher/create" },
     ["voucher"]
   );
   const { mutationAsync: updateVoucherMutation } = useUpdateVoucher();
   const { mutationAsync: deleteVoucherMutation } = useDeleteVoucher();
+
+  // Fetch options
+  const { classExpOptions, subclassOptions, isLoading, error } = useFetchOptions(selectedClassExp);
+
+  useEffect(() => {
+    console.log("Selected classExp updated:", selectedClassExp);
+    if (selectedClassExp) {
+      setSelectedSubclass(""); // Clear subclass when classExp changes
+    }
+  }, [selectedClassExp]);
+
+  useEffect(() => {
+    console.log("Fetched subclass options:", subclassOptions);
+  }, [subclassOptions]);
+
+  const handleClassExpChange = (event) => {
+    const value = event.target.value;
+    console.log("ClassExp changed to:", value);
+    setSelectedClassExp(value);
+  };
+
+  const handleSubclassChange = (event) => {
+    const value = event.target.value;
+    console.log("Subclass changed to:", value);
+    setSelectedSubclass(value);
+  };
 
   const handleEditClick = (voucher) => {
     setEditVoucherData(voucher);
@@ -51,13 +72,29 @@ export const Voucher = () => {
     }
   };
 
-  const CreateVoucherElements = VoucherInfoFieldsData?.map((data, index) => (
+  if (isLoading) {
+    return <div>Loading options...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading options</div>;
+  }
+
+  const classExpOptionsArray = classExpOptions.map(option => ({
+    value: option.value,
+    label: option.label
+  }));
+
+  const CreateVoucherElements = VoucherInfoFieldsData(classExpOptionsArray, subclassOptions).map((data, index) => (
     <TextField
       key={index}
       label={data.label}
       name={data.name}
       type={data.type}
       placeholder={data.placeholder}
+      options={data.options}
+      onChange={data.name === "classExp" ? handleClassExpChange : data.name === "subclass" ? handleSubclassChange : undefined}
+      value={data.name === "classExp" ? selectedClassExp : data.name === "subclass" ? selectedSubclass : ""}
     />
   ));
 
@@ -68,7 +105,7 @@ export const Voucher = () => {
           <h1 className="text-2xl font-semibold">Create Voucher</h1>
 
           <Formik
-            initialValues={initialCreateVoucherValues}
+            initialValues={{ ...initialCreateVoucherValues, subclass: selectedSubclass }}
             validationSchema={CreateVoucherSchema}
             onSubmit={async (values, actions) => {
               try {
@@ -106,7 +143,7 @@ export const Voucher = () => {
           <h1 className="text-2xl font-semibold">Update Voucher</h1>
 
           <Formik
-            initialValues={editVoucherData}
+            initialValues={{ ...editVoucherData, subclass: selectedSubclass }}
             validationSchema={CreateVoucherSchema}
             onSubmit={async (values, actions) => {
               try {
@@ -140,18 +177,38 @@ export const Voucher = () => {
         </div>
       )}
 
-      <Section style="row-span-full w-[15rem] max-w-full"></Section>
       <Section style="h-[5rem] max-h-full">
         <h1 className="text-2xl font-semibold">Disbursement Voucher</h1>
       </Section>
       <Section style="bg-white flex flex-col gap-5 w-full overflow-x-auto">
         <div className="flex flex-row gap-5 self-end mb-6">
-          <select className="w-fit p-2 rounded-md bg-transparent border-2 border-gray-400">
-            <option defaultValue>Filter Categories</option>
-            <option value="">Product 1</option>
-            <option value="">Product 2</option>
-            <option value="">Product 3</option>
-            <option value="">Product 4</option>
+          <select 
+            className="w-fit p-2 rounded-md bg-transparent border-2 border-gray-400" 
+            value={selectedClassExp} 
+            onChange={handleClassExpChange}
+          >
+            <option value="">Select Class Exp</option>
+            {classExpOptionsArray.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <select 
+            className="w-fit p-2 rounded-md bg-transparent border-2 border-gray-400" 
+            value={selectedSubclass} 
+            onChange={handleSubclassChange}
+          >
+            <option value="">Select Subclass</option>
+            {subclassOptions.length > 0 ? (
+              subclassOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))
+            ) : (
+              <option value="">No subclasses available</option>
+            )}
           </select>
           <input
             type="text"
@@ -160,7 +217,7 @@ export const Voucher = () => {
           />
           <div
             className="bg-accent-dark py-1 px-2 items-center justify-center gap-1 rounded-md flex w-24 flex-row text-white font-medium"
-            aria-label="Add Product"
+            aria-label="Add Voucher"
             role="button"
             tabIndex={0}
             onClick={() => setCreateVoucher((prev) => !prev)}

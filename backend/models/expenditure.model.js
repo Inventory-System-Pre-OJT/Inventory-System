@@ -6,7 +6,7 @@ const expenditureSchema = new mongoose.Schema({
         required: true,
     },
     subclass: {
-        type: String,
+        type: [String], // Array of strings
         required: true,
     },
 }, { timestamps: true });

@@ -1,6 +1,8 @@
 import { useQuery } from "react-query";
 import { useQueryClient, useMutation } from "react-query";
 import { axiosRequest } from "../service";
+import { useState, useEffect } from "react";
+
 
 const useMutationAsync = (request, queryKeys = []) => {
   const queryClient = useQueryClient();
@@ -200,37 +202,60 @@ const useDeleteExpenditure = () => {
 };
 
 
-// const useDeleteResource = (endpoint, options = {}) => {
-// 	const queryClient = useQueryClient();
-// 	const mutation = useMutation(
-// 	  async (id) => {
-// 		const response = await axiosRequest("delete", `api/v1/voucher/delete/${id}`);
-// 		return response.data;
-// 	  },
-// 	  {
-// 		onSuccess: () => {
-// 		  queryClient.invalidateQueries(options.queryKey || []);
-// 		},
-// 		...options.mutationOptions,
-// 	  }
-// 	);
 
-// 	const deleteResource = async (id) => {
-// 	  try {
-// 		await toast.promise(mutation.mutateAsync(id), {
-// 		  loading: options.loadingMessage || `${location.pathname.includes('pending') ? 'Cancelling...' : 'Deleting...'}`,
-// 		  success: options.successMessage || `${location.pathname.includes('pending') ? 'Order Cancel' : 'Deleted'}`,
-// 		  error: options.errorMessage || "Error when Deleting",
-// 		});
-// 	  } catch (error) {
-// 		toast.error(error);
-// 	  }
-// 	};
+export const useFetchOptions = (selectedClassExp) => {
+  const [classExpOptions, setClassExpOptions] = useState([]);
+  const [subclassOptions, setSubclassOptions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-// 	return { deleteResource };
-//   };
+  // Fetch classExp options
+  useEffect(() => {
+    const fetchClassExpOptions = async () => {
+      setIsLoading(true);
+      console.log("Starting fetch for classExp options...");
+      try {
+        const response = await axiosRequest("get", "/api/v1/expenditure/class");
+        console.log("Fetched classExp options:", response.data);
+        setClassExpOptions(response.data);
+      } catch (err) {
+        console.error("Error fetching classExp options:", err);
+        setError(err);
+      } finally {
+        setIsLoading(false);
+        console.log("Finished fetch for classExp options.");
+      }
+    };
 
-// const findSelectedItemById = (dataArray, itemId) => {
-// 	return dataArray?.find((item) => itemId === item._id);
-//   };
+    fetchClassExpOptions();
+  }, []);
+
+  // Fetch subclass options based on selected classExp
+  useEffect(() => {
+    const fetchSubclassOptions = async () => {
+      if (selectedClassExp) {
+        setIsLoading(true);
+        console.log("Fetching subclasses for selected classExp:", selectedClassExp);
+        try {
+          const response = await axiosRequest("get", `/api/v1/expenditure/subclasses/${selectedClassExp}`);
+          console.log("Fetched subclass options:", response.data);
+          setSubclassOptions(response.data);
+        } catch (err) {
+          console.error("Error fetching subclasses:", err);
+          setError(err);
+        } finally {
+          setIsLoading(false);
+          console.log("Finished fetch for subclasses.");
+        }
+      } else {
+        console.log("No classExp selected. Clearing subclass options.");
+        setSubclassOptions([]);
+      }
+    };
+
+    fetchSubclassOptions();
+  }, [selectedClassExp]);
+
+  return { classExpOptions, subclassOptions, isLoading, error };
+};
 export { useMutationAsync, FetchVoucherData , useUpdateVoucher, useDeleteVoucher, useExpenditureMutationAsync,useUpdateExpenditure, FetchExpenditureData, useDeleteExpenditure};
