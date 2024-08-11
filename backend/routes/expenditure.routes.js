@@ -11,11 +11,11 @@ import {
 
 const router = express.Router();
 
-router.post('/', createExpenditure);
+router.post('/create', createExpenditure);
 router.get('/', getAllExpenditure);
 router.get('/:id', getExpenditureById);
-router.put('/:id', updateExpenditureById);
-router.delete('/:id', deleteExpenditureById);
+router.put('/update/:id', updateExpenditureById);
+router.delete('/delete/:id', deleteExpenditureById);
 router.get('/class/:classExp', getSubclassesByClass);
 router.get('/class/:classExp/subclass/:subclass', getExpenditureByClassAndSubclass); // New route
 

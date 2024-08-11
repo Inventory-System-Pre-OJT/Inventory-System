@@ -13,8 +13,14 @@ import {
 } from "../data";
 import { Formik, Form, FieldArray } from "formik";
 import { CreateExpenditureSchema } from "../schema";
-import { useExpenditureMutationAsync, FetchExpenditureData, useUpdateExpenditure, useDeleteExpenditure } from "../function";
+import {
+  useExpenditureMutationAsync,
+  FetchExpenditureData,
+  useUpdateExpenditure,
+  useDeleteExpenditure,
+} from "../function";
 import toast from "react-hot-toast";
+import { generateClassExpNumber } from "../function/generateVoucherNumber"; // Import the function
 
 export const Expenditure = () => {
   const [openCreateExpenditure, setCreateExpenditure] = useState(false);
@@ -57,6 +63,7 @@ export const Expenditure = () => {
       label={data.label}
       name={data.name}
       type={data.type}
+      readOnly={data.readOnly} // Pass the readOnly property
       placeholder={data.placeholder}
     />
   ));
@@ -70,6 +77,7 @@ export const Expenditure = () => {
           <Formik
             initialValues={{
               ...initialCreateExpenditureValues,
+              classExp: generateClassExpNumber(), // Set the value for classExp
               subclasses: [{ name: "" }] // Initialize with one subclass
             }}
             validationSchema={CreateExpenditureSchema}
@@ -91,6 +99,8 @@ export const Expenditure = () => {
               <Form>
                 <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
                   {CreateExpenditureElements}
+
+                
 
                   <FieldArray name="subclasses">
                     {({ remove, push }) => (
@@ -167,6 +177,7 @@ export const Expenditure = () => {
                 <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
                   {CreateExpenditureElements}
 
+         
                   <FieldArray name="subclasses">
                     {({ remove, push }) => (
                       <div>
@@ -269,4 +280,3 @@ export const Expenditure = () => {
     </main>
   );
 };
-  

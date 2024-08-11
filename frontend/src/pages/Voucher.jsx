@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Section, TableHead, TableRow, TableCont, TextField } from "../components";
 import { tableHeadData, initialCreateVoucherValues, VoucherInfoFieldsData } from "../data";
 import { Formik, Form } from "formik";
@@ -6,6 +6,8 @@ import { CreateVoucherSchema } from "../schema";
 import { useMutationAsync, FetchVoucherData, useUpdateVoucher, useDeleteVoucher } from "../function";
 import toast from "react-hot-toast";
 import { generateVoucherNumber } from "../function/generateVoucherNumber"; // Import the function
+import { useFetchClasses, useFetchSubclasses } from "../function/hooks";
+
 
 export const Voucher = () => {
   const [openCreateVoucher, setCreateVoucher] = useState(false);
@@ -13,7 +15,6 @@ export const Voucher = () => {
   const [editVoucherData, setEditVoucherData] = useState(null);
 
   const { voucherData, voucherFetching, voucherLoading, voucherError } = FetchVoucherData();
-  
   const { mutationAsync: createVoucherMutation } = useMutationAsync(
     {
       method: "post",
@@ -23,6 +24,17 @@ export const Voucher = () => {
   );
   const { mutationAsync: updateVoucherMutation } = useUpdateVoucher();
   const { mutationAsync: deleteVoucherMutation } = useDeleteVoucher();
+
+  // Fetch classes and subclasses
+  const { data: classesData = [], isLoading: classesLoading } = useFetchClasses();
+  const [classExp, setClassExp] = useState('');
+  const { data: subclassesData = [], isLoading: subclassesLoading } = useFetchSubclasses(classExp);
+
+  useEffect(() => {
+    if (editVoucherData) {
+      setClassExp(editVoucherData.classExp);
+    }
+  }, [editVoucherData]);
 
   const handleEditClick = (voucher) => {
     setEditVoucherData(voucher);
@@ -43,7 +55,11 @@ export const Voucher = () => {
     }
   };
 
-  const CreateVoucherElements = VoucherInfoFieldsData?.map((data, index) => (
+  const handleClassChange = (event) => {
+    setClassExp(event.target.value);
+  };
+
+  const CreateVoucherElements = VoucherInfoFieldsData(classesData, subclassesData)?.map((data, index) => (
     <TextField
       key={index}
       label={data.label}
@@ -51,6 +67,7 @@ export const Voucher = () => {
       type={data.type}
       placeholder={data.placeholder}
       options={data.options} // Pass options to the TextField component
+      onChange={data.name === 'classExp' ? handleClassChange : undefined} // Handle class change
     />
   ));
 

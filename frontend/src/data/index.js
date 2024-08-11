@@ -59,7 +59,7 @@ const initialCreateVoucherValues = {
 
 };
 
-const VoucherInfoFieldsData = [
+const VoucherInfoFieldsData = (classes = [], subclasses = []) => [
   {
     name: "no",
     type: "number",
@@ -106,17 +106,13 @@ const VoucherInfoFieldsData = [
     name: "classExp",
     type: "select",
     label: "Class",
-    options: [
-     
-    ],
+    options: classes.map(cls => ({ value: cls.classExp, label: cls.classExp })),
   },
   {
     name: "subclass",
     type: "select",
     label: "Subclass",
-    options: [
-     
-    ],
+    options: subclasses.map(sub => ({ value: sub.name, label: sub.name })),
   },
   {
     name: "checkNum",
@@ -145,6 +141,7 @@ const VoucherInfoFieldsData = [
 ];
 
 
+
 const tableHeadDataExpenditure = [
   {
     name: "classExp",
@@ -165,7 +162,8 @@ const ExpenditureInfoFieldsData = [
     type: "number",
     label: "Class",
     placeholder: "101",
-  } 
+    readOnly: true,
+  }
 ];
 
 //   name: "type",
