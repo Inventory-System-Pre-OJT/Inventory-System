@@ -72,8 +72,6 @@ function Balance() {
       history: [
         { date: '01/23/24', action: 'Added product' },
         { date: '01/25/24', action: 'Product released' },
-        { date: '01/29/24', action: 'Product Delivered' },
-        { date: '01/29/24', action: 'Product Delivered' },
         { date: '01/29/24', action: 'Product Delivered', status: "DONE" },
       ]
     },
@@ -103,7 +101,7 @@ function Balance() {
     <div className="mt-5">
       <div className="flex flex-col items-start">
         <h3 className="font-bold text-start">All products <span className="text-xs text-gray-500">34</span></h3>
-        <p className="text-xs text-gray-500">Showing 1-10 of 100</p>
+        <p className="text-xs text-gray-500">Showing 1-10 of {contents.length}</p>
       </div>
     </div>
     <div className="flex justify-end">
@@ -153,11 +151,6 @@ function Balance() {
                     <div>
                       <p className="text-xs text-gray-500">RETAIL PRICE</p>
                       <p className="font-semibold">{content.price}</p>
-                    </div>
-                    <Separator orientation="vertical" className="h-auto" />
-                    <div>
-                      <p className="text-xs text-gray-500">WHOLESALE PRICE</p>
-                      <p className="font-semibold">{content.wholesale}</p>
                     </div>
                     <Separator orientation="vertical" className="h-auto" />
                     <div>
