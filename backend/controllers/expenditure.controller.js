@@ -71,7 +71,7 @@ export const deleteExpenditureById = async (req, res) => {
 export const getSubclassesByClass = async (req, res) => {
     try {
         const expenditures = await Expenditure.find({ classExp: req.params.classExp });
-        if (expenditures.length > 0) {  
+        if (expenditures.length > 0) {
             const subclasses = expenditures.map(exp => exp.subclasses).flat();
             res.status(200).json(subclasses);
         } else {
@@ -85,16 +85,18 @@ export const getSubclassesByClass = async (req, res) => {
 // Get a specific expenditure by classExp and subclass name
 export const getExpenditureByClassAndSubclass = async (req, res) => {
     try {
-        const classExp = parseInt(req.params.classExp, 10);
-        const subclass = req.params.subclass;
+        const classExp = parseInt(req.params.classExp, 10); // Ensure classExp is a number
+        const subclassName = req.params.subclass;
 
+        // Find an expenditure with the specified classExp and subclass name
         const expenditure = await Expenditure.findOne({
             classExp: classExp,
-            'subclasses.name': subclass
+            'subclasses.name': subclassName
         });
 
         if (expenditure) {
-            const matchedSubclass = expenditure.subclasses.find(sub => sub.name === subclass);
+            // Find the specific subclass within the matched expenditure
+            const matchedSubclass = expenditure.subclasses.find(sub => sub.name === subclassName);
             if (matchedSubclass) {
                 res.status(200).json({
                     classExp: expenditure.classExp,
@@ -110,6 +112,3 @@ export const getExpenditureByClassAndSubclass = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-
-

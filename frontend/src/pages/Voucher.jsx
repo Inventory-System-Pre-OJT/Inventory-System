@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 import { generateVoucherNumber } from "../function/generateVoucherNumber"; // Import the function
 import { useFetchClasses, useFetchSubclasses } from "../function/hooks";
 
-
 export const Voucher = () => {
   const [openCreateVoucher, setCreateVoucher] = useState(false);
   const [openEditVoucher, setEditVoucher] = useState(false);
@@ -29,6 +28,12 @@ export const Voucher = () => {
   const { data: classesData = [], isLoading: classesLoading } = useFetchClasses();
   const [classExp, setClassExp] = useState('');
   const { data: subclassesData = [], isLoading: subclassesLoading } = useFetchSubclasses(classExp);
+
+  useEffect(() => {
+    if (editVoucherData) {
+      setClassExp(editVoucherData.classExp);
+    }
+  }, [editVoucherData]);
 
   useEffect(() => {
     if (editVoucherData) {
@@ -99,7 +104,7 @@ export const Voucher = () => {
               }
             }}
           >
-            {({ values }) => {
+            {({ values, setFieldValue }) => {
               console.log('classExp:', values.classExp);
               console.log('subclass:', values.subclass);
 
@@ -143,7 +148,7 @@ export const Voucher = () => {
               }
             }}
           >
-            {({ values }) => (
+            {({ values, setFieldValue }) => (
               <Form>
                 <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
                   {CreateVoucherElements}

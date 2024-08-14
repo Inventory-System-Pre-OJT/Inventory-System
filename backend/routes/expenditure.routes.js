@@ -17,6 +17,6 @@ router.get('/:id', getExpenditureById);
 router.put('/update/:id', updateExpenditureById);
 router.delete('/delete/:id', deleteExpenditureById);
 router.get('/class/:classExp', getSubclassesByClass);
-router.get('/class/:classExp/subclass/:subclass', getExpenditureByClassAndSubclass); // New route
+router.get('/class/:classExp/subclass/:subclass', getExpenditureByClassAndSubclass);
 
 export default router;  

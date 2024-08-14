@@ -13,7 +13,7 @@ export const useFetchClasses = () => {
 
 // Fetch subclasses by classExp
 const fetchSubclassesByClassExp = async (classExp) => {
-  const response = await axiosRequest("get", `/api/v1/expenditure/class/${classExp}`);
+  const response = await axiosRequest("get", `/api/v1/expenditure/class/${classExp}/`);
   return response.data; // Ensure to return data directly
 };
 
