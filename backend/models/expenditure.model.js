@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const expenditureSchema = new mongoose.Schema({
     classExp: {
         type: Number,
-        required: true,
+        
     },
     subclasses: [{
         name: {

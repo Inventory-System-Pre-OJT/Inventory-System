@@ -97,9 +97,9 @@ const FetchVoucherData = () => {
     refetch: refetchVoucher,
   } = useQuery(
     ["voucher"],
-    () =>
+    () => 
       axiosRequest(
-        "get",
+        "get",  
         `api/v1/voucher/get`
       ),
     {
@@ -197,25 +197,6 @@ const useDeleteExpenditure = () => {
 
   return { mutationAsync };
 };    
-
-export const FetchClassesAndSubclasses = () => {
-  const fetchClassesAndSubclasses = async () => {
-    try {
-      const response = await fetch("/api/v1/classes-and-subclasses");
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to fetch data");
-      }
-      console.log("Fetched data:", data); // Log fetched data
-      return data;
-    } catch (error) {
-      console.error("Error fetching classes and subclasses:", error); // Log error
-      throw error;
-    }
-  };
-
-  return useQuery("classesAndSubclasses", fetchClassesAndSubclasses);
-};
 
 
 

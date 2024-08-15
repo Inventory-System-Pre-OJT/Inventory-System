@@ -8,6 +8,7 @@ export const TextField = ({
   placeholder,
   options,
   isImportant = true,
+  onChange
 }) => {
   return (
     <div className={`flex flex-col gap-2 `}>
@@ -22,6 +23,7 @@ export const TextField = ({
           as="select"
           id={name}
           name={name}
+          onChange={onChange}
           className={` border-2  border-dark_mode-lighter  p-2 rounded-md bg-transparent `}
         >
           {options.map((option) => (
@@ -58,6 +60,7 @@ TextField.propTypes = {
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   isImportant: PropTypes.string,
+  onChange : PropTypes.func,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string,

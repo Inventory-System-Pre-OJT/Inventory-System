@@ -39,7 +39,7 @@ const voucherSchema = new mongoose.Schema({
     },
     subclass: {
         type: String,
-        required: true,
+    
     },
     preparedBy: {
         type: String,

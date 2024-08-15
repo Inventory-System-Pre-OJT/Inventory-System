@@ -44,26 +44,26 @@ export const Voucher = () => {
   const { mutationAsync: deleteVoucherMutation } = useDeleteVoucher();
 
   // Fetch classes and subclasses
-  const { data: classesData = [], isLoading: classesLoading } = useFetchClasses();
+  const { data: classesData = [], isLoading: classesLoading  ,} = useFetchClasses();
   const [classExp, setClassExp] = useState('');
-  const { data: subclassesData = [], isLoading: subclassesLoading } = useFetchSubclasses(classExp);
-
-  useEffect(() => {
-    if (editVoucherData) {
-      setClassExp(editVoucherData.classExp);
-    }
-  }, [editVoucherData]);
-
-  useEffect(() => {
-    if (editVoucherData) {
-      setClassExp(editVoucherData.classExp);
-    }
-  }, [editVoucherData]);
+  const { data: subclassesData = [], isLoading: subclassesLoading , refetch } = useFetchSubclasses(classExp);
+  console.log(`Class : ${classesData}`)
+  console.log(`Sub Class : ${subclassesData}`)
 
   const handleEditClick = (voucher) => {
     setEditVoucherData(voucher);
     setEditVoucher(true);
   };
+
+  useEffect(() => {
+    if (editVoucherData) {
+      setClassExp(editVoucherData.classExp);
+    }
+  }, [editVoucherData]);
+
+
+
+
 
   const handleDeleteClick = async (id) => {
     if (window.confirm("Are you sure you want to delete this voucher?")) {
@@ -125,27 +125,29 @@ export const Voucher = () => {
           <h1 className="text-2xl font-semibold">Create Voucher</h1>
 
           <Formik
-            initialValues={{ 
-              ...initialCreateVoucherValues, 
-              no: generateVoucherNumber(),
-              classExp: '', // Initialize with empty or default value
-              subclass: '', // Initialize with empty or default value
-            }}
-            validationSchema={CreateVoucherSchema}
-            onSubmit={async (values, actions) => {
-              try {
-                const response = await createVoucherMutation.mutateAsync(values);
-                if (response.status === 200) {
-                  toast.success("Voucher created successfully");
-                }
-                actions.resetForm();
-                setCreateVoucher(false);
-              } catch (error) {
-                toast.error("Error creating voucher");
-                console.error(error);
-              }
-            }}
-          >
+  initialValues={{ 
+    ...initialCreateVoucherValues, 
+    no: generateVoucherNumber(),
+    classExp: '', 
+    subclass: '', 
+  }}
+  validationSchema={CreateVoucherSchema}
+  onSubmit={async (values, actions) => {
+    console.log('Submitting values:', values); // Add this line
+    try {
+      const response = await createVoucherMutation.mutateAsync(values);
+      if (response.status === 200) {
+        toast.success("Voucher created successfully");
+      }
+      actions.resetForm();
+      setCreateVoucher(false);
+    } catch (error) {
+      toast.error("Error creating voucher");
+      console.error(error);
+    }
+  }}
+>
+
             {({ values, setFieldValue }) => {
               console.log('classExp:', values.classExp);
               console.log('subclass:', values.subclass);

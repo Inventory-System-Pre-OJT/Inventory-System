@@ -109,13 +109,13 @@ const VoucherInfoFieldsData = (classes = [], subclasses = []) => [
     name: "classExp",
     type: "select",
     label: "Class",
-    options: classes.map(cls => ({ value: cls.classExp, label: cls.classExp })),
+    options: classes?.map(cls => ({ value: cls.classExp, label: cls.classExp })),
   },
   {
     name: "subclass",
     type: "select",
     label: "Subclass",
-    options: subclasses.map(sub => ({ value: sub.name, label: sub.name })),
+    options: subclasses?.map(sub => ({ value: sub.name, label: sub.name })),
   },
   {
     name: "checkNum",
