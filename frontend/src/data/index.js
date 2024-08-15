@@ -38,6 +38,9 @@ const tableHeadData = [
   {
     name: "Approved By",
   },
+  {
+    name: "Action",
+  },
 
 ];
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Section, TableHead, TableRow, TableCont, TextField } from "../components";
 import { tableHeadData, initialCreateVoucherValues, VoucherInfoFieldsData } from "../data";
 import { Formik, Form } from "formik";
@@ -7,11 +7,30 @@ import { useMutationAsync, FetchVoucherData, useUpdateVoucher, useDeleteVoucher 
 import toast from "react-hot-toast";
 import { generateVoucherNumber } from "../function/generateVoucherNumber"; // Import the function
 import { useFetchClasses, useFetchSubclasses } from "../function/hooks";
+import SidebarV from '../components/SidebarV';
+import { UseToggle } from "../hooks";
+import { useNavigate } from "react-router-dom";
 
 export const Voucher = () => {
   const [openCreateVoucher, setCreateVoucher] = useState(false);
   const [openEditVoucher, setEditVoucher] = useState(false);
   const [editVoucherData, setEditVoucherData] = useState(null);
+  const [activeTab, setActiveTab] = useState(0);
+  const [isOpenModal, setOpenModal] = UseToggle(false);
+  const [activeStep, setActiveStep] = useState(0);
+  const currentValidationSchema = CreateVoucherSchema[activeStep];
+  const [activePage, setActivePage] = useState('VoucherRecord');
+  const [filter, setFilter] = useState('');
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const underlineRef = useRef(null);
+  const containerRef = useRef(null);
+  const balanceTabRef = useRef(null);
+  const navigate = useNavigate();
+  const openModal = () => setOpenModal(true);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const handleTabClick = (index) => setActiveTab(index);
+  const [isFilterDropdownOpen, setFilterDropdownOpen] = useState(false);
 
   const { voucherData, voucherFetching, voucherLoading, voucherError } = FetchVoucherData();
   const { mutationAsync: createVoucherMutation } = useMutationAsync(
@@ -76,8 +95,31 @@ export const Voucher = () => {
     />
   ));
 
+  useEffect(() => {
+    const activeTab = document.querySelector(`.tab-${activePage}`);
+    if (activeTab && underlineRef.current && containerRef.current) {
+      if (activePage === 'balance' && balanceTabRef.current) {
+        const balanceTabLeft = balanceTabRef.current.offsetLeft;
+        const containerWidth = containerRef.current.offsetWidth;
+        underlineRef.current.style.width = `${containerWidth - balanceTabLeft}px`;
+        underlineRef.current.style.transform = `translateX(${balanceTabLeft}px)`;
+      } else {
+        underlineRef.current.style.width = `${activeTab.offsetWidth}px`;
+        underlineRef.current.style.transform = `translateX(${activeTab.offsetLeft}px)`;
+      }
+    }
+  }, [activePage]);
+  console.log('Rendering voucher component');
+
   return (
-    <main className="grid grid-rows-[auto_1fr] grid-cols-[auto_1fr] text-black w-full relative">
+    <div className="flex">
+      <SidebarV />
+      <main className="flex flex-col bg-gray-100 text-black h-full w-screen m-0 mt-14 lg:ml-64 lg:mr-10">
+        <section className="border-gray-400 p-5 w-full bg-white">
+          <div className="flex flex-col gap-y-3 w-full">
+            <div className="flex justify-between gap-x-3 items-center w-full">
+              <div ref={containerRef} className='flex flex-row gap-x-3 w-full border-b-2 border-green-200'>
+                <div className="relative flex flex-row gap-x-3 ">
       {openCreateVoucher && (
         <div className="absolute left-0 right-0 top-0 bottom-0 bg-white z-10 p-5">
           <h1 className="text-2xl font-semibold">Create Voucher</h1>
@@ -165,10 +207,7 @@ export const Voucher = () => {
         </div>
       )}
 
-      <Section style="row-span-full w-[15rem] max-w-full"></Section>
-      <Section style="h-[5rem] max-h-full">
-        <h1 className="text-2xl font-semibold">Disbursement Voucher</h1>
-      </Section>
+      
       <Section style="bg-white flex flex-col gap-5 w-full overflow-x-auto">
         <div className="flex flex-row gap-5 self-end mb-6">
           <select className="w-fit p-2 rounded-md bg-transparent border-2 border-gray-400">
@@ -216,6 +255,6 @@ export const Voucher = () => {
           </TableCont>
         )}
       </Section>
-    </main>
+      </div></div></div></div></section></main></div>
   );
 };
