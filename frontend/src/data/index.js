@@ -163,7 +163,7 @@ const ExpenditureInfoFieldsData = [
   {
     name: "classExp",
     type: "number",
-    label: "Class",
+    label: "Class", 
     placeholder: "101",
     readOnly: true,
   }
@@ -172,6 +172,7 @@ const ExpenditureInfoFieldsData = [
 //   name: "type",
 //   type: "select",
 //   label: "Type",
+
 //   option: [
 //     { value: "Active Materials", label: "Active Materials" },
 //     { value: "Non Active", label: "None Active" },

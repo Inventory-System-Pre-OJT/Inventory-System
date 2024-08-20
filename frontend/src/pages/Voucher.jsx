@@ -1,13 +1,28 @@
 import { useState, useRef, useEffect } from "react";
-import { Section, TableHead, TableRow, TableCont, TextField } from "../components";
-import { tableHeadData, initialCreateVoucherValues, VoucherInfoFieldsData } from "../data";
+import {
+  Section,
+  TableHead,
+  TableRow,
+  TableCont,
+  TextField,
+} from "../components";
+import {
+  tableHeadData,
+  initialCreateVoucherValues,
+  VoucherInfoFieldsData,
+} from "../data";
 import { Formik, Form } from "formik";
 import { CreateVoucherSchema } from "../schema";
-import { useMutationAsync, FetchVoucherData, useUpdateVoucher, useDeleteVoucher } from "../function";
+import {
+  useMutationAsync,
+  FetchVoucherData,
+  useUpdateVoucher,
+  useDeleteVoucher,
+} from "../function";
 import toast from "react-hot-toast";
 import { generateVoucherNumber } from "../function/generateVoucherNumber"; // Import the function
-import { useFetchClasses, useFetchSubclasses } from "../function/hooks";
-import SidebarV from '../components/SidebarV';
+ import { useFetchClasses, useFetchSubclasses } from "../function/hooks";
+import SidebarV from "../components/SidebarV";
 import { UseToggle } from "../hooks";
 import { useNavigate } from "react-router-dom";
 
@@ -19,8 +34,8 @@ export const Voucher = () => {
   const [isOpenModal, setOpenModal] = UseToggle(false);
   const [activeStep, setActiveStep] = useState(0);
   const currentValidationSchema = CreateVoucherSchema[activeStep];
-  const [activePage, setActivePage] = useState('VoucherRecord');
-  const [filter, setFilter] = useState('');
+  const [activePage, setActivePage] = useState("VoucherRecord");
+  const [filter, setFilter] = useState("");
   const [selectAll, setSelectAll] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const underlineRef = useRef(null);
@@ -32,7 +47,8 @@ export const Voucher = () => {
   const handleTabClick = (index) => setActiveTab(index);
   const [isFilterDropdownOpen, setFilterDropdownOpen] = useState(false);
 
-  const { voucherData, voucherFetching, voucherLoading, voucherError } = FetchVoucherData();
+  const { voucherData, voucherFetching, voucherLoading, voucherError } =
+    FetchVoucherData();
   const { mutationAsync: createVoucherMutation } = useMutationAsync(
     {
       method: "post",
@@ -44,11 +60,16 @@ export const Voucher = () => {
   const { mutationAsync: deleteVoucherMutation } = useDeleteVoucher();
 
   // Fetch classes and subclasses
-  const { data: classesData = [], isLoading: classesLoading  ,} = useFetchClasses();
-  const [classExp, setClassExp] = useState('');
-  const { data: subclassesData = [], isLoading: subclassesLoading , refetch } = useFetchSubclasses(classExp);
-  console.log(`Class : ${classesData}`)
-  console.log(`Sub Class : ${subclassesData}`)
+  const { data: classesData = [], isLoading: classesLoading } =
+    useFetchClasses();
+  const [classExp, setClassExp] = useState("");
+  const {
+    data: subclassesData = [],
+    isLoading: subclassesLoading,
+    refetch,
+  } = useFetchSubclasses(classExp);
+  console.log(`Class : ${classesData}`);
+  console.log(`Sub Class : ${subclassesData}`);
 
   const handleEditClick = (voucher) => {
     setEditVoucherData(voucher);
@@ -60,10 +81,6 @@ export const Voucher = () => {
       setClassExp(editVoucherData.classExp);
     }
   }, [editVoucherData]);
-
-
-
-
 
   const handleDeleteClick = async (id) => {
     if (window.confirm("Are you sure you want to delete this voucher?")) {
@@ -83,7 +100,10 @@ export const Voucher = () => {
     setClassExp(event.target.value);
   };
 
-  const CreateVoucherElements = VoucherInfoFieldsData(classesData, subclassesData)?.map((data, index) => (
+  const CreateVoucherElements = VoucherInfoFieldsData(
+    classesData,
+    subclassesData
+  )?.map((data, index) => (
     <TextField
       key={index}
       label={data.label}
@@ -91,17 +111,19 @@ export const Voucher = () => {
       type={data.type}
       placeholder={data.placeholder}
       options={data.options} // Pass options to the TextField component
-      onChange={data.name === 'classExp' ? handleClassChange : undefined} // Handle class change
+      onChange={data.name === "classExp" ? handleClassChange : undefined} // Handle class change
     />
   ));
 
   useEffect(() => {
     const activeTab = document.querySelector(`.tab-${activePage}`);
     if (activeTab && underlineRef.current && containerRef.current) {
-      if (activePage === 'balance' && balanceTabRef.current) {
+      if (activePage === "balance" && balanceTabRef.current) {
         const balanceTabLeft = balanceTabRef.current.offsetLeft;
         const containerWidth = containerRef.current.offsetWidth;
-        underlineRef.current.style.width = `${containerWidth - balanceTabLeft}px`;
+        underlineRef.current.style.width = `${
+          containerWidth - balanceTabLeft
+        }px`;
         underlineRef.current.style.transform = `translateX(${balanceTabLeft}px)`;
       } else {
         underlineRef.current.style.width = `${activeTab.offsetWidth}px`;
@@ -109,7 +131,7 @@ export const Voucher = () => {
       }
     }
   }, [activePage]);
-  console.log('Rendering voucher component');
+  console.log("Rendering voucher component");
 
   return (
     <div className="flex">
@@ -118,145 +140,159 @@ export const Voucher = () => {
         <section className="border-gray-400 p-5 w-full bg-white">
           <div className="flex flex-col gap-y-3 w-full">
             <div className="flex justify-between gap-x-3 items-center w-full">
-              <div ref={containerRef} className='flex flex-row gap-x-3 w-full border-b-2 border-green-200'>
+              <div
+                ref={containerRef}
+                className="flex flex-row gap-x-3 w-full border-b-2 border-green-200"
+              >
                 <div className="relative flex flex-row gap-x-3 ">
-      {openCreateVoucher && (
-        <div className="absolute left-0 right-0 top-0 bottom-0 bg-white z-10 p-5">
-          <h1 className="text-2xl font-semibold">Create Voucher</h1>
+                  {openCreateVoucher && (
+                    <div className="absolute left-0 right-0 top-0 bottom-0 bg-white z-10 p-5">
+                      <h1 className="text-2xl font-semibold">Create Voucher</h1>
 
-          <Formik
-  initialValues={{ 
-    ...initialCreateVoucherValues, 
-    no: generateVoucherNumber(),
-    classExp: '', 
-    subclass: '', 
-  }}
-  validationSchema={CreateVoucherSchema}
-  onSubmit={async (values, actions) => {
-    console.log('Submitting values:', values); // Add this line
-    try {
-      const response = await createVoucherMutation.mutateAsync(values);
-      if (response.status === 200) {
-        toast.success("Voucher created successfully");
-      }
-      actions.resetForm();
-      setCreateVoucher(false);
-    } catch (error) {
-      toast.error("Error creating voucher");
-      console.error(error);
-    }
-  }}
->
+                      <Formik
+                        initialValues={{
+                          ...initialCreateVoucherValues,
+                          no: generateVoucherNumber(),
+                          classExp: "",
+                          subclass: "",
+                        }}
+                        validationSchema={CreateVoucherSchema}
+                        onSubmit={async (values, actions) => {
+                          console.log("Submitting values:", values); // Add this line
+                          try {
+                            const response =
+                              await createVoucherMutation.mutateAsync(values);
+                            if (response.status === 200) {
+                              toast.success("Voucher created successfully");
+                            }
+                            actions.resetForm();
+                            setCreateVoucher(false);
+                          } catch (error) {
+                            toast.error("Error creating voucher");
+                            console.error(error);
+                          }
+                        }}
+                      >
+                        {({ values, setFieldValue }) => {
+                          console.log("classExp:", values.classExp);
+                          console.log("subclass:", values.subclass);
 
-            {({ values, setFieldValue }) => {
-              console.log('classExp:', values.classExp);
-              console.log('subclass:', values.subclass);
+                          return (
+                            <Form>
+                              <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
+                                {CreateVoucherElements}
+                                <button
+                                  type="submit"
+                                  className="bg-primary text-black font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
+                                >
+                                  Create Voucher
+                                </button>
+                              </div>
+                            </Form>
+                          );
+                        }}
+                      </Formik>
+                    </div>
+                  )}
 
-              return (
-                <Form>
-                  <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
-                    {CreateVoucherElements}
-                    <button
-                      type="submit"
-                      className="bg-primary text-black font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
-                    >
-                      Create Voucher
-                    </button>
-                  </div>
-                </Form>
-              );
-            }}
-          </Formik>
-        </div>
-      )}
+                  {openEditVoucher && editVoucherData && (
+                    <div className="absolute left-0 right-0 top-0 bottom-0 bg-white z-10 p-5">
+                      <h1 className="text-2xl font-semibold">Update Voucher</h1>
 
-      {openEditVoucher && editVoucherData && (
-        <div className="absolute left-0 right-0 top-0 bottom-0 bg-white z-10 p-5">
-          <h1 className="text-2xl font-semibold">Update Voucher</h1>
+                      <Formik
+                        initialValues={editVoucherData}
+                        validationSchema={CreateVoucherSchema}
+                        onSubmit={async (values, actions) => {
+                          try {
+                            const response =
+                              await updateVoucherMutation.mutateAsync({
+                                id: editVoucherData._id,
+                                data: values,
+                              });
+                            if (response.status === 200) {
+                              toast.success("Voucher updated successfully");
+                            }
+                            actions.resetForm();
+                            setEditVoucher(false);
+                            setEditVoucherData(null);
+                          } catch (error) {
+                            toast.error("Error updating voucher");
+                            console.error(error);
+                          }
+                        }}
+                      >
+                        {({ values, setFieldValue }) => (
+                          <Form>
+                            <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
+                              {CreateVoucherElements}
+                              <button
+                                type="submit"
+                                className="bg-primary text-black font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
+                              >
+                                Update Voucher
+                              </button>
+                            </div>
+                          </Form>
+                        )}
+                      </Formik>
+                    </div>
+                  )}
 
-          <Formik
-            initialValues={editVoucherData}
-            validationSchema={CreateVoucherSchema}
-            onSubmit={async (values, actions) => {
-              try {
-                const response = await updateVoucherMutation.mutateAsync({ id: editVoucherData._id, data: values });
-                if (response.status === 200) {
-                  toast.success("Voucher updated successfully");
-                }
-                actions.resetForm();
-                setEditVoucher(false);
-                setEditVoucherData(null);
-              } catch (error) {
-                toast.error("Error updating voucher");
-                console.error(error);
-              }
-            }}
-          >
-            {({ values, setFieldValue }) => (
-              <Form>
-                <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
-                  {CreateVoucherElements}
-                  <button
-                    type="submit"
-                    className="bg-primary text-black font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
-                  >
-                    Update Voucher
-                  </button>
+                  <Section style="bg-white flex flex-col gap-5 w-full overflow-x-auto">
+                    <div className="flex flex-row gap-5 self-end mb-6">
+                      <select className="w-fit p-2 rounded-md bg-transparent border-2 border-gray-400">
+                        <option defaultValue>Filter Categories</option>
+                        <option value="">Product 1</option>
+                        <option value="">Product 2</option>
+                        <option value="">Product 3</option>
+                        <option value="">Product 4</option>
+                      </select>
+                      <input
+                        type="text"
+                        placeholder="Search"
+                        className="rounded-md bg-transparent border-2 border-gray-400 p-2"
+                      />
+                      <div
+                        className="bg-accent-dark py-1 px-2 items-center justify-center gap-1 rounded-md flex w-24 flex-row text-white font-medium"
+                        aria-label="Add Product"
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => setCreateVoucher((prev) => !prev)}
+                      >
+                        <span>Add</span>
+                      </div>
+                    </div>
+
+                    {voucherFetching || voucherLoading ? (
+                      <div className="text-center">
+                        <h1 className="text-2xl uppercase">Loading</h1>
+                      </div>
+                    ) : voucherError ? (
+                      <div className="text-center">
+                        <h1 className="text-2xl uppercase text-red-500">
+                          Error fetching voucher data
+                        </h1>
+                      </div>
+                    ) : (
+                      <TableCont>
+                        <TableHead tableData={tableHeadData} />
+                        {voucherData?.data?.map((voucher) => (
+                          <TableRow
+                            key={voucher._id}
+                            tableRowData={voucher}
+                            onEditClick={() => handleEditClick(voucher)}
+                            onDeleteClick={() => handleDeleteClick(voucher._id)}
+                          />
+                        ))}
+                      </TableCont>
+                    )}
+                  </Section>
                 </div>
-              </Form>
-            )}
-          </Formik>
-        </div>
-      )}
-
-      
-      <Section style="bg-white flex flex-col gap-5 w-full overflow-x-auto">
-        <div className="flex flex-row gap-5 self-end mb-6">
-          <select className="w-fit p-2 rounded-md bg-transparent border-2 border-gray-400">
-            <option defaultValue>Filter Categories</option>
-            <option value="">Product 1</option>
-            <option value="">Product 2</option>
-            <option value="">Product 3</option>
-            <option value="">Product 4</option>
-          </select>
-          <input
-            type="text"
-            placeholder="Search"
-            className="rounded-md bg-transparent border-2 border-gray-400 p-2"
-          />
-          <div
-            className="bg-accent-dark py-1 px-2 items-center justify-center gap-1 rounded-md flex w-24 flex-row text-white font-medium"
-            aria-label="Add Product"
-            role="button"
-            tabIndex={0}
-            onClick={() => setCreateVoucher((prev) => !prev)}
-          >
-            <span>Add</span>
+              </div>
+            </div>
           </div>
-        </div>
-
-        {voucherFetching || voucherLoading ? (
-          <div className="text-center">
-            <h1 className="text-2xl uppercase">Loading</h1>
-          </div>
-        ) : voucherError ? (
-          <div className="text-center">
-            <h1 className="text-2xl uppercase text-red-500">Error fetching voucher data</h1>
-          </div>
-        ) : (
-          <TableCont>
-            <TableHead tableData={tableHeadData} /> 
-            {voucherData?.data?.map((voucher) => (
-              <TableRow
-                key={voucher._id}
-                tableRowData={voucher}
-                onEditClick={() => handleEditClick(voucher)}  
-                onDeleteClick={() => handleDeleteClick(voucher._id)}
-              />
-            ))}
-          </TableCont>
-        )}
-      </Section>
-      </div></div></div></div></section></main></div>
+        </section>
+      </main>
+    </div>
   );
 };
