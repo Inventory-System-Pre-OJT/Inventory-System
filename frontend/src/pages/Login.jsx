@@ -37,7 +37,7 @@ export const Login = () => {
         </div>
         <div className="text-center w-full md:w-[80%] m-auto flex flex-col justify-start md:justify-around  h-full gap-16 md:gap-0 md:h-[30rem] ">
           <div>
-            <h1 className=" text-3xl font-medium mb-1">Welcome HK Inventory</h1>
+            <h1 className=" text-3xl font-medium mb-1">Welcome Eurasia Inventory</h1>
             <p className=" text-gray-600 text-[1.1rem]">
               Welcome back! Please enter your details.
             </p>
