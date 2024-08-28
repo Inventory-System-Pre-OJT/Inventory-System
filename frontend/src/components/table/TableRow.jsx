@@ -1,8 +1,6 @@
-// components/table/TableRow.jsx
-
 import PropTypes from 'prop-types';
 
-export const TableRow = ({ tableRowData, onEditClick, onDeleteClick }) => {
+export const TableRow = ({ tableRowData, onEditClick, onDeleteClick, onDownloadPDF }) => {
   const { _id, createdAt, updatedAt, __v, ...filteredData } = tableRowData;
   const tableRowValues = Object.values(filteredData);
 
@@ -17,8 +15,11 @@ export const TableRow = ({ tableRowData, onEditClick, onDeleteClick }) => {
         <button onClick={onEditClick} className="text-blue-500 hover:underline mr-2">
           Edit
         </button>
-        <button onClick={onDeleteClick} className="text-red-500 hover:underline">
+        <button onClick={onDeleteClick} className="text-red-500 hover:underline mr-2">
           Delete
+        </button>
+        <button onClick={onDownloadPDF} className="text-green-500 hover:underline">
+          Download PDF
         </button>
       </td>
     </tr>
@@ -29,4 +30,5 @@ TableRow.propTypes = {
   tableRowData: PropTypes.object.isRequired,
   onEditClick: PropTypes.func.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
+  onDownloadPDF: PropTypes.func.isRequired,  // Add prop type for onDownloadPDF
 };

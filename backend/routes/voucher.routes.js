@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { createVoucher, getAllVouchers, getVoucherById, updateVoucherById, deleteVoucherById } from '../controllers/voucher.controllers.js';
+import { createVoucher, getAllVouchers, getVoucherById, updateVoucherById, deleteVoucherById , searchVouchers} from '../controllers/voucher.controllers.js';
 
 // Create a new voucher
 router.post('/create', createVoucher);
@@ -15,5 +15,7 @@ router.patch('/update/:id', updateVoucherById);
 
 // Delete a voucher by ID
 router.delete('/delete/:id', deleteVoucherById);
+
+router.post('/searchVoucher', searchVouchers); // Added search route
 
 export default router;

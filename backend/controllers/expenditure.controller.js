@@ -112,3 +112,26 @@ export const getExpenditureByClassAndSubclass = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// Search expenditures based on query parameters
+export const searchExpenditure = async (req, res) => {
+    try {
+        const query = req.body; // Expecting query parameters in the request body
+
+        // Build query object dynamically based on request body
+        const searchQuery = {};
+        if (query.classExp) searchQuery.classExp = query.classExp;
+        if (query.subclasses && query.subclasses.length > 0) {
+            searchQuery['subclasses.name'] = { $in: query.subclasses };
+        }
+
+        // Perform the search
+        const expenditures = await Expenditure.find(searchQuery);
+
+        res.status(200).json(expenditures);
+    } catch (error) {
+        console.log("searchExpenditure Controller Error", error.message);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+};
+

@@ -64,3 +64,16 @@ export const deleteVoucherById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const searchVouchers = async (req, res) => {
+    try {
+        const query = req.body;
+
+        // Find vouchers matching the query parameters
+        const vouchers = await Voucher.find(query);
+        return res.json(vouchers);
+    } catch (error) {
+        console.log("searchVouchers Controller Error", error.message);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+};

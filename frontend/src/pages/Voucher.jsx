@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import jsPDF from 'jspdf'; 
 import {
   Section,
   TableHead,
@@ -131,7 +132,42 @@ export const Voucher = () => {
       }
     }
   }, [activePage]);
+
   console.log("Rendering voucher component");
+
+  const generatePDF = (voucherData) => {
+    const doc = new jsPDF();
+
+    // Set PDF title
+    doc.setFontSize(20);
+    doc.text("Voucher Details", 10, 10);
+
+    // Add voucher details to the PDF
+    const details = [
+      { label: "No", value: voucherData.no },
+      { label: "Amount", value: voucherData.amount },
+      { label: "Date", value: voucherData.date },
+      { label: "Address", value: voucherData.address },
+      { label: "Description of Payment", value: voucherData.descOfPayment },
+      { label: "Bank Account", value: voucherData.bankAcc },
+      { label: "Check Number", value: voucherData.checkNum },
+      { label: "Invoice No", value: voucherData.invoiceNo },
+      { label: "Class", value: voucherData.classExp },
+      { label: "Subclass", value: voucherData.subclass },
+      { label: "Prepared By", value: voucherData.preparedBy },
+      { label: "Accounting", value: voucherData.accounting },
+      { label: "Approved By", value: voucherData.approvedBy },
+    ];
+
+    // Add each detail as a new line in the PDF
+    details.forEach((detail, index) => {
+      doc.setFontSize(12);
+      doc.text(`${detail.label}: ${detail.value || "N/A"}`, 10, 30 + index * 10);
+    });
+
+    // Save or print the PDF
+    doc.save(`voucher_${voucherData.no}.pdf`);
+  };
 
   return (
     <div className="flex">
@@ -282,7 +318,10 @@ export const Voucher = () => {
                             tableRowData={voucher}
                             onEditClick={() => handleEditClick(voucher)}
                             onDeleteClick={() => handleDeleteClick(voucher._id)}
+                            onDownloadPDF={() => generatePDF(voucher)}  // Pass generatePDF as onDownloadPDF handler
+                            
                           />
+                          
                         ))}
                       </TableCont>
                     )}

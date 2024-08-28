@@ -198,7 +198,21 @@ const useDeleteExpenditure = () => {
   return { mutationAsync };
 };    
 
-
+const useSearchVouchers = (searchQuery) => {
+  return useQuery(
+    ["searchVouchers", searchQuery],
+    async () => {
+      console.log("Fetching search results for query:", searchQuery); // Debug log
+      const response = await axiosRequest("post", "api/v1/voucher/searchVoucher", { query: searchQuery });
+      console.log("Search results response data:", response.data); // Debug log
+      return response.data;
+    },
+    {
+      enabled: !!searchQuery, // Enable query only if searchQuery is not empty
+      retry: 3,
+    }
+  );
+};
 
 
 export {
@@ -209,5 +223,6 @@ export {
   useExpenditureMutationAsync,
   useUpdateExpenditure,
   FetchExpenditureData,
-  useDeleteExpenditure
+  useDeleteExpenditure,
+  useSearchVouchers 
 };

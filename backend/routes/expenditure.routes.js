@@ -6,7 +6,10 @@ import {
     updateExpenditureById,
     deleteExpenditureById,
     getSubclassesByClass,
-    getExpenditureByClassAndSubclass
+    getExpenditureByClassAndSubclass,
+    searchExpenditure
+
+
 } from '../controllers/expenditure.controller.js';
 
 const router = express.Router();
@@ -14,9 +17,10 @@ const router = express.Router();
 router.post('/create', createExpenditure);
 router.get('/', getAllExpenditure);
 router.get('/:id', getExpenditureById);
-router.put('/update/:id', updateExpenditureById);
+router.patch('/update/:id', updateExpenditureById);
 router.delete('/delete/:id', deleteExpenditureById);
 router.get('/class/:classExp', getSubclassesByClass);
 router.get('/class/:classExp/subclass/:subclass', getExpenditureByClassAndSubclass);
+router.post('/searchExp', searchExpenditure);
 
 export default router;  
