@@ -1,5 +1,7 @@
+//frontend/src/pages/Voucher.jsx
+
 import { useState, useRef, useEffect } from "react";
-import jsPDF from 'jspdf'; 
+import jsPDF from 'jspdf';
 import {
   Section,
   TableHead,
@@ -22,7 +24,7 @@ import {
 } from "../function";
 import toast from "react-hot-toast";
 import { generateVoucherNumber } from "../function/generateVoucherNumber"; // Import the function
- import { useFetchClasses, useFetchSubclasses } from "../function/hooks";
+import { useFetchClasses, useFetchSubclasses } from "../function/hooks";
 import SidebarV from "../components/SidebarV";
 import { UseToggle } from "../hooks";
 import { useNavigate } from "react-router-dom";
@@ -47,6 +49,9 @@ export const Voucher = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const handleTabClick = (index) => setActiveTab(index);
   const [isFilterDropdownOpen, setFilterDropdownOpen] = useState(false);
+  const [selectedClass, setSelectedClass] = useState("");
+  const [selectedSubclass, setSelectedSubclass] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
 
   const { voucherData, voucherFetching, voucherLoading, voucherError } =
     FetchVoucherData();
@@ -76,6 +81,8 @@ export const Voucher = () => {
     setEditVoucherData(voucher);
     setEditVoucher(true);
   };
+  
+  
 
   useEffect(() => {
     if (editVoucherData) {
@@ -122,9 +129,8 @@ export const Voucher = () => {
       if (activePage === "balance" && balanceTabRef.current) {
         const balanceTabLeft = balanceTabRef.current.offsetLeft;
         const containerWidth = containerRef.current.offsetWidth;
-        underlineRef.current.style.width = `${
-          containerWidth - balanceTabLeft
-        }px`;
+        underlineRef.current.style.width = `${containerWidth - balanceTabLeft
+          }px`;
         underlineRef.current.style.transform = `translateX(${balanceTabLeft}px)`;
       } else {
         underlineRef.current.style.width = `${activeTab.offsetWidth}px`;
@@ -168,6 +174,13 @@ export const Voucher = () => {
     // Save or print the PDF
     doc.save(`voucher_${voucherData.no}.pdf`);
   };
+
+  const filteredVouchers = voucherData?.data?.filter((voucher) =>
+    Object.values(voucher).some((value) =>
+      value.toString().toLowerCase().includes(filter.toLowerCase())
+    )
+  );
+
 
   return (
     <div className="flex">
@@ -285,8 +298,10 @@ export const Voucher = () => {
                       </select>
                       <input
                         type="text"
-                        placeholder="Search"
-                        className="rounded-md bg-transparent border-2 border-gray-400 p-2"
+                        placeholder="Search vouchers"
+                        className="w-full p-2 border border-gray-300 rounded-md"
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)} // Update search query
                       />
                       <div
                         className="bg-accent-dark py-1 px-2 items-center justify-center gap-1 rounded-md flex w-24 flex-row text-white font-medium"
@@ -312,16 +327,14 @@ export const Voucher = () => {
                     ) : (
                       <TableCont>
                         <TableHead tableData={tableHeadData} />
-                        {voucherData?.data?.map((voucher) => (
+                        {filteredVouchers?.map((voucher) => (
                           <TableRow
                             key={voucher._id}
                             tableRowData={voucher}
                             onEditClick={() => handleEditClick(voucher)}
                             onDeleteClick={() => handleDeleteClick(voucher._id)}
-                            onDownloadPDF={() => generatePDF(voucher)}  // Pass generatePDF as onDownloadPDF handler
-                            
+                            onDownloadPDF={() => generatePDF(voucher)} // Pass the generatePDF function
                           />
-                          
                         ))}
                       </TableCont>
                     )}

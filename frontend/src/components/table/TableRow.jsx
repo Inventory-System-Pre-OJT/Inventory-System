@@ -1,3 +1,5 @@
+//frontend/src/components/table/TableRow.jsx
+
 import PropTypes from 'prop-types';
 
 export const TableRow = ({ tableRowData, onEditClick, onDeleteClick, onDownloadPDF }) => {

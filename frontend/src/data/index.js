@@ -1,3 +1,5 @@
+//frontend/src/data/index.js
+
 const tableHeadData = [
   {
     name: "No",
