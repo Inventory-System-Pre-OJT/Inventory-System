@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { FiMoreVertical } from "react-icons/fi";
+import { FiUserPlus, FiMoreVertical, FiEye, FiEyeOff } from "react-icons/fi";
 import { FaUserLock, FaUserMinus, FaUser } from "react-icons/fa";
 import { Pencil2Icon, DotFilledIcon, PersonIcon } from '@radix-ui/react-icons';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import Sidebar from "@/components/Sidebar";
 import { SlKey } from "react-icons/sl";
 import { PiTrash } from "react-icons/pi";
-import { FiUserPlus } from "react-icons/fi";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate, Link } from "react-router-dom";
 
 const users = [
   {
@@ -29,10 +28,33 @@ const users = [
 ];
 
 export const UserManagement = () => {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [showModal, setShowModal] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleAddUser = () => {
-    navigate('/add-user'); // Define the route to navigate to
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handlePasswordVisibilityToggle = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    // Placeholder function to validate unique password
+    validateUniquePassword(e.target.value);
+  };
+
+  const validateUniquePassword = (password) => {
+    // Implement password uniqueness check here
+    // Example: Check against a list of existing passwords
+    console.log("Validating password:", password);
   };
 
   return (
@@ -43,8 +65,8 @@ export const UserManagement = () => {
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-3xl font-bold">User management</h1>
             <button 
+              onClick={handleAddUser}
               className="bg-green-500 text-white px-4 py-2 rounded-lg flex items-center"
-              onClick={handleAddUser} // Handle the button click
             >
               <span className="flex justify-center items-center">
                 <FiUserPlus />&nbsp;Add
@@ -80,7 +102,7 @@ export const UserManagement = () => {
                 <th scope="col" className="text-zinc-900 w-7 h-7"></th>
               </tr>
             </thead>
-            <tbody className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-100 dark:text-gray-100"> 
+            <tbody className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-100 dark:text-gray-100">
               {users.map((user) => (
                 <tr key={user.id}>
                   <td className="text-zinc-900 w-4 h-4">
@@ -145,6 +167,85 @@ export const UserManagement = () => {
           </table>
         </div>
       </div>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-lg p-8 w-full max-w-md">
+            <h2 className="text-xl font-bold mb-4">Add User</h2>
+            <form>
+              <div className="mb-4">
+                <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
+                <input
+                  type="text"
+                  id="username"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Employee Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
+                />
+              </div>
+              <div className="mb-4 relative">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+                <input
+                  type={passwordVisible ? "text" : "password"}
+                  id="password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
+                />
+                <button
+                  type="button"
+                  onClick={handlePasswordVisibilityToggle}
+                  className="absolute inset-y-0 right-1 top-6 pr-3"
+                >
+                  {passwordVisible ? <FiEyeOff /> : <FiEye />}
+                </button>
+              </div>
+              <div className="mb-4 flex justify-between space-x-4">
+                <div className="w-1/2">
+                  <label htmlFor="access" className="block text-sm font-medium text-gray-700">Access</label>
+                  <select
+                    id="access"
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
+                  >
+                    <option>Staff</option>
+                    <option>Admin</option>
+                    <option>Productions</option>
+                  </select>
+                </div>
+                <div className="w-1/2">
+                  <label htmlFor="branch" className="block text-sm font-medium text-gray-700">Branch</label>
+                  <select
+                    id="branch"
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
+                  >
+                    <option>Main</option>
+                    <option>South</option>
+                    <option>West</option>
+                  </select>
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
+                  onClick={handleCloseModal}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md">
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
