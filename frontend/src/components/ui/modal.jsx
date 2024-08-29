@@ -58,7 +58,9 @@ export function Modal({ title, titleModal, description, label, contentType, plac
                 <img src="path_to_your_image" alt="Scan Copy" className="w-full h-auto" />
               </div>
             )}
-            {contentType === 'description' && description}
+            {contentType === 'description' && 
+              <p className="text-sm text-gray-500">{description}</p>
+            }
             {contentType === 'content' && content}
           </AlertDialogDescription>
         </AlertDialogHeader>
