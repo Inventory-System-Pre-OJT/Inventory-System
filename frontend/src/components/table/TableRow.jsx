@@ -1,27 +1,41 @@
-//frontend/src/components/table/TableRow.jsx
-
 import PropTypes from 'prop-types';
+import { FaEdit, FaTrash, FaDownload } from 'react-icons/fa';
 
 export const TableRow = ({ tableRowData, onEditClick, onDeleteClick, onDownloadPDF }) => {
   const { _id, createdAt, updatedAt, __v, ...filteredData } = tableRowData;
   const tableRowValues = Object.values(filteredData);
 
   return (
-    <tr className="flex flex-col md:flex-row justify-between text-start text-sm">
+    <tr className="border-b border-gray-300 hover:bg-gray-50">
       {tableRowValues.map((data, index) => (
-        <td key={index} className="w-40 p-2 border-r border-b border-gray-300 text-left break-words">
+        <td
+          key={index}
+          className="p-2 text-left text-gray-700 border-r border-gray-300 break-words"
+        >
           {data}
         </td>
       ))}
-      <td>
-        <button onClick={onEditClick} className="text-blue-500 hover:underline mr-2">
-          Edit
+      <td className="p-2 text-left flex gap-2">
+        <button
+          onClick={onEditClick}
+          className="text-blue-500 hover:text-blue-700"
+          aria-label="Edit"
+        >
+          <FaEdit />
         </button>
-        <button onClick={onDeleteClick} className="text-red-500 hover:underline mr-2">
-          Delete
+        <button
+          onClick={onDeleteClick}
+          className="text-red-500 hover:text-red-700"
+          aria-label="Delete"
+        >
+          <FaTrash />
         </button>
-        <button onClick={onDownloadPDF} className="text-green-500 hover:underline">
-          Download PDF
+        <button
+          onClick={onDownloadPDF}
+          className="text-teal-500 hover:text-teal-700"
+          aria-label="Download PDF"
+        >
+          <FaDownload />
         </button>
       </td>
     </tr>
@@ -29,8 +43,14 @@ export const TableRow = ({ tableRowData, onEditClick, onDeleteClick, onDownloadP
 };
 
 TableRow.propTypes = {
-  tableRowData: PropTypes.object.isRequired,
+  tableRowData: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    createdAt: PropTypes.string,
+    updatedAt: PropTypes.string,
+    __v: PropTypes.number,
+    // Add other properties as needed
+  }).isRequired,
   onEditClick: PropTypes.func.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
-  onDownloadPDF: PropTypes.func.isRequired,  // Add prop type for onDownloadPDF
+  onDownloadPDF: PropTypes.func.isRequired,
 };

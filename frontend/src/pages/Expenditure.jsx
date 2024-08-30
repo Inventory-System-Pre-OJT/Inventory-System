@@ -102,220 +102,261 @@ export const Expenditure = () => {
   }, [activePage]);
   console.log('Rendering voucher component');
 
+  
+
   return (
     <div className="flex">
-      <SidebarV />
-      <main className="flex flex-col bg-gray-100 text-black h-full w-screen m-0 mt-14 lg:ml-64 lg:mr-10">
-        <section className="border-gray-400 p-5 w-full bg-white">
-          <div className="flex flex-col gap-y-3 w-full">
-            <div className="flex justify-between gap-x-3 items-center w-full">
-              <div ref={containerRef} className='flex flex-row gap-x-3 w-full border-b-2 border-green-200'>
-              <div className="relative flex flex-row gap-x-3 ">
-      {openCreateExpenditure && (
-        <div className="absolute left-0 right-0 top-0 bottom-0 bg-white z-10 p-5">
-          <h1 className="text-2xl font-semibold">Create Expenditure</h1>
+      {/* Sidebar */}
+      <SidebarV className="w-64 h-screen bg-gray-200" />
 
-          <Formik
-            initialValues={{
-              ...initialCreateExpenditureValues,
-              classExp: generateClassExpNumber(), // Set the value for classExp
-              subclasses: [{ name: "" }] // Initialize with one subclass
-            }}
-            validationSchema={CreateExpenditureSchema}
-            onSubmit={async (values, actions) => {
-              try {
-                const response = await createExpenditureMutation.mutateAsync(values);
-                if (response.status === 200) {
-                  toast.success("Expenditure created successfully");
-                }
-                actions.resetForm();
-                setCreateExpenditure(false);
-              } catch (error) {
-                toast.error("Error creating expenditure");
-                console.error(error);
-              }
-            }}
-          >
-            {({ values }) => (
-              <Form>
-                <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
-                  {CreateExpenditureElements}
-
-                
-
-                  <FieldArray name="subclasses">
-                    {({ remove, push }) => (
-                      <div>
-                        {values.subclasses.length > 0 &&
-                          values.subclasses.map((subclass, index) => (
-                            <div key={index} className="mb-4">
-                              <TextField
-                                label={`Subclass ${index + 1}`}
-                                name={`subclasses.${index}.name`}
-                                type="text"
-                                placeholder="Enter subclass"
-                              />
-                              <button
-                                type="button"
-                                onClick={() => remove(index)}
-                                className="bg-red-500 text-white p-2 rounded mt-2"
-                              >
-                                Remove
-                              </button>
-                            </div>
-                          ))}
-                        <button
-                          type="button"
-                          onClick={() => push({ name: "" })}
-                          className="bg-primary text-white p-2 rounded mt-4"
-                        >
-                          Add Subclass
-                        </button>
+      {/* Main Content */}
+      <main className="flex-1 bg-gray-100 text-black h-full mt-14 ml-64">
+        <section className="border-gray-400 p-5 bg-white w-full">
+          <div className="relative flex flex-col gap-y-3 w-full">
+            {/* Form for creating or editing expenditure */}
+            {(openCreateExpenditure || (openEditExpenditure && editExpenditureData)) && (
+  <div className="absolute inset-0 bg-white z-10 p-5">
+    <h1 className="text-accent-dark text-3xl font-semibold text-center mb-5">{openCreateExpenditure ? 'Create Expenditure' : 'Update Expenditure'}</h1>
+    <Formik
+      initialValues={{
+        ...initialCreateExpenditureValues,
+        ...(openEditExpenditure && editExpenditureData),
+        classExp: openCreateExpenditure ? generateClassExpNumber() : editExpenditureData?.classExp || '',
+        subclasses: (openEditExpenditure && editExpenditureData?.subclasses) || [{ name: "" }]
+      }}
+      validationSchema={CreateExpenditureSchema}
+      onSubmit={async (values, actions) => {
+        try {
+          const response = openCreateExpenditure
+            ? await createExpenditureMutation.mutateAsync(values)
+            : await updateExpenditureMutation.mutateAsync({ id: editExpenditureData._id, data: values });
+          if (response.status === 200) {
+            toast.success(`Expenditure ${openCreateExpenditure ? 'created' : 'updated'} successfully`);
+          }
+          actions.resetForm();
+          setCreateExpenditure(false);
+          setEditExpenditure(false);
+          setEditExpenditureData(null);
+        } catch (error) {
+          toast.error(`Error ${openCreateExpenditure ? 'creating' : 'updating'} expenditure`);
+          console.error(error);
+        }
+      }}
+    >
+      {({ values, resetForm }) => (
+        <Form>
+          <div className="grid grid-cols-2 gap-5 grid-flow-dense place-content-center">
+            {CreateExpenditureElements}
+            <FieldArray name="subclasses">
+              {({ remove, push }) => (
+                <div>
+                  {values.subclasses.length > 0 &&
+                    values.subclasses.map((subclass, index) => (
+                      <div key={index} className="mb-4">
+                        <TextField
+                          label={`Subclass ${index + 1}`}
+                          name={`subclasses.${index}.name`}
+                          type="text"
+                          placeholder="Enter subclass"
+                        />
+                        <div className="flex gap-2 mt-2">
+                          <button
+                            type="button"
+                            onClick={() => remove(index)}
+                            className="bg-red-500 text-white p-2 rounded"
+                          >
+                            Remove
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => push({ name: "" })}
+                            className="bg-teal-700 text-white p-2 rounded"
+                          >
+                            Add Subclass
+                          </button>
+                        </div>
                       </div>
-                    )}
-                  </FieldArray>
-
-                  <button
-                    type="submit"
-                    className="bg-primary text-black font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
-                  >
-                    Create Expenditure
-                  </button>
+                    ))}
                 </div>
-              </Form>
-            )}
-          </Formik>
-        </div>
-      )}
+              )}
+            </FieldArray>
 
-      {openEditExpenditure && editExpenditureData && (
-        <div className="absolute left-0 right-0 top-0 bottom-0 bg-white z-10 p-5">
-          <h1 className="text-2xl font-semibold">Update Expenditure</h1>
-
-          <Formik
-            initialValues={{
-              ...editExpenditureData,
-              subclasses: editExpenditureData.subclasses || [{ name: "" }] // Initialize with one subclass if not present
-            }}
-            validationSchema={CreateExpenditureSchema}
-            onSubmit={async (values, actions) => {
-              try {
-                const response = await updateExpenditureMutation.mutateAsync({ id: editExpenditureData._id, data: values });
-                if (response.status === 200) {
-                  toast.success("Expenditure updated successfully");
-                }
-                actions.resetForm();
-                setEditExpenditure(false);
-                setEditExpenditureData(null);
-              } catch (error) {
-                toast.error("Error updating expenditure");
-                console.error(error);
-              }
-            }}
-          >
-            {({ values }) => (
-              <Form>
-                <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
-                  {CreateExpenditureElements}
-
-         
-                  <FieldArray name="subclasses">
-                    {({ remove, push }) => (
-                      <div>
-                        {values.subclasses.length > 0 &&
-                          values.subclasses.map((subclass, index) => (
-                            <div key={index} className="mb-4">
-                              <TextField
-                                label={`Subclass ${index + 1}`}
-                                name={`subclasses.${index}.name`}
-                                type="text"
-                                placeholder="Enter subclass"
-                              />
-                              <button
-                                type="button"
-                                onClick={() => remove(index)}
-                                className="bg-red-500 text-white p-2 rounded mt-2"
-                              >
-                                Remove
-                              </button>
-                            </div>
-                          ))}
-                        <button
-                          type="button"
-                          onClick={() => push({ name: "" })}
-                          className="bg-primary text-white p-2 rounded mt-4"
-                        >
-                          Add Subclass
-                        </button>
-                      </div>
-                    )}
-                  </FieldArray>
-
-                  <button
-                    type="submit"
-                    className="bg-primary text-black font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
-                  >
-                    Update Expenditure
-                  </button>
-                </div>
-              </Form>
-            )}
-          </Formik>
-        </div>
-      )}
-
-      
-      
-      <Section style="bg-white flex flex-col gap-5 w-full overflow-x-auto">
-        <div className="flex flex-row gap-5 self-end mb-6">
-          <select className="w-fit p-2 rounded-md bg-transparent border-2 border-gray-400">
-            <option defaultValue>Filter Categories</option>
-            <option value="">Product 1</option>
-            <option value="">Product 2</option>
-            <option value="">Product 3</option>
-            <option value="">Product 4</option>
-          </select>
-          <input
-            type="text"
-            placeholder="Search"
-            className="rounded-md bg-transparent border-2 border-gray-400 p-2"
-          />
-          <div
-            className="bg-accent-dark py-1 px-2 items-center justify-center gap-1 rounded-md flex w-24 flex-row text-white font-medium"
-            aria-label="Add Product"
-            role="button"
-            tabIndex={0}
-            onClick={() => setCreateExpenditure((prev) => !prev)}
-          >
-            <span>Add</span>
-          </div>
-        </div>
-
-        {expenditureFetching || expenditureLoading ? (
-          <div className="text-center">
-            <h1 className="text-2xl uppercase">Loading</h1>
-          </div>
-        ) : expenditureError ? (
-          <div className="text-center">
-            <h1 className="text-2xl uppercase text-red-500">Error fetching expenditure data</h1>
-          </div>
-        ) : (
-          <TableCont>
-            <TableHead tableData={tableHeadDataExpenditure} />
-            {expenditureData?.data?.map((expenditure) => (
-              <TableRow
-                key={expenditure._id}
-                tableRowData={{
-                  ...expenditure,
-                  subclasses: expenditure.subclasses.map(subclass => subclass.name).join(', ') // Join subclass names into a string
+            <div className="col-span-2 flex justify-between mt-8">
+              <button
+                type="button"
+                className="bg-gray-500 text-white font-bold h-fit p-2 rounded-md"
+                onClick={() => {
+                  resetForm(); // Reset the form values
+                  setCreateExpenditure(false); // Close the create form
+                  setEditExpenditure(false); // Close the edit form if it was open
+                  setEditExpenditureData(null); // Clear edit data
                 }}
-                onEditClick={() => handleEditClick(expenditure)}
-                onDeleteClick={() => handleDeleteClick(expenditure._id)}
-              />
-            ))}
-          </TableCont>
-        )}
-      </Section>
-    </div></div></div></div></section></main></div>
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="bg-accent-dark text-white font-bold h-fit w-300 p-2 rounded-md"
+              >
+                {openCreateExpenditure ? 'Create Expenditure' : 'Update Expenditure'}
+              </button>
+            </div>
+          </div>
+        </Form>
+      )}
+    </Formik>
+  </div>
+)}
+
+            
+{openEditExpenditure && editExpenditureData && (
+  <div className="absolute left-0 right-0 top-0 bottom-0 bg-white z-10 p-5">
+    <h1 className="text-accent-dark text-3xl font-semibold text-center mb-5">Update Expenditure</h1>
+
+    <Formik
+      initialValues={{
+        ...editExpenditureData,
+        subclasses: editExpenditureData.subclasses || [{ name: "" }] // Initialize with one subclass if not present
+      }}
+      validationSchema={CreateExpenditureSchema}
+      onSubmit={async (values, actions) => {
+        try {
+          const response = await updateExpenditureMutation.mutateAsync({ id: editExpenditureData._id, data: values });
+          if (response.status === 200) {
+            toast.success("Expenditure updated successfully");
+          }
+          actions.resetForm();
+          setEditExpenditure(false);
+          setEditExpenditureData(null);
+        } catch (error) {
+          toast.error("Error updating expenditure");
+          console.error(error);
+        }
+      }}
+    >
+      {({ values, resetForm }) => (
+        <Form>
+          <div className="grid grid-cols-2 gap-5 grid-flow-dense place-content-center">
+            {CreateExpenditureElements}
+
+            <FieldArray name="subclasses">
+              {({ remove, push }) => (
+                <div>
+                  {values.subclasses.length > 0 &&
+                    values.subclasses.map((subclass, index) => (
+                      <div key={index} className="mb-4">
+                        <TextField
+                          label={`Subclass ${index + 1}`}
+                          name={`subclasses.${index}.name`}
+                          type="text"
+                          placeholder="Enter subclass"
+                        />
+                        <div className="flex gap-2 mt-2">
+                          <button
+                            type="button"
+                            onClick={() => remove(index)}
+                            className="bg-red-500 text-white p-2 rounded"
+                          >
+                            Remove
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => push({ name: "" })}
+                            className="bg-teal-700 text-white p-2 rounded"
+                          >
+                            Add Subclass
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
+            </FieldArray>
+
+            <div className="col-span-2 flex justify-between mt-8">
+              <button
+                type="button"
+                className="bg-gray-500 text-white font-bold h-fit p-2 rounded-md"
+                onClick={() => {
+                  resetForm(); // Reset the form values
+                  setEditExpenditure(false); // Close the edit form
+                  setEditExpenditureData(null); // Clear edit data
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="bg-accent-dark text-white font-bold h-fit p-2 rounded-md"
+              >
+                Update Expenditure
+              </button>
+            </div>
+          </div>
+        </Form>
+      )}
+    </Formik>
+  </div>
+)}
+
+
+      
+      
+            <Section style="bg-white flex flex-col gap-5 w-full overflow-x-auto">
+              <div className="flex flex-row gap-5 self-end mb-6">
+                <select className="w-fit p-2 rounded-md bg-transparent border-2 border-gray-400">
+                  <option defaultValue>Filter Categories</option>
+                  <option value="">Product 1</option>
+                  <option value="">Product 2</option>
+                  <option value="">Product 3</option>
+                  <option value="">Product 4</option>
+                </select>
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="rounded-md bg-transparent border-2 border-gray-400 p-2"
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                />
+                <div
+                  className="bg-accent-dark py-1 px-2 items-center justify-center gap-1 rounded-md flex w-24 flex-row text-white font-medium"
+                  aria-label="Add Expenditure"
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setCreateExpenditure((prev) => !prev)}
+                >
+                  <span>Add</span>
+                </div>
+              </div>
+
+              {expenditureFetching || expenditureLoading ? (
+                <div className="text-center">
+                  <h1 className="text-2xl uppercase">Loading</h1>
+                </div>
+              ) : expenditureError ? (
+                <div className="text-center">
+                  <h1 className="text-2xl uppercase text-red-500">Error fetching expenditure data</h1>
+                </div>
+              ) : (
+                <TableCont>
+                  <TableHead tableData={tableHeadDataExpenditure} />
+                  {expenditureData?.data?.map((expenditure) => (
+                    <TableRow
+                      key={expenditure._id}
+                      tableRowData={{
+                        ...expenditure,
+                        subclasses: expenditure.subclasses.map(subclass => subclass.name).join(', ') // Join subclass names into a string
+                      }}
+                      onEditClick={() => handleEditClick(expenditure)}
+                      onDeleteClick={() => handleDeleteClick(expenditure._id)}
+                    />
+                  ))}
+                </TableCont>
+              )}
+            </Section>
+          </div>
+        </section>
+      </main>
+    </div>
   );
 };
