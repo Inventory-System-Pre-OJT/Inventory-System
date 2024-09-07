@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "./input"
+import { Formik, Form } from 'formik';
+import { TextField } from '../form/TextField';
 
 export function Modal({ title, titleModal, description, label, contentType, placeholder, children, action, btnPlaceholder }) {
   return (
@@ -24,19 +26,32 @@ export function Modal({ title, titleModal, description, label, contentType, plac
           <AlertDialogTitle>{titleModal || title}</AlertDialogTitle>
           <AlertDialogDescription>
             {contentType === 'form' && (
-              <form>
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="inputField">
-                    {label}
-                  </label>
-                  <input
-                    id="inputField"
-                    type="text"
-                    className="bg-light_mode-primary p-2 px-1 border-b-[1px] focus:border-b-2 focus:border-green-500 focus:outline-none focus:ring-0 focus:ring-blue-500"
-                    placeholder={placeholder}
-                  />
-                </div>
-              </form>
+              <Formik
+              initialValues={{
+                branchName: '',
+                branchAddress: '',
+              }}
+              onSubmit={(values, { setSubmitting }) => {
+                console.log(values);
+                setSubmitting(false);
+                handleModalClose();
+              }}
+            >
+              <Form className="flex flex-col gap-y-3">
+                <TextField
+                  name="branchName"
+                  type="text"
+                  placeholder="Enter branch name"
+                />
+                <TextField
+                  label="Branch Address"
+                  name="branchAddress"
+                  type="text"
+                  placeholder="Enter branch address"
+                />
+                <button type="submit" className="btn btn-primary">Submit</button>
+              </Form>
+            </Formik>
             )}
             {contentType === 'form_password' && (
               <form>

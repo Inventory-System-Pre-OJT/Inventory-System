@@ -30,7 +30,7 @@ export const TextField = ({
       }`}
     >
       <div className="flex flex-row items-center gap-2">
-        <label className={`font-medium dark:text-slate-200`} htmlFor={name}>
+        <label className={`font-medium dark:text-slate-800 text-slate-400`} htmlFor={name}>
           {label}
         </label>
         {isImportant && <LuAsterisk className="text-red-400 w-4 h-4" />}

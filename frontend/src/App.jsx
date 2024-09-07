@@ -1,7 +1,7 @@
 import "./App.css";
 import { Toaster } from "react-hot-toast";
 import { LandingLayout } from "./layout";
-import { Login, Inventory, ProductAdd, UserManagement, Settings, Branch } from "./pages";
+import { Login, Inventory, ProductAdd, UserManagement, Settings, Branch, BranchCreate } from "./pages";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -28,6 +28,7 @@ const router = createBrowserRouter(
         <Route path="/usermanagement" element={<UserManagement />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/branch" element={<Branch />} />
+        <Route path="/branch/create" element={<BranchCreate />} />
       </Route>
     </>
   )

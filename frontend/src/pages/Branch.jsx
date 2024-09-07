@@ -1,15 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Sidebar from '../components/Sidebar';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Modal } from '../components/ui/modal';
 import { PlusIcon } from "@radix-ui/react-icons";
-
+import { TextField } from "../components";
+import { Form, Formik } from "formik";
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 export const Branch = () => {
+    const navigate = useNavigate();
+
     const branchDetails = [
         { id: 1, name: 'Branch Isabela', address: 'Ibigay mo na' },
         { id: 2, name: 'Branch Cabanatuan', address: 'Ibigay mo na' },
         { id: 3, name: 'Branch Casiguran', address: 'Ibigay mo na' },
-    ]
+    ]   
+    const handleCreateBranch = () => {
+        navigate('/branch/create');
+      };
 
     return (
     <div className="flex">
@@ -37,12 +45,14 @@ export const Branch = () => {
                             </div>
                             
                         ))}
-                        <Card className='bg-green-100 hover:bg-green-300 cursor-pointer'>
-                            <CardHeader >
-                                <CardTitle className='flex items-center justify-between gap-x-2'>Create New Branch <PlusIcon className='w-4 h-4'/></CardTitle>
-                                <CardDescription>Create a new branch to manage your business</CardDescription>
-                            </CardHeader>
-                        </Card>
+                        <Link to="/branch/create">
+                            <Card className='bg-green-100 hover:bg-green-300 cursor-pointer'>
+                                    <CardHeader >
+                                    <CardTitle className='flex items-center justify-between gap-x-2'>Create New Branch <PlusIcon className='w-4 h-4'/></CardTitle>
+                                    <CardDescription>Create a new branch to manage your business</CardDescription>
+                                </CardHeader>
+                            </Card>
+                        </Link>
                     </div>
                 </div>
             </section>

@@ -5,7 +5,7 @@ import { FiSettings } from 'react-icons/fi';
 import { FaBuilding } from 'react-icons/fa6';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '@/store/authUser.js';
-
+import { BsBoxFill } from "react-icons/bs";
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
@@ -85,6 +85,12 @@ const Sidebar = () => {
                     </a>
                     </li>
                     <li>
+                    <Link to="/inventory" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <BsBoxFill className='className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-100 dark:group-hover:text-white"' />
+                        <span className="flex-1 ms-3 text-start whitespace-nowrap">Inventory</span>
+                    </Link>
+                    </li>
+                    <li>
                     <Link to="/branch" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <FaBuilding className='className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-100 dark:group-hover:text-white"' />
                         <span className="flex-1 ms-3 text-start whitespace-nowrap">Branch</span>
@@ -93,7 +99,7 @@ const Sidebar = () => {
                 </div>
                 <div className="border-gray-200">
                     <li>
-                        <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <a href="" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                             <FiSettings className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                             <span className="flex-1 ms-3 text-start whitespace-nowrap">Settings</span>
                         </a>
