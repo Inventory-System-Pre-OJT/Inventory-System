@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,6 +16,33 @@ import { Formik, Form } from 'formik';
 import { TextField } from '../form/TextField';
 
 export function Modal({ title, titleModal, description, label, contentType, placeholder, children, action, btnPlaceholder }) {
+  const [activeTab, setActiveTab] = useState('stocks');
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'stocks':
+        return (
+          <ul>
+            <li>Stock 1</li>
+            <li>Stock 2</li>
+            <li>Stock 3</li>
+          </ul>
+        );
+      case 'revenue':
+        return <p>Total Revenue: $10,000</p>;
+      case 'quantity':
+        return (
+          <ul>
+            <li>Stock 1: 100 units</li>
+            <li>Stock 2: 200 units</li>
+            <li>Stock 3: 150 units</li>
+          </ul>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -76,6 +103,18 @@ export function Modal({ title, titleModal, description, label, contentType, plac
             {contentType === 'description' && 
               <p className="text-sm text-gray-500">{description}</p>
             }
+            {contentType === 'tab-content' && (
+              <div>
+                <div className="tabs gap-x-3">
+                  <button className={`p-1 pr-3 border-b-2 tab ${activeTab === 'stocks' ? 'active border-b-blue-500 transition-all' : ''}`} onClick={() => setActiveTab('stocks')}>List of Stocks</button>
+                  <button className={`p-1 pr-3 border-b-2 tab ${activeTab === 'revenue' ? 'active border-b-blue-500 transition-all' : ''}`} onClick={() => setActiveTab('revenue')}>Revenue</button>
+                  <button className={`p-1 pr-3 border-b-2 tab ${activeTab === 'quantity' ? 'active border-b-blue-500 transition-all' : ''}`} onClick={() => setActiveTab('quantity')}>Stock Quantity</button>
+                </div>
+                <div className="tab-content">
+                  {renderTabContent()}
+                </div>
+              </div>
+            )}
             {contentType === 'content' && content}
           </AlertDialogDescription>
         </AlertDialogHeader>

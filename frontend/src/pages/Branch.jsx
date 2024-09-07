@@ -33,7 +33,7 @@ export const Branch = () => {
                             <div className="flex-box-item">
                             <Modal 
                                 title={`View ${branch.name} Details`} 
-                                contentType="description"
+                                contentType="tab-content"
                             >
                                 <Card className='hover:bg-slate-100 cursor-pointer'>
                                     <CardHeader>
@@ -46,11 +46,11 @@ export const Branch = () => {
                             
                         ))}
                         <Link to="/branch/create">
-                            <Card className='bg-green-100 hover:bg-green-300 cursor-pointer'>
+                            <Card className='bg-green-100 hover:bg-green-500 hover:text-white cursor-pointer transition-all duration-300'>
                                     <CardHeader >
-                                    <CardTitle className='flex items-center justify-between gap-x-2'>Create New Branch <PlusIcon className='w-4 h-4'/></CardTitle>
-                                    <CardDescription>Create a new branch to manage your business</CardDescription>
-                                </CardHeader>
+                                        <CardTitle className='flex items-center justify-between gap-x-2'>Create New Branch <PlusIcon className='w-4 h-4'/></CardTitle>
+                                        <CardDescription  >Create a new branch to manage your business</CardDescription>
+                                    </CardHeader>
                             </Card>
                         </Link>
                     </div>
