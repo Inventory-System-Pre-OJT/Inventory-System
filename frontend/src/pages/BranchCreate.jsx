@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Sidebar from '../components/Sidebar';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Modal } from '../components/ui/modal';
-import { PlusIcon } from "@radix-ui/react-icons";
+import { PlusIcon, ArrowLeftIcon } from "@radix-ui/react-icons";
 import { TextField } from "../components";
 import { Form, Formik } from "formik";
 import { useNavigate } from 'react-router-dom';
@@ -27,12 +27,19 @@ export const BranchCreate = () => {
     <div className="flex">
         <Sidebar />
         <main className="flex flex-col  text-black flex-grow m-0 mt-14 w-full lg:ml-64">
-            <div className="m-3">
-                <h1 className="text-2xl font-bold">Create New Branch</h1>
+            <div className="flex items-center">
+                <div className="m-3 w-fit rounded-full border-2 border-gray-200 p-2">
+                    <Link to="/branch">
+                        <ArrowLeftIcon className="w-5 h-5" />
+                    </Link>
+                </div>
+                <div>
+                    <h1 className="text-2xl font-bold">Create New Branch</h1>
+                </div>
             </div>
-            
+           
             <div className="w-full flex justify-center border-gray-200 p-2">
-                <div className="w-5/6 p-5 border-2 rounded-md">
+                <div className="w-full p-5 border-2 rounded-md">
                     <div className="flex items-center gap-x-2">
                         <LuBuilding />
                         <h1 className="text-lg font-bold">Branch Information</h1>
