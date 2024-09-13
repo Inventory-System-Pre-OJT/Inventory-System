@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "./input"
 import { Formik, Form } from 'formik';
 import { TextField } from '../form/TextField';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 
 export function Modal({ title, titleModal, description, label, contentType, placeholder, children, action, btnPlaceholder }) {
   const [activeTab, setActiveTab] = useState('stocks');
@@ -22,10 +23,23 @@ export function Modal({ title, titleModal, description, label, contentType, plac
     switch (activeTab) {
       case 'stocks':
         return (
-          <ul>
-            <li>Stock 1</li>
-            <li>Stock 2</li>
-            <li>Stock 3</li>
+          <ul className='mt-2'>
+            <li>
+            <Card className='hover:bg-slate-100 cursor-pointer p-1 my-3'>
+                <CardHeader className="p-3">
+                    <CardTitle>Meth</CardTitle>
+                    <CardDescription>Stock 1</CardDescription>
+                </CardHeader>
+            </Card>
+            </li>
+            <li>
+            <Card className='hover:bg-slate-100 cursor-pointer p-1'>
+                <CardHeader className="p-3">
+                    <CardTitle>Meth</CardTitle>
+                    <CardDescription>Stock 1</CardDescription>
+                </CardHeader>
+            </Card>
+            </li>
           </ul>
         );
       case 'revenue':

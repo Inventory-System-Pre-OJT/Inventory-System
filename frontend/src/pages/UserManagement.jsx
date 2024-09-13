@@ -88,18 +88,19 @@ export const UserManagement = () => {
               />
             </div>
           </div>
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-300 dark:text-gray-400">
+          <div className="flex-grow overflow-x-auto shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500 border border-gray-200 border-collapse">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
-                <th scope="col" className="text-slate-500 border-gray-200 w-4 h-4">
+                <th scope="col" className="text-slate-500 border border-gray-200 w-4 h-4">
                   <input type="checkbox" className="w-4 h-4" />
                 </th>
-                <th scope="col" className="text-zinc-900 w-7 h-7">User name</th>
-                <th scope="col" className="text-zinc-900 w-7 h-7">Branch</th>
-                <th scope="col" className="text-zinc-900 w-7 h-7">Access</th>
-                <th scope="col" className="text-zinc-900 w-7 h-7">Last active</th>
-                <th scope="col" className="text-zinc-900 w-7 h-7">Date added</th> 
-                <th scope="col" className="text-zinc-900 w-7 h-7"></th>
+                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">User name</th>
+                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Branch</th>
+                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Access</th>
+                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Last active</th>
+                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Date added</th> 
+                <th scope="col" className="text-zinc-900 w-7 h-7">Action</th>
               </tr>
             </thead>
             <tbody className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-100 dark:text-gray-100">
@@ -165,6 +166,8 @@ export const UserManagement = () => {
               ))}
             </tbody>
           </table>
+          </div>
+         
         </div>
       </div>
 

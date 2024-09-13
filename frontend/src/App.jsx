@@ -9,6 +9,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { StabilityPage } from "./pages/stability/StabilityPage";
 
 const roles = {
   USER: "user",
@@ -29,6 +30,9 @@ const router = createBrowserRouter(
         <Route path="/settings" element={<Settings />} />
         <Route path="/branch" element={<Branch />} />
         <Route path="/branch/create" element={<BranchCreate />} />
+
+        {/* Stability Page */}
+        <Route path="/stability" element={<StabilityPage />} />
       </Route>
     </>
   )
