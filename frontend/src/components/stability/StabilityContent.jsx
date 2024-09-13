@@ -153,21 +153,10 @@ export function StabilityContent() {
               <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
                 <DropdownMenuRadioItem value="asc">Ascending name</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="desc">Descending name</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="asc_expiration">Ascending Expiration Date</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="desc_expiration">Descending Expiration Date</DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
               {/* End item */}
-              {/* Custom start */}
-              <DropdownMenuSub>
-                <DropdownMenuSubTrigger>Custom</DropdownMenuSubTrigger>
-                <DropdownMenuPortal>
-                  <DropdownMenuSubContent>
-                    <DropdownMenuItem>Email</DropdownMenuItem>
-                    <DropdownMenuItem>Message</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>More...</DropdownMenuItem>
-                  </DropdownMenuSubContent>
-                </DropdownMenuPortal>
-              </DropdownMenuSub>
-              {/* End custom */}
             </DropdownMenuContent>
           </DropdownMenu>
           <Dialog>
