@@ -44,96 +44,29 @@ export function StabilityContent() {
 
   const contents = [
     {
-      title: "Protect Zinc",
-      lotNo: "LotNo. 1234567890",
+      title: "Sodium Ascorbate",
+      brandName: "Protect Zinc",
+      lotNo: "1234567890",
+      mfgDate: "2024-01-01",
+      expirationDate: "2024-01-01",
       type: "Drug",
-      stock: "1,200kg",
-      price: "$180.00",
-      wholesale: "$100.00 - $170.00",
-      total: "$280.00",
       status: "DONE",
-      history: [
-        { date: '01/23/24', action: 'Added product' },
-        { date: '01/25/24', action: 'Product released' },
-        { date: '01/29/24', action: 'Product Delivered' },
-        { date: '01/29/24', action: 'Product Delivered' },
-        { date: '01/29/24', action: 'Product Delivered', status: "DONE" },
-      ]
     },
     {
-      title: "Sodium",
-      lotNo: "LotNo. 1234567890",
+      title: "Zinc Sulfate",
+      brandName: "Pincater",
+      lotNo: "1234567890",
+      mfgDate: "2024-01-01",
+      expirationDate: "2024-01-01",
       type: "Drug",
-      stock: "1,200kg",
-      price: "$180.00",
-      wholesale: "$100.00 - $170.00",
-      total: "$280.00",
       status: "DONE",
-      history: [
-        { date: '01/23/24', action: 'Added product' },
-        { date: '01/25/24', action: 'Product released' },
-        { date: '01/29/24', action: 'Product Delivered', status: "DONE" },
-      ]
     },
 
   ]
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case 'stocks':
-        return (
-          <ul className='mt-2'>
-            <li>
-              <Card className='hover:bg-slate-100 cursor-pointer p-1 my-3'>
-                <CardHeader className="p-3">
-                  <CardTitle>Meth</CardTitle>
-                  <CardDescription>Stock 1</CardDescription>
-                </CardHeader>
-              </Card>
-            </li>
-            <li>
-              <Card className='hover:bg-slate-100 cursor-pointer p-1'>
-                <CardHeader className="p-3">
-                  <CardTitle>Meth</CardTitle>
-                  <CardDescription>Stock 1</CardDescription>
-                </CardHeader>
-              </Card>
-            </li>
-          </ul>
-        );
-      case 'revenue':
-        return <p>Total Revenue: $10,000</p>;
-      case 'quantity':
-        return (
-          <ul>
-            <li>Stock 1: 100 units</li>
-            <li>Stock 2: 200 units</li>
-            <li>Stock 3: 150 units</li>
-          </ul>
-        );
-      default:
-        return null;
-    }
-  };
 
 
   return (
     <div className="space-y-5 ">
-      {/* <div className="grid grid-cols-5 gap-3">
-        {stats.map((stat, index) => (
-          <Card key={index} className="border border-gray-200 bg-white shadow-sm">
-            <CardContent className="p-4">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-xs font-semibold text-gray-500">{stat.title}</span>
-                <stat.icon className="h-4 w-4 text-gray-400" />
-              </div>
-              <div className="text-2xl text-start font-bold">{stat.value}</div>
-              <div className={`text-xs text-start ${stat.changeColor}`}>
-                {stat.change} vs last month
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div> */}
       <div className="flex justify-between items-center">
         <div className="mt-5">
           <div className="flex flex-col items-start">
@@ -399,16 +332,16 @@ export function StabilityContent() {
                     <p className="text-xs text-gray-500">{content.lotNo} • {content.type}</p>
                   </div>
                   <div className="flex gap-4">
-                    {/* <div>
-                      <p className="text-xs text-gray-500">RETAIL PRICE</p>
-                      <p className="font-semibold">{content.price}</p>
+                    <div>
+                      <p className="text-xs text-gray-500">MANUFACTURING DATE</p>
+                      <p className="font-semibold">{content.mfgDate}</p>
                     </div>
                     <Separator orientation="vertical" className="h-auto" />
                     <div>
-                      <p className="text-xs text-gray-500">TOTAL</p>
-                      <p className="font-semibold">{content.total}</p>
+                      <p className="text-xs text-gray-500">EXPIRATION DATE</p>
+                      <p className="font-semibold">{content.expirationDate}</p>
                     </div>
-                    <Separator orientation="vertical" className="h-auto" /> */}
+                    <Separator orientation="vertical" className="h-auto" />
                     <div className="mr-2">
                       <p className="text-xs text-gray-500">STATUS</p>
                       <p className={`font-semibold ${content.status === "DONE" ? "text-green-500" :
@@ -424,7 +357,11 @@ export function StabilityContent() {
               <DialogHeader>
                 <DialogTitle>{content.title} Stability Data</DialogTitle>
                 <DialogDescription>
-                  {content.lotNo} • {content.type}
+                  <p>Product Name: {content.title}</p>
+                  <p>Brand Name: {content.brandName}</p>
+                  <p>Lot No: {content.lotNo}</p>
+                  <p>Type: {content.type}</p>
+                  <p>Expiration Date: {content.expirationDate}</p>
                 </DialogDescription>
               </DialogHeader>
               <div className="relative">
