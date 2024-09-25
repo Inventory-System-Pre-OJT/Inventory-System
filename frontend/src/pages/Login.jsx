@@ -48,12 +48,14 @@ export const Login = () => {
           }} onSubmit={LoginHandler} validationSchema={LoginSchema}>
             <Form className="flex flex-col gap-3 text-start ">
               <TextField
+                labelClassName="dark:text-slate-100 text-slate-400"
                 type="text"
                 label="Username"
                 name="username"
                 placeholder="jhondoe12"
               />
               <TextField
+                labelClassName="dark:text-slate-100 text-slate-400"
                 type="text"
                 label="Password"
                 name="password"
@@ -69,14 +71,14 @@ export const Login = () => {
               </button>
             </Form>
           </Formik>
-          <p className="dark:text-slate-500">
+          {/* <p className="dark:text-slate-500">
             Don’t have an account?
             <Links
               to="sign-up"
               name=" Sign Up"
               style=" text-accent dark:text-slate-400 font-bold border-b-[1px] border-gray-400 dark:text-green-500 text-green-500"
             />{" "}
-          </p>
+          </p> */}
         </div>
         <p className=" self-center md:self-start font-medium text-[0.8rem] dark:text-slate-500">© {getYear.getFullYear()} , Eurasia Resarch Pharma Corp</p>
       </div>

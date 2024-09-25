@@ -51,6 +51,12 @@ const Table = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckboxC
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td className="px-2 py-4 border border-gray-200 text-black w-auto">initial</td>
+            </tr>
+            <tr>
+              <td className="px-2 py-4 border border-gray-200 text-black w-auto">test</td>
+            </tr>
           </tbody>
         </table>
       </div>

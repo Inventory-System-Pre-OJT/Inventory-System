@@ -5,7 +5,7 @@ import { UserManagement } from './UserManagement';
 import { Settings } from './Settings';
 import { Branch } from './Branch';
 import { BranchCreate } from './BranchCreate';
-import { StabilityPage } from './stability/StabilityPage';
+import { Landing } from './Landing';
 export {
     Login,
     Inventory,
@@ -14,5 +14,5 @@ export {
     Settings,
     Branch,
     BranchCreate,
-    StabilityPage,
+    Landing
 }

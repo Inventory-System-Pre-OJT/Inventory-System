@@ -1,7 +1,7 @@
 import "./App.css";
 import { Toaster } from "react-hot-toast";
 import { LandingLayout } from "./layout";
-import { Login, Inventory, ProductAdd, UserManagement, Settings, Branch, BranchCreate } from "./pages";
+import { Login, Inventory, ProductAdd, UserManagement, Settings, Branch, BranchCreate, Landing } from "./pages";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -9,7 +9,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { StabilityPage } from "./pages/stability/StabilityPage";
 
 const roles = {
   USER: "user",
@@ -23,7 +22,8 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<LandingLayout />}>
-        <Route index element={<Login />} />
+        <Route index element={<Landing />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/inventory/add" element={<ProductAdd />} />
         <Route path="/usermanagement" element={<UserManagement />} />
@@ -31,8 +31,6 @@ const router = createBrowserRouter(
         <Route path="/branch" element={<Branch />} />
         <Route path="/branch/create" element={<BranchCreate />} />
 
-        {/* Stability Page */}
-        <Route path="/stability" element={<StabilityPage />} />
       </Route>
     </>
   )
