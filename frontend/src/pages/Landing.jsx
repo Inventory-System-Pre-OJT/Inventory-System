@@ -4,7 +4,7 @@ import { GiMedicines } from 'react-icons/gi';
 import { Card, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Link } from 'react-router-dom';
-
+import { IoTrendingUpOutline } from "react-icons/io5";
 export const Landing = () => {
 
   // Sanitization function
@@ -43,7 +43,7 @@ export const Landing = () => {
     {
       title: 'Branch POS',
       description: 'Point of Sale system for efficient transaction management and sales tracking across branches.',
-      icon: GiMedicines,
+      icon: IoTrendingUpOutline,
       link: '/branch',
       color: 'bg-indigo-300'
     }
@@ -65,7 +65,7 @@ export const Landing = () => {
                 <Card className={`${item.color} rounded-2xl p-5 shadow-lg relative w-2/3 md:w-5/6 opacity-100 transition-all duration-300 hover:scale-105`}>
                 <CardContent>
                   <div className="absolute -top-5 -left-5 bg-white rounded-full p-3 shadow-lg">
-                    <GiMedicines className="text-2xl" />
+                    <item.icon className="text-2xl" />
                   </div>
                   <CardTitle className='py-2 text-2xl font-bold text-start'>
                     {item.title}
