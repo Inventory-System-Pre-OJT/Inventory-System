@@ -10,6 +10,8 @@ export const TextField = ({
   placeholder,
   options,
   isImportant = true,
+  labelClassName,
+  ...props
 }) => {
   return (
     <div
@@ -30,7 +32,7 @@ export const TextField = ({
       }`}
     >
       <div className="flex flex-row items-center gap-2">
-        <label className={`font-medium dark:text-slate-200`} htmlFor={name}>
+        <label className={`font-medium ${labelClassName}`} htmlFor={name}>
           {label}
         </label>
         {isImportant && <LuAsterisk className="text-red-400 w-4 h-4" />}
@@ -71,6 +73,7 @@ export const TextField = ({
           type={type}
           name={name}
           id={name}
+          {...props}
           className={`bg-light_mode-primary dark:text-slate-300 dark:bg-slate-600 border-2 focus:ring-2 focus:ring-green-500 focus:outline-none dark:border-slate-600 p-2 rounded-md `}
           placeholder={placeholder}
         />
@@ -94,7 +97,8 @@ TextField.propTypes = {
   type: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
-  isImportant: PropTypes.string,
+  isImportant: PropTypes.bool,
+  labelClassName: PropTypes.string,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string,

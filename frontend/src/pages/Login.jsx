@@ -27,18 +27,18 @@ export const Login = () => {
         <div className="blurred p-5 absolute top-[2rem] left-28 right-28 bottom-[0%] md:top-[50%] md:bottom-[30%] md:left-0 md:right-0  "></div>
       </div>
 
-      <div className="mt-3 md:mt-0 self-start  flex flex-col justify-between p-0 md:p-5 h-full">
+      <div className="mt-3 md:mt-0 self-start dark:bg-slate-800 flex flex-col justify-between p-0 md:p-5 h-full">
 
         <div className=" opacity-0 md:opacity-100 flex flex-row items-center gap-1">
           <GoDotFill className=" text-accent text-md text-green-400" />
-          <p className="  self-start font-semibold text-[0.8rem] ">
+          <p className="self-start font-semibold dark:text-slate-400 text-[0.8rem] ">
             Eurasia Research Pharma Corp
           </p>
         </div>
         <div className="text-center w-full md:w-[80%] m-auto flex flex-col justify-start md:justify-around  h-full gap-16 md:gap-0 md:h-[30rem] ">
-          <div>
+          <div className="dark:text-slate-100"> 
             <h1 className=" text-3xl font-medium mb-1">Welcome Eurasia Inventory</h1>
-            <p className=" text-gray-600 text-[1.1rem]">
+            <p className=" text-gray-600 dark:text-slate-500 text-[1.1rem]">
               Welcome back! Please enter your details.
             </p>
           </div>
@@ -48,12 +48,14 @@ export const Login = () => {
           }} onSubmit={LoginHandler} validationSchema={LoginSchema}>
             <Form className="flex flex-col gap-3 text-start ">
               <TextField
+                labelClassName="dark:text-slate-100 text-slate-400"
                 type="text"
                 label="Username"
                 name="username"
                 placeholder="jhondoe12"
               />
               <TextField
+                labelClassName="dark:text-slate-100 text-slate-400"
                 type="text"
                 label="Password"
                 name="password"
@@ -69,14 +71,14 @@ export const Login = () => {
               </button>
             </Form>
           </Formik>
-          <p className="dark:text-slate-500">
+          {/* <p className="dark:text-slate-500">
             Don’t have an account?
             <Links
               to="sign-up"
               name=" Sign Up"
               style=" text-accent dark:text-slate-400 font-bold border-b-[1px] border-gray-400 dark:text-green-500 text-green-500"
             />{" "}
-          </p>
+          </p> */}
         </div>
         <p className=" self-center md:self-start font-medium text-[0.8rem] dark:text-slate-500">© {getYear.getFullYear()} , Eurasia Resarch Pharma Corp</p>
       </div>

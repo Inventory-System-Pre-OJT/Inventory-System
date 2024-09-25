@@ -2,10 +2,12 @@ import React from 'react';
 import { Button } from '../ui/button.jsx';
 import { ComboboxComponent } from '../ui/combobox.jsx';
 import { Modal } from '../ui/modal.jsx';
-import { ArrowTopRightIcon, Pencil2Icon } from '@radix-ui/react-icons';
+import { ArrowTopRightIcon, Pencil2Icon, CheckIcon } from '@radix-ui/react-icons';
+import moment from 'moment';
 
-const Outgoing = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckboxChange }) => {
+const Outgoing = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckboxChange, stockData }) => {
   const frameworks = [
+    { value: "All", label: "All" },
     { value: "Amox", label: "Amox" },
     { value: "ProteCee", label: "Protec Cee" },
     { value: "Highermin", label: "Highermin" },
@@ -13,7 +15,8 @@ const Outgoing = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
     { value: "Anin", label: "Anin" },
   ];
   
-  const fruits = [
+  const miligrams = [
+    { value: "All", label: "All" },
     { value: "100mg", label: "100mg" },
     { value: "200mg", label: "200mg" },
     { value: "300mg", label: "300mg" },
@@ -32,29 +35,91 @@ const Outgoing = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
   const ProfileForm = ({ className }) => (
     <form className={`grid items-start gap-4 ${className}`}>
       <div className="grid gap-2">
-        <Label htmlFor="email">Email</Label>
-        <Input type="email" id="email" defaultValue="example@example.com" />
+        <label htmlFor="email">Email</label>
+        <input type="email" id="email" defaultValue="example@example.com" />
       </div>
       <div className="grid gap-2">
-        <Label htmlFor="username">Username</Label>
-        <Input id="username" defaultValue="@username" />
+        <label htmlFor="username">Username</label>
+        <input id="username" defaultValue="@username" />
       </div>
       <Button type="submit">Save changes</Button>
     </form>
   );
 
   const handleFunctionalities = [
-    { icon: Pencil2Icon, label: "Edit", action: handleEdit },
     { 
-      icon: ArrowTopRightIcon, 
+      icon: Pencil2Icon, 
+      label: "Edit", 
+      action: handleEdit,
+      title: "Edit",
+      btnPlaceholder: "Save",
+      contentType: "form_password",
+      description: "Do you wish to edit this item?",
+      content: <ProfileForm />
+    },
+    { 
+      icon: CheckIcon, 
       label: "Confirm", 
       title: "Confirm", 
       contentType: "description",
-      description: "Do you wish to confirm this item?",
+      description: "Do you wish to mark this as complete?",
       btnPlaceholder: "Save", 
       content: <ProfileForm />
     },
   ];
+
+  const stockElement = stockData?.data?.map((data, index) => {
+    return (
+      <tr key={data.id} className="odd:bg-gray-50 even:bg-white">
+        <td className="px-4 py-4 border border-gray-200 w-auto">
+          <input
+            type="checkbox"
+            className="w-4 h-4"
+            checked={selectedRows.includes(data.id)}
+            onChange={() => handleCheckboxChange(data.id)}
+          />
+        </td>
+        <td className="px-2 py-4 border border-gray-200 text-black w-auto ">{data.product_name.toUpperCase()}</td>
+        <td className="px-2 py-4 border border-gray-200 w-auto">{data.desc}</td>
+        <td className="px-2 py-4 border border-gray-200 w-auto">{moment(data.date).format('MMM D, YYYY')}</td>
+        <td className="px-2 py-4 border border-gray-200 text-nowrap w-auto">{data.qty} {data.metrics}</td>
+        <td className="px-2 py-4 border border-gray-200 w-auto">{moment(data.expiration_date).fromNow()}</td>
+        <td className="px-2 py-4 border border-gray-200 w-auto">{data.invoice_no}</td>
+        <td className="px-2 py-4 border border-gray-200 w-auto">
+          <Modal title="View" description="Authentication here" label="Password" placeholder="Enter admin password" contentType="form_password">
+            <Button variant="outline">View Price</Button>
+          </Modal>
+        </td>
+        <td className="px-2 py-4 border border-gray-200 w-auto">{data.lot_no}</td>
+        <td className="px-2 py-4 border border-gray-200 w-auto">{data.receiver}</td>
+        <td className="px-2 py-4 border border-gray-200 w-auto">
+          <Modal title="View Scan copy" description="Image here" contentType="image">
+            <Button variant="outline">View Scan</Button>
+          </Modal>
+        </td>
+        <td className="px-2 py-4 border border-gray-200 w-auto">{data.done_by}</td>
+        <td className="px-2 py-4 border border-gray-200">
+          <div className="flex flex-row gap-x-2">
+            {handleFunctionalities.map((functionality, idx) => (
+              <Modal
+                key={idx}
+                title={functionality.title}
+                titleModal={functionality.title}
+                btnPlaceholder={functionality.btnPlaceholder}
+                contentType={functionality.contentType}
+                description={functionality.description}
+                content={functionality.content}
+              >
+                <Button key={idx} variant="outline" size="icon" onClick={() => functionality.action(index)}>
+                  <functionality.icon />
+                </Button>
+              </Modal>
+            ))}
+          </div>
+        </td>
+      </tr>
+    );
+  });
 
   return (
     <div className='flex flex-col min-w-screen'>
@@ -63,82 +128,39 @@ const Outgoing = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
           <ComboboxComponent options={frameworks} placeholder="Select Product..." />
         </div>
         <div className="flex flex-col gap-y-3 w-full sm:w-1/2 lg:w-1/4">
-          <ComboboxComponent options={fruits} placeholder="Select Miligrams..." />
+          <ComboboxComponent options={miligrams} placeholder="Select Miligrams..." />
         </div>
       </div>
       <div className="flex-grow overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 border border-gray-200 border-collapse">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
-              <th scope="col" className="px-4 py-3 border text-slate-500 border-gray-200">
-                <input type="checkbox" className="w-4 h-4" checked={selectAll} onChange={handleSelectAllChange} />
+              <th scope="col" className="px-4 py-3 border text-slate-500 border-gray-200 w-12">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4"
+                  checked={selectAll}
+                  onChange={handleSelectAllChange}
+                />
               </th>
-              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200">Product</th>
-              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200">Description</th>
-              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200">Date</th>
-              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200">Quantity</th>
-              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200">Expiration</th>
-              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200">Invoice No.</th>
-              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200">Price</th>
-              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200">Lot No.</th>
-              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200">Received By</th>
-              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200">Scan Copy</th>
-              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200">Processed By</th>
-              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200">Actions</th>
+              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Product</th>
+              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Description</th>
+              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Date</th>
+              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Quantity</th>
+              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Expiration</th>
+              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Invoice No.</th>
+              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Price</th>
+              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Lot No.</th>
+              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Received By</th>
+              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Scan Copy</th>
+              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Processed By</th>
+              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Status</th>
+              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Process Date</th>
+              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
-              <tr key={index} className="odd:bg-gray-50 even:bg-white">
-                <td className="px-4 py-4 border border-gray-200">
-                  <input type="checkbox" className="w-4 h-4" checked={selectedRows.includes(index)} onChange={() => handleCheckboxChange(index)} />
-                </td>
-                <td className="px-2 py-4 border border-gray-200">1</td>
-                <td className="px-2 py-4 border border-gray-200">2</td>
-                <td className="px-2 py-4 border border-gray-200">3</td>
-                <td className="px-2 py-4 border border-gray-200">4</td>
-                <td className="px-2 py-4 border border-gray-200">5</td>
-                <td className="px-2 py-4 border border-gray-200">6</td>
-                <td className="px-2 py-4 border border-gray-200">
-                  <Modal title="View" description="Authentication here" label="Password" placeholder="Enter admin password" contentType="form_password">
-                    <Button variant="outline">View Price</Button>
-                  </Modal>
-                </td>
-                <td className="px-2 py-4 border border-gray-200">8</td>
-                <td className="px-2 py-4 border border-gray-200">9</td>
-                <td className="px-2 py-4 border border-gray-200">
-                  <Modal title="View Scan copy" description="Image here" contentType="image">
-                    <Button variant="outline">View Scan</Button>
-                  </Modal>
-                </td>
-                <td className="px-2 py-4 border border-gray-200">11</td>
-                <td className="px-2 py-4 border border-gray-200">
-                <div className="flex flex-row gap-x-2">
-                    {handleFunctionalities.map((functionality, idx) => (
-                      functionality.label === "Edit" ? (
-                        <Button key={idx} variant="outline" size="icon" onClick={() => functionality.action(index)}>
-                          <functionality.icon />
-                        </Button>
-                      ) : (
-                        <Modal
-                          key={idx}
-                          title={functionality.title}
-                          titleModal={functionality.title}
-                          btnPlaceholder={functionality.btnPlaceholder}
-                          contentType={functionality.contentType}
-                          description="Are you sure to move this nigga up?"
-                          content={functionality.content}
-                        >
-                          <Button variant="outline" size="icon">
-                            <functionality.icon />
-                          </Button>
-                        </Modal>
-                      )
-                    ))}
-                  </div>
-                </td>
-              </tr>
-            ))}
+            {stockElement}
           </tbody>
         </table>
       </div>

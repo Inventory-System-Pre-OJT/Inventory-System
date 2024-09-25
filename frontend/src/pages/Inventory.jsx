@@ -109,23 +109,29 @@ export const Inventory = () => {
     navigate('/inventory/add');
   }
 
-  const handleCheckboxChange = (index) => {
-    const updatedSelectedRows = [...selectedRows];
-    if (updatedSelectedRows.includes(index)) {
-      updatedSelectedRows.splice(updatedSelectedRows.indexOf(index), 1);
+  const handleSelectAllChange = (event) => {
+    const checked = event.target.checked;
+    setSelectAll(checked);
+    if (checked) {
+      const allRowIds = stockData?.data?.map((data) => data.id) || [];
+      setSelectedRows(allRowIds);
     } else {
-      updatedSelectedRows.push(index);
+      setSelectedRows([]);
     }
-    setSelectedRows(updatedSelectedRows);
   };
 
-  const handleSelectAllChange = () => {
-    if (selectAll) {
-      setSelectedRows([]);
+  const handleCheckboxChange = (rowId) => {
+    const selectedIndex = selectedRows.indexOf(rowId);
+    let newSelectedRows = [];
+
+    if (selectedIndex === -1) {
+      newSelectedRows = [...selectedRows, rowId];
     } else {
-      setSelectedRows([0, 1]); // Assuming you have 2 rows, adjust accordingly
+      newSelectedRows = selectedRows.filter((id) => id !== rowId);
     }
-    setSelectAll(!selectAll);
+
+    setSelectedRows(newSelectedRows);
+    setSelectAll(newSelectedRows.length === (stockData?.data?.length || 0));
   };
 
   useEffect(() => {
