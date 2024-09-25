@@ -14,7 +14,7 @@ export const Login = () => {
   const LoginHandler = async (values) => {
     const success = await login(values);
     if (success){
-      navigate("inventory");
+      navigate("/inventory");
     }
   };
   return (
