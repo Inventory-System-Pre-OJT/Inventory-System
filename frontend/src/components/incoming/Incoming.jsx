@@ -47,14 +47,31 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
             onChange={() => handleCheckboxChange(data.id)}
           />
         </td>
-        <td className="px-2 py-4 border border-gray-200 text-black w-auto">{data.product_name}</td>
-        <td className="px-2 py-4 border border-gray-200 w-auto">{data.desc}</td>
+        <td className="px-2 py-4 border border-gray-200 text-black w-auto ">{data.product_name.charAt(0).toUpperCase() + data.product_name.slice(1).toLowerCase()}</td>
+        <td className="px-2 py-4 border border-gray-200 w-auto">{data.desc.charAt(0).toUpperCase() + data.desc.slice(1).toLowerCase()}</td>
         <td className="px-2 py-4 border border-gray-200 w-auto">{moment(data.date).format('MMM D,YYYY')}</td>
         <td className="px-2 py-4 border border-gray-200 text-nowrap w-auto">{data.qty} {data.metrics}</td>
         <td className="px-2 py-4 border border-gray-200 w-auto">{moment(data.expiration_date).fromNow()}</td>
         <td className="px-2 py-4 border border-gray-200 w-auto">{data.invoice_no}</td>
         <td className="px-2 py-4 border border-gray-200 w-auto">
-          <Modal title="View" description="Authentication here" label="Password" placeholder="Enter admin password" contentType="form_password">
+          <Modal 
+            title="View Price" 
+            description="Please enter the admin password to view the price."
+            label="Password" 
+            placeholder="Enter admin password" 
+            contentType="form_password"
+            onSubmit={(password) => {
+              if (password === 'validAdminPassword') { // Replace with actual validation logic
+                return (
+                  <div>
+                    <p>Price: ${data.price}</p>
+                  </div>
+                );
+              } else {
+                return <p>Invalid password. Price cannot be shown.</p>;
+              }
+            }}
+          >
             <Button variant="outline">View Price</Button>
           </Modal>
         </td>
@@ -66,6 +83,7 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
           </Modal>
         </td>
         <td className="px-2 py-4 border border-gray-200 w-auto">{data.done_by}</td>
+        <td className="px-2 py-4 border border-gray-200 w-auto">{moment(data.created_at).format('MMM D, YYYY, h:mm:a')}</td>
         <td className="px-2 py-4 border border-gray-200 text-center w-auto">
           <ResponsiveActionsMenu onActionSelected={handleActionSelected} />
         </td>
@@ -106,6 +124,7 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
               <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Received By</th>
               <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Scan Copy</th>
               <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Processed By</th>
+              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Process Date</th>
               <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Actions</th>
             </tr>
           </thead>
