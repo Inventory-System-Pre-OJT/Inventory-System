@@ -155,7 +155,6 @@ const Outgoing = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
               <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Scan Copy</th>
               <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Processed By</th>
               <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Status</th>
-              <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Process Date</th>
               <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Actions</th>
             </tr>
           </thead>
