@@ -13,6 +13,7 @@ import { Pencil2Icon } from "@radix-ui/react-icons";
 const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckboxChange }) => {
   const [position, setPosition] = useState('bottom');
   const frameworks = [
+    { value: 'All', label: 'All' },
     { value: 'Amox', label: 'Amox' },
     { value: 'ProteCee', label: 'Protec Cee' },
     { value: 'Highermin', label: 'Highermin' },
@@ -20,7 +21,8 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
     { value: 'Anin', label: 'Anin' },
   ];
 
-  const fruits = [
+  const miligrams = [
+    { value: 'All', label: 'All' },
     { value: '100mg', label: '100mg' },
     { value: '200mg', label: '200mg' },
     { value: '300mg', label: '300mg' },
@@ -78,7 +80,7 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
           <ComboboxComponent options={frameworks} placeholder="Select Product..." />
         </div>
         <div className="flex flex-col gap-y-3 w-full sm:w-1/2 lg:w-1/4">
-          <ComboboxComponent options={fruits} placeholder="Select Miligrams..." />
+          <ComboboxComponent options={miligrams} placeholder="Select Miligrams..." />
         </div>
       </div>
       <div className="flex-grow overflow-x-auto shadow-md sm:rounded-lg">
