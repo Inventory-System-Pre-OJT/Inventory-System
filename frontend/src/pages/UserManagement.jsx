@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiUserPlus, FiMoreVertical, FiEye, FiEyeOff } from "react-icons/fi";
 import { FaUserLock, FaUserMinus, FaUser } from "react-icons/fa";
 import { Pencil2Icon, DotFilledIcon, PersonIcon } from '@radix-ui/react-icons';
@@ -8,30 +8,23 @@ import { SlKey } from "react-icons/sl";
 import { PiTrash } from "react-icons/pi";
 import { useNavigate, Link } from "react-router-dom";
 
-const users = [
-  {
-    id: 1,
-    name: "John Doe",
-    branch: "Tarlac",
-    access: "Admin",
-    lastActive: "Now",
-    dateAdded: "Aug 13, 2023",
-  },
-  {
-    id: 2,
-    name: "Ericka Jones",
-    branch: "Tarlac",
-    access: ["Employee", "Cashier"],
-    lastActive: "Yesterday, 6:00pm",
-    dateAdded: "Aug 13, 2023",
-  },
-];
+
 
 export const UserManagement = () => {
   const [showModal, setShowModal] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [accounts, setAccount] = useState([]);
+
+
+  useEffect(() => {
+    const fetchAccount = async () => {
+      const getAccount = await axios.get("/api/v1/auth/getAccount");
+      setAccount(getPosts.data);
+    }
+      fetchAccount();
+  })
 
   const handleAddUser = () => {
     setShowModal(true);
@@ -96,49 +89,23 @@ export const UserManagement = () => {
                   <input type="checkbox" className="w-4 h-4" />
                 </th>
                 <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">User name</th>
+                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Name</th>
                 <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Branch</th>
-                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Access</th>
-                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Last active</th>
+                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Account Type</th>
                 <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Date added</th> 
                 <th scope="col" className="text-zinc-900 w-7 h-7">Action</th>
               </tr>
             </thead>
             <tbody className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-100 dark:text-gray-100">
-              {users.map((user) => (
-                <tr key={user.id}>
+            {accounts.map((account) => (
+                <tr key={account.id}>
                   <td className="text-zinc-900 w-4 h-4">
                     <input type="checkbox" className="w-4 h-4" />
                   </td>
-                  <td className="text-zinc-900 w-4 h-4">{user.name}</td>
-                  <td className="text-zinc-900 w-4 h-4">{user.branch}</td>
-                  <td className="text-zinc-900 w-4 h-4">
-                    {Array.isArray(user.access) ? (
-                      user.access.map((role, index) => (
-                        <span
-                          key={index}
-                          className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${
-                            role === "Admin"
-                              ? "bg-green-200 text-green-700"
-                              : "bg-blue-200 text-blue-700"
-                          } mr-2`}
-                        >
-                          {role}
-                        </span>
-                      ))
-                    ) : (
-                      <span
-                        className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${
-                          user.access === "Admin"
-                            ? "bg-green-200 text-green-700"
-                            : "bg-blue-200 text-blue-700"
-                        }`}
-                      >
-                        {user.access}
-                      </span>
-                    )}
-                  </td>
-                  <td className="text-zinc-900 w-4 h-4">{user.lastActive}</td>
-                  <td className="text-zinc-900 w-4 h-4">{user.dateAdded}</td>
+                  <td className="text-zinc-900 w-4 h-4">{account.username}</td>
+                  <td className="text-zinc-900 w-4 h-4">{account.first_name}</td> 
+                  <td className="text-zinc-900 w-4 h-4">{account.branch}</td>
+                  <td className="text-zinc-900 w-4 h-4">{account.account_type}</td>
                   <td className="flex">
                     <DropdownMenu.Root>
                       <DropdownMenu.Trigger asChild>

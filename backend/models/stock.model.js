@@ -63,10 +63,11 @@ const stockSchema = mongoose.Schema({
     lot_no: {
         type: Number,
         required: true
+    },
+    rt_status: {
+        type: String,
+        required: true
     }
-    // rt_status: {
-    //     type: Boolean
-    // }
 });
 
 export const Stock = mongoose.model('Stock', stockSchema);
