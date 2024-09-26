@@ -21,7 +21,7 @@ export const UserManagement = () => {
   useEffect(() => {
     const fetchAccount = async () => {
       const getAccount = await axios.get("/api/v1/auth/getAccount");
-      setAccount(getPosts.data);
+      setAccount(getAccount.data);
     }
       fetchAccount();
   })
