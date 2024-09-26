@@ -93,3 +93,14 @@ export async function authCheck(req, res){
         res.status(500).json({ success: false, message: "Internal Server Error" })
     }
 }
+
+export async function getAccount(req, res){
+    try{
+        const user = await User.find();
+        return res.json(user);
+    }
+    catch(error){
+        console.log("getAccount Controller Error", error.message);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+}

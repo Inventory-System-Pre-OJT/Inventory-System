@@ -18,9 +18,17 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    branch: {
+        type: String,
+        required: true
+    },
     account_type: {
         type: String,
         required: true,
+    },
+    date: {
+        type: Date,
+        required: true
     }
 });
 

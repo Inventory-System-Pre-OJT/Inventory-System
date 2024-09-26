@@ -1,4 +1,5 @@
 import axios from "axios";
+import { User } from "lucide-react";
 import toast from "react-hot-toast";
 import { create } from "zustand";
 
@@ -8,6 +9,7 @@ export const useAuthStore = create((set) => ({
     isCheckingAuth:false,
     isLoggingOut:false,
     isLoggingIn:false,
+    isGetting:false,
     register: async (credentials) => {
         set({ isRegistering:true })
         try{
@@ -58,6 +60,19 @@ export const useAuthStore = create((set) => ({
         } 
         catch (error){
             set({ isCheckingAuth:false, user:null });
+        }
+    },
+
+    getAccount: async (data) => {
+        set({ isGetting:true })
+        try{
+            const response = await axios.post("/api/v1/auth/getAccount", data);
+            set({ user:response.data.user, isLoggingOut:false });
+            toast.success("Account fetched successfully");
+        } 
+        catch(error){
+            toast.error(error.response.data.message || "An error occured" );
+            set({ isGetting:false });   
         }
     }
 }));

@@ -3,9 +3,10 @@ import { Button } from '../ui/button.jsx';
 import { ComboboxComponent } from '../ui/combobox.jsx';
 import { Modal } from '../ui/modal.jsx';
 import { ArrowTopRightIcon, Pencil2Icon, CheckIcon } from '@radix-ui/react-icons';
+import { FetchStockData } from '@/functions/index.js';
 import moment from 'moment';
 
-const Outgoing = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckboxChange, stockData }) => {
+const Outgoing = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckboxChange }) => {
   const frameworks = [
     { value: "All", label: "All" },
     { value: "Amox", label: "Amox" },
@@ -68,6 +69,8 @@ const Outgoing = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
     },
   ];
 
+  const { stockData } = FetchStockData();
+
   const stockElement = stockData?.data?.map((data, index) => {
     return (
       <tr key={data.id} className="odd:bg-gray-50 even:bg-white">
@@ -79,7 +82,7 @@ const Outgoing = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
             onChange={() => handleCheckboxChange(data.id)}
           />
         </td>
-        <td className="px-2 py-4 border border-gray-200 text-black w-auto ">{data.product_name.toUpperCase()}</td>
+        <td className="px-2 py-4 border border-gray-200 text-black w-auto ">{data.product_name.charAt(0).toUpperCase() + data.product_name.slice(1).toLowerCase()}</td>
         <td className="px-2 py-4 border border-gray-200 w-auto">{data.desc}</td>
         <td className="px-2 py-4 border border-gray-200 w-auto">{moment(data.date).format('MMM D, YYYY')}</td>
         <td className="px-2 py-4 border border-gray-200 text-nowrap w-auto">{data.qty} {data.metrics}</td>

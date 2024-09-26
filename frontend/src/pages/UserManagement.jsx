@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiUserPlus, FiMoreVertical, FiEye, FiEyeOff } from "react-icons/fi";
 import { FaUserLock, FaUserMinus, FaUser } from "react-icons/fa";
 import { PersonIcon, Pencil2Icon } from "@radix-ui/react-icons"; // Use TrashIcon instead of PiTrash
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import Sidebar from "@/components/Sidebar";
 import { useNavigate, Link } from "react-router-dom";
+<<<<<<< HEAD
 import { ResponsiveActionsMenu } from "@/components/ui/responsive-actions-menu";
 import { HiDotsVertical } from "react-icons/hi"
 import { SlKey } from "react-icons/sl"
@@ -27,6 +28,10 @@ const users = [
     dateAdded: "Aug 13, 2023",
   },
 ];
+=======
+
+
+>>>>>>> ecf4b37ee25579fc4874b5e54e891dd3c8dc546b
 
 const actions = [
   {
@@ -57,6 +62,16 @@ export const UserManagement = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [accounts, setAccount] = useState([]);
+
+
+  useEffect(() => {
+    const fetchAccount = async () => {
+      const getAccount = await axios.get("/api/v1/auth/getAccount");
+      setAccount(getPosts.data);
+    }
+      fetchAccount();
+  })
 
   const handleAddUser = () => {
     setShowModal(true);
@@ -144,49 +159,23 @@ export const UserManagement = () => {
                   <input type="checkbox" className="w-4 h-4" />
                 </th>
                 <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">User name</th>
+                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Name</th>
                 <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Branch</th>
-                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Access</th>
-                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Last active</th>
+                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Account Type</th>
                 <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Date added</th> 
                 <th scope="col" className="text-zinc-900 w-7 h-7">Action</th>
               </tr>
             </thead>
             <tbody className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-100 dark:text-gray-100">
-              {users.map((user) => (
-                <tr key={user.id}>
+            {accounts.map((account) => (
+                <tr key={account.id}>
                   <td className="text-zinc-900 w-4 h-4">
                     <input type="checkbox" className="w-4 h-4" />
                   </td>
-                  <td className="text-zinc-900 w-4 h-4">{user.name}</td>
-                  <td className="text-zinc-900 w-4 h-4">{user.branch}</td>
-                  <td className="text-zinc-900 w-4 h-4">
-                    {Array.isArray(user.access) ? (
-                      user.access.map((role, index) => (
-                        <span
-                          key={index}
-                          className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${
-                            role === "Admin"
-                              ? "bg-green-200 text-green-700"
-                              : "bg-blue-200 text-blue-700"
-                          } mr-2`}
-                        >
-                          {role}
-                        </span>
-                      ))
-                    ) : (
-                      <span
-                        className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${
-                          user.access === "Admin"
-                            ? "bg-green-200 text-green-700"
-                            : "bg-blue-200 text-blue-700"
-                        }`}
-                      >
-                        {user.access}
-                      </span>
-                    )}
-                  </td>
-                  <td className="text-zinc-900 w-4 h-4">{user.lastActive}</td>
-                  <td className="text-zinc-900 w-4 h-4">{user.dateAdded}</td>
+                  <td className="text-zinc-900 w-4 h-4">{account.username}</td>
+                  <td className="text-zinc-900 w-4 h-4">{account.first_name}</td> 
+                  <td className="text-zinc-900 w-4 h-4">{account.branch}</td>
+                  <td className="text-zinc-900 w-4 h-4">{account.account_type}</td>
                   <td className="flex">
                     <ResponsiveActionsMenu actions={actions} onActionSelected={handleActionSelected} />
                   </td>

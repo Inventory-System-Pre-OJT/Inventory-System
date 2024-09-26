@@ -45,7 +45,8 @@ export async function postStock(req, res) {
         // }
 
         const newStock = new Stock({
-            product_name, qty, invoice_no, receiver, desc, date, expiration_date, scan_copy, done_by, price, lot_no, metrics, type, color, pricing_model, currency
+            product_name, qty, invoice_no, receiver, desc, date, expiration_date, scan_copy, done_by, price, lot_no, metrics, type, color, pricing_model, currency,
+            rt_status: "Incoming"
         });
 
         await newStock.save();
