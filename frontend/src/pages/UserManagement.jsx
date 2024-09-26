@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { FiUserPlus, FiMoreVertical, FiEye, FiEyeOff } from "react-icons/fi";
 import { FaUserLock, FaUserMinus, FaUser } from "react-icons/fa";
-import { Pencil2Icon, DotFilledIcon, PersonIcon } from '@radix-ui/react-icons';
+import { PersonIcon, Pencil2Icon } from "@radix-ui/react-icons"; // Use TrashIcon instead of PiTrash
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import Sidebar from "@/components/Sidebar";
-import { SlKey } from "react-icons/sl";
-import { PiTrash } from "react-icons/pi";
 import { useNavigate, Link } from "react-router-dom";
-
+import { ResponsiveActionsMenu } from "@/components/ui/responsive-actions-menu";
+import { HiDotsVertical } from "react-icons/hi"
+import { SlKey } from "react-icons/sl"
+import { PiTrash } from "react-icons/pi"
 const users = [
   {
     id: 1,
@@ -26,6 +27,30 @@ const users = [
     dateAdded: "Aug 13, 2023",
   },
 ];
+
+const actions = [
+  {
+    value: "view",
+    label: "View profile",
+    icon: PersonIcon,
+  },
+  {
+    value: "edit",
+    label: "Edit",
+    icon: Pencil2Icon,
+  },
+  {
+    value: "changePermission",
+    label: "Change permission",
+    icon: SlKey,
+  },
+  {
+    value: "delete",
+    label: "Delete",
+    icon: PiTrash,
+  },
+];
+
 
 export const UserManagement = () => {
   const [showModal, setShowModal] = useState(false);
@@ -55,6 +80,29 @@ export const UserManagement = () => {
     // Implement password uniqueness check here
     // Example: Check against a list of existing passwords
     console.log("Validating password:", password);
+  };
+
+  const handleActionSelected = (action) => {
+    switch (action) {
+      case 'view':
+        // Handle view profile action
+        console.log("View profile action selected");
+        break;
+      case 'edit':
+        // Handle edit profile action
+        console.log("Edit action selected");
+        break;
+      case 'changePermission':
+        // Handle change permission action
+        console.log("Change permission action selected");
+        break;
+      case 'delete':
+        // Handle delete user action
+        console.log("Delete action selected");
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -140,27 +188,7 @@ export const UserManagement = () => {
                   <td className="text-zinc-900 w-4 h-4">{user.lastActive}</td>
                   <td className="text-zinc-900 w-4 h-4">{user.dateAdded}</td>
                   <td className="flex">
-                    <DropdownMenu.Root>
-                      <DropdownMenu.Trigger asChild>
-                        <button className="text-gray-500 hover:text-gray-700 focus:outline-none">
-                          <FiMoreVertical />
-                        </button>
-                      </DropdownMenu.Trigger>
-                      <DropdownMenu.Content className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
-                        <DropdownMenu.Item className="flex items-center w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
-                          <PersonIcon className="mr-2" /> View profile
-                        </DropdownMenu.Item>
-                        <DropdownMenu.Item className="flex items-center w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
-                          <Pencil2Icon className="mr-2" /> Edit profile
-                        </DropdownMenu.Item>
-                        <DropdownMenu.Item className="flex items-center w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
-                          <SlKey className="mr-2" /> Change permission
-                        </DropdownMenu.Item>
-                        <DropdownMenu.Item className="flex items-center w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100">
-                          <PiTrash className="mr-2" /> Delete user
-                        </DropdownMenu.Item>
-                      </DropdownMenu.Content>
-                    </DropdownMenu.Root>
+                    <ResponsiveActionsMenu actions={actions} onActionSelected={handleActionSelected} />
                   </td>
                 </tr>
               ))}

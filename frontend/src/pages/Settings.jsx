@@ -27,7 +27,6 @@ export const Settings = () => {
 
   const handleSaveSettings = () => {
     // Save settings logic here
-    console.log('Settings saved:', { currencies });
   };
 
   return (

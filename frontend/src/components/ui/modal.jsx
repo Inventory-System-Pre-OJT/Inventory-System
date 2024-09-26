@@ -22,26 +22,30 @@ export function Modal({ title, titleModal, description, label, contentType, plac
   const renderTabContent = () => {
     switch (activeTab) {
       case 'stocks':
-        return (
-          <ul className='mt-2'>
-            <li>
-            <Card className='hover:bg-slate-100 cursor-pointer p-1 my-3'>
-                <CardHeader className="p-3">
-                    <CardTitle>Meth</CardTitle>
-                    <CardDescription>Stock 1</CardDescription>
-                </CardHeader>
-            </Card>
-            </li>
-            <li>
-            <Card className='hover:bg-slate-100 cursor-pointer p-1'>
-                <CardHeader className="p-3">
-                    <CardTitle>Meth</CardTitle>
-                    <CardDescription>Stock 1</CardDescription>
-                </CardHeader>
-            </Card>
-            </li>
-          </ul>
-        );
+        return (() => {
+          const stocks = [
+            { name: "Paracetamol", symbol: "PARA", price: 5.99 },
+            { name: "Amoxicillin", symbol: "AMOX", price: 12.50 },
+            { name: "Ibuprofen", symbol: "IBUP", price: 7.25 },
+            { name: "Omeprazole", symbol: "OMEP", price: 15.80 },
+            { name: "Metformin", symbol: "METF", price: 8.99 }
+          ];
+
+          return (
+            <ul className='mt-2'>
+              {stocks.map((stock, index) => (
+                <li key={index}>
+                  <Card className='hover:bg-slate-100 cursor-pointer p-1 my-3'>
+                    <CardHeader className="p-3">
+                      <CardTitle>{stock.name}</CardTitle>
+                      <CardDescription>{stock.symbol} - ${stock.price.toFixed(2)}</CardDescription>
+                    </CardHeader>
+                  </Card>
+                </li>
+              ))}
+            </ul>
+          );
+        })();
       case 'revenue':
         return <p>Total Revenue: $10,000</p>;
       case 'quantity':
