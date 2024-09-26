@@ -8,11 +8,11 @@ import { GoFilter } from 'react-icons/go';
 import { FetchStockData } from '@/functions/index.js';
 import { useStockStore } from '@/store/stockUser.js';
 import moment from 'moment';
-import { Pencil2Icon } from "@radix-ui/react-icons";
+import { Pencil2Icon, TrashIcon } from "@radix-ui/react-icons";
 
 const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckboxChange }) => {
   const [position, setPosition] = useState('bottom');
-  const frameworks = [
+  const products = [
     { value: 'All', label: 'All' },
     { value: 'Amox', label: 'Amox' },
     { value: 'ProteCee', label: 'Protec Cee' },
@@ -28,6 +28,11 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
     { value: '300mg', label: '300mg' },
     { value: '400mg', label: '400mg' },
     { value: '500mg', label: '500mg' },
+  ];
+
+  const actions = [
+    { value: 'edit', label: 'Edit', icon: Pencil2Icon },
+    { value: 'delete', label: 'Delete', icon: TrashIcon },
   ];
 
   const handleActionSelected = (action) => {
@@ -85,7 +90,7 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
         <td className="px-2 py-4 border border-gray-200 w-auto">{data.done_by}</td>
         <td className="px-2 py-4 border border-gray-200 w-auto">{moment(data.created_at).format('MMM D, YYYY, h:mm:a')}</td>
         <td className="px-2 py-4 border border-gray-200 text-center w-auto">
-          <ResponsiveActionsMenu onActionSelected={handleActionSelected} />
+          <ResponsiveActionsMenu actions={actions} onActionSelected={handleActionSelected} />
         </td>
       </tr>
     )
@@ -95,10 +100,10 @@ const Incoming = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
     <div className="flex flex-col min-w-screen">
       <div className="flex flex-col sm:flex-row gap-3 lg:gap-1 mb-3 w-full">
         <div className="flex flex-col gap-y-3 w-full sm:w-1/2 lg:w-1/4">
-          <ComboboxComponent options={frameworks} placeholder="Select Product..." />
+          <ComboboxComponent options={products} placeholder="Select Product..." search={true} />
         </div>
         <div className="flex flex-col gap-y-3 w-full sm:w-1/2 lg:w-1/4">
-          <ComboboxComponent options={miligrams} placeholder="Select Miligrams..." />
+          <ComboboxComponent options={miligrams} placeholder="Select Miligrams..." search={true} />
         </div>
       </div>
       <div className="flex-grow overflow-x-auto shadow-md sm:rounded-lg">

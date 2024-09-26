@@ -19,10 +19,9 @@ import {
   PopoverTrigger,
 } from "./popover"
 
-export function ComboboxComponent({ options, placeholder = "Select option..." }) {
+export function ComboboxComponent({ options, placeholder = "Select option...", search = false }) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -40,7 +39,9 @@ export function ComboboxComponent({ options, placeholder = "Select option..." })
       </PopoverTrigger>
       <PopoverContent align="start" sideOffset={4} className="w-64 p-0">
         <Command>
-          <CommandInput placeholder="Search..." className="h-9" />
+          {search && (
+            <CommandInput placeholder="Search..." className="h-9" />
+          )}
           <CommandList>
             <CommandEmpty>No option found.</CommandEmpty>
             <CommandGroup>

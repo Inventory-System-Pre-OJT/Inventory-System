@@ -5,11 +5,15 @@ import { PersonIcon, Pencil2Icon } from "@radix-ui/react-icons"; // Use TrashIco
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import Sidebar from "@/components/Sidebar";
 import { useNavigate, Link } from "react-router-dom";
-<<<<<<< HEAD
 import { ResponsiveActionsMenu } from "@/components/ui/responsive-actions-menu";
 import { HiDotsVertical } from "react-icons/hi"
 import { SlKey } from "react-icons/sl"
 import { PiTrash } from "react-icons/pi"
+import axios from "axios";
+import { Formik } from "formik";
+import { Dialog } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { ComboboxComponent } from '@/components/ui/combobox';
 const users = [
   {
     id: 1,
@@ -28,10 +32,6 @@ const users = [
     dateAdded: "Aug 13, 2023",
   },
 ];
-=======
-
-
->>>>>>> ecf4b37ee25579fc4874b5e54e891dd3c8dc546b
 
 const actions = [
   {
@@ -73,12 +73,25 @@ export const UserManagement = () => {
       fetchAccount();
   })
 
+  const options = [
+    { value: 'all', label: 'All' },
+    { value: 'active', label: 'Active' },
+    { value: 'inactive', label: 'Inactive' },
+  ]
+
   const handleAddUser = () => {
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
+    setValues({
+      username: '',
+      email: '',
+      password: '',
+      access: 'Staff',
+      branch: 'Main'
+    });
   };
 
   const handlePasswordVisibilityToggle = () => {
@@ -138,12 +151,10 @@ export const UserManagement = () => {
           </div>
           <div className="flex justify-between items-center mb-4">
             <span className="text-lg">
-              All users <span className="font-bold text-green-500">44</span>
+              All users <span className="font-bold text-green-500">{accounts.length}</span>
             </span>
             <div className="flex space-x-2">
-              <select className="border border-gray-300 rounded-lg px-2 py-1">
-                <option>Filters</option>
-              </select>
+              <ComboboxComponent options={options} placeholder="Select Options..." search={false} />
               <input
                 type="text"
                 placeholder="Search"
@@ -187,84 +198,123 @@ export const UserManagement = () => {
          
         </div>
       </div>
-
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg p-8 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Add User</h2>
-            <form>
-              <div className="mb-4">
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
-                <input
-                  type="text"
-                  id="username"
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Employee Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
-                />
-              </div>
-              <div className="mb-4 relative">
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-                <input
-                  type={passwordVisible ? "text" : "password"}
-                  id="password"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
-                />
-                <button
-                  type="button"
-                  onClick={handlePasswordVisibilityToggle}
-                  className="absolute inset-y-0 right-1 top-6 pr-3"
-                >
-                  {passwordVisible ? <FiEyeOff /> : <FiEye />}
-                </button>
-              </div>
-              <div className="mb-4 flex justify-between space-x-4">
-                <div className="w-1/2">
-                  <label htmlFor="access" className="block text-sm font-medium text-gray-700">Access</label>
-                  <select
-                    id="access"
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
-                  >
-                    <option>Staff</option>
-                    <option>Admin</option>
-                    <option>Productions</option>
-                  </select>
-                </div>
-                <div className="w-1/2">
-                  <label htmlFor="branch" className="block text-sm font-medium text-gray-700">Branch</label>
-                  <select
-                    id="branch"
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
-                  >
-                    <option>Main</option>
-                    <option>South</option>
-                    <option>West</option>
-                  </select>
-                </div>
-              </div>
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
-                  onClick={handleCloseModal}
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md">
-                  Save
-                </button>
-              </div>
-            </form>
+        <Dialog open={showModal} onOpenChange={setShowModal} className="animate-in fade-in-90 slide-in-from-bottom-10">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white rounded-lg p-8 w-full max-w-md">
+              <h2 className="text-xl font-bold mb-4">Add User</h2>
+              <Formik
+                initialValues={{
+                  username: '',
+                  email: '',
+                  password: '',
+                  access: 'Staff',
+                  branch: 'Main'
+                }}
+                onSubmit={(values, { setSubmitting }) => {
+                  handleSubmit(values);
+                  setSubmitting(false);
+                }}
+              >
+                {({ values, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+                  <form onSubmit={handleSubmit}>
+                    <div className="mb-4">
+                      <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
+                      <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.username}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">Employee Email</label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.email}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
+                      />
+                    </div>
+                    <div className="mb-4 relative">
+                      <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+                      <input
+                        type={passwordVisible ? "text" : "password"}
+                        id="password"
+                        name="password"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.password}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
+                      />
+                      <button
+                        type="button"
+                        onClick={handlePasswordVisibilityToggle}
+                        className="absolute inset-y-0 right-1 top-6 pr-3"
+                      >
+                        {passwordVisible ? <FiEyeOff /> : <FiEye />}
+                      </button>
+                    </div>
+                    <div className="mb-4 flex justify-between space-x-4">
+                      <div className="w-1/2">
+                        <label htmlFor="access" className="block text-sm font-medium text-gray-700">Access</label>
+                        <select
+                          id="access"
+                          name="access"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.access}
+                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
+                        >
+                          <option>Staff</option>
+                          <option>Admin</option>
+                          <option>Productions</option>
+                        </select>
+                      </div>
+                      <div className="w-1/2">
+                        <label htmlFor="branch" className="block text-sm font-medium text-gray-700">Branch</label>
+                        <select
+                          id="branch"
+                          name="branch"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.branch}
+                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
+                        >
+                          <option>Main</option>
+                          <option>South</option>
+                          <option>West</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="flex justify-end">
+                      <Button
+                        variant="outline"
+                        className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
+                        onClick={handleCloseModal}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="bg-green-500 text-white px-4 py-2 rounded-md"
+                        disabled={isSubmitting}
+                      >
+                        Save
+                      </Button>
+                    </div>
+                  </form>
+                )}
+              </Formik>
+            </div>
           </div>
-        </div>
+        </Dialog>
       )}
     </div>
   );

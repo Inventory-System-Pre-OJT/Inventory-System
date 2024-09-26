@@ -3,42 +3,68 @@ import Sidebar from '../components/Sidebar';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Modal } from '../components/ui/modal';
 import { ChevronRightIcon, ChevronLeftIcon } from "@radix-ui/react-icons";
+import { ComboboxComponent } from '../components/ui/combobox';
 
 export const Audit = () => {
+    const options = [
+        { value: '1', label: '1' },
+        { value: '2', label: '2' },
+        { value: '3', label: '3' },
+    ]
     return (
         <div className="flex">
             <Sidebar />
             <main className="flex flex-col text-black flex-grow m-0 mt-14 w-full lg:ml-64">
                 <section className="p-5">
                     <div className="rounded-lg border border-gray-200">
+                        <div className="flex justify-between items-center px-4 py-2">
+                            <h1 className="text-2xl font-bold">Audit</h1>
+                            <div className="flex items-center gap-2">
+                                <input type="text" placeholder="Search" className="border border-gray-300 rounded-md px-4 py-2" />
+                                <button className="bg-blue-500 text-white px-4 py-2 rounded-md">Search</button>
+                            </div>
+                           
+                        </div>
+                        <div className="flex items-center ml-4">
+                            <ComboboxComponent options={options} placeholder="Select Options..." search={false} />
+                        </div>
                         <div className="overflow-x-auto rounded-t-lg">
                             <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
                                 <thead className="text-left">
                                     <tr>
-                                        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Name</th>
-                                        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Date of Birth</th>
-                                        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Role</th>
-                                        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Salary</th>
+                                        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">User Name</th>
+                                        <th className='whitespace-nowrap px-4 py-2 font-medium text-gray-900'>Actions</th>
+                                        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Date</th>
+                                        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Description</th>
+                                        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Transaction Number</th>
+                                        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Created At</th>
+
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-200">
                                     <tr>
                                         <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">John Doe</td>
+                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Checked Out Item</td>
                                         <td className="whitespace-nowrap px-4 py-2 text-gray-700">24/05/1995</td>
-                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Web Developer</td>
-                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">$120,000</td>
+                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Did transaction with receipt number 1234567890</td>
+                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">1234567890</td>
+                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">24/05/1995</td>
                                     </tr>
                                     <tr>
                                         <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Jane Doe</td>
+                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Checked Out Item</td>
                                         <td className="whitespace-nowrap px-4 py-2 text-gray-700">04/11/1980</td>
-                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Web Designer</td>
-                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">$100,000</td>
+                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Did transaction with receipt number 1234567890</td>
+                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">1234567890</td>
+                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">24/05/1995</td>
                                     </tr>
                                     <tr>
                                         <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Gary Barlow</td>
+                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Checked Out Item</td>
                                         <td className="whitespace-nowrap px-4 py-2 text-gray-700">24/05/1995</td>
-                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Singer</td>
-                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">$20,000</td>
+                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Did transaction with receipt number 1234567890</td>
+                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">1234567890</td>
+                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">24/05/1995</td>
                                     </tr>
                                 </tbody>
                             </table>
