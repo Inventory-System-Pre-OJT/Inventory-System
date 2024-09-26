@@ -11,9 +11,9 @@ export const Branch = () => {
     const navigate = useNavigate();
 
     const branchDetails = [
-        { id: 1, name: 'Branch Isabela', address: 'Ibigay mo na' },
-        { id: 2, name: 'Branch Cabanatuan', address: 'Ibigay mo na' },
-        { id: 3, name: 'Branch Casiguran', address: 'Ibigay mo na' },
+        { id: 1, name: 'Branch Isabela', address: '123 Pine St, Isabela City' },
+        { id: 2, name: 'Branch Cabanatuan', address: '456 Oak Ave, Cabanatuan City' },
+        { id: 3, name: 'Branch Manila', address: '789 Maple Rd, Manila' },
     ]   
     const handleCreateBranch = () => {
         navigate('/branch/create');
@@ -47,10 +47,10 @@ export const Branch = () => {
                         ))}
                         <Link to="/branch/create">
                             <Card className='bg-green-100 hover:bg-green-500 hover:text-white cursor-pointer transition-all duration-300'>
-                                    <CardHeader >
-                                        <CardTitle className='flex items-center justify-between gap-x-2'>Create New Branch <PlusIcon className='w-4 h-4'/></CardTitle>
-                                        <CardDescription  >Create a new branch to manage your business</CardDescription>
-                                    </CardHeader>
+                                <CardHeader >
+                                    <CardTitle className='flex items-center justify-between gap-x-2'>Create New Branch <PlusIcon className='w-4 h-4'/></CardTitle>
+                                    <CardDescription  >Create a new branch to manage your business</CardDescription>
+                                </CardHeader>
                             </Card>
                         </Link>
                     </div>

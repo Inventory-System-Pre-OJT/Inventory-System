@@ -27,13 +27,13 @@ export const BranchCreate = () => {
     <div className="flex">
         <Sidebar />
         <main className="flex flex-col  text-black flex-grow m-0 mt-14 w-full lg:ml-64">
-            <div className="flex items-center">
-                <Link to="/branch">
-                    <div className="m-3 w-fit rounded-full border-2 border-gray-200 p-2">
+            <div className="flex items-center mx-2">
+                <Link to="/branch" className="cursor-pointer transition-all duration-300 hover:opacity-40">
+                    <div className="my-3 w-fit rounded-full border-2 border-gray-200 p-2">
                         <ArrowLeftIcon className="w-5 h-5" />
                     </div>
                 </Link>
-                <div>
+                <div className="ml-2">
                     <h1 className="text-2xl font-bold">Create New Branch</h1>
                 </div>
             </div>
