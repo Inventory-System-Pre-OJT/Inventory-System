@@ -14,24 +14,6 @@ import { Formik } from "formik";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ComboboxComponent } from '@/components/ui/combobox';
-const users = [
-  {
-    id: 1,
-    name: "John Doe",
-    branch: "Tarlac",
-    access: "Admin",
-    lastActive: "Now",
-    dateAdded: "Aug 13, 2023",
-  },
-  {
-    id: 2,
-    name: "Ericka Jones",
-    branch: "Tarlac",
-    access: ["Employee", "Cashier"],
-    lastActive: "Yesterday, 6:00pm",
-    dateAdded: "Aug 13, 2023",
-  },
-];
 
 const actions = [
   {
@@ -56,28 +38,28 @@ const actions = [
   },
 ];
 
-
 export const UserManagement = () => {
   const [showModal, setShowModal] = useState(false);
+  const [viewUserModal, setViewUserModal] = useState(false);
+  const [selectedAccount, setSelectedAccount] = useState(null);
+  const [accounts, setAccount] = useState([]);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const [accounts, setAccount] = useState([]);
-
 
   useEffect(() => {
     const fetchAccount = async () => {
       const getAccount = await axios.get("/api/v1/auth/getAccount");
       setAccount(getAccount.data);
     }
-      fetchAccount();
-  })
+    fetchAccount();
+  }, []);
 
   const options = [
     { value: 'all', label: 'All' },
     { value: 'active', label: 'Active' },
     { value: 'inactive', label: 'Inactive' },
-  ]
+  ];
 
   const handleAddUser = () => {
     setShowModal(true);
@@ -85,13 +67,7 @@ export const UserManagement = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setValues({
-      username: '',
-      email: '',
-      password: '',
-      access: 'Staff',
-      branch: 'Main'
-    });
+    setSelectedAccount(null); // Reset selected account
   };
 
   const handlePasswordVisibilityToggle = () => {
@@ -110,22 +86,19 @@ export const UserManagement = () => {
     console.log("Validating password:", password);
   };
 
-  const handleActionSelected = (action) => {
+  const handleActionSelected = (action, account) => {
     switch (action) {
       case 'view':
-        // Handle view profile action
-        console.log("View profile action selected");
+        setSelectedAccount(account); // Set the selected account
+        setViewUserModal(true);
         break;
       case 'edit':
-        // Handle edit profile action
         console.log("Edit action selected");
         break;
       case 'changePermission':
-        // Handle change permission action
         console.log("Change permission action selected");
         break;
       case 'delete':
-        // Handle delete user action
         console.log("Delete action selected");
         break;
       default:
@@ -163,41 +136,71 @@ export const UserManagement = () => {
             </div>
           </div>
           <div className="flex-grow overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 border border-gray-200 border-collapse">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-              <tr>
-                <th scope="col" className="text-slate-500 border border-gray-200 w-4 h-4">
-                  <input type="checkbox" className="w-4 h-4" />
-                </th>
-                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">User name</th>
-                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Name</th>
-                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Branch</th>
-                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Account Type</th>
-                <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Date added</th> 
-                <th scope="col" className="text-zinc-900 w-7 h-7">Action</th>
-              </tr>
-            </thead>
-            <tbody className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-100 dark:text-gray-100">
-            {accounts.map((account) => (
-                <tr key={account.id}>
-                  <td className="text-zinc-900 w-4 h-4">
-                    <input type="checkbox" className="w-4 h-4" />
-                  </td>
-                  <td className="text-zinc-900 w-4 h-4">{account.username}</td>
-                  <td className="text-zinc-900 w-4 h-4">{account.first_name}</td> 
-                  <td className="text-zinc-900 w-4 h-4">{account.branch}</td>
-                  <td className="text-zinc-900 w-4 h-4">{account.account_type}</td>
-                  <td className="flex">
-                    <ResponsiveActionsMenu actions={actions} onActionSelected={handleActionSelected} />
-                  </td>
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500 border border-gray-200 border-collapse">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                <tr>
+                  <th scope="col" className="text-slate-500 border border-gray-200 w-4 h-4">
+                    <span>#</span>
+                  </th>
+                  <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">User name</th>
+                  <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Name</th>
+                  <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Branch</th>
+                  <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Account Type</th>
+                  <th scope="col" className="px-2 py-3 border text-slate-500 border-gray-200 w-auto">Date added</th> 
+                  <th scope="col" className="text-zinc-900 w-7 h-7">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-100 dark:text-gray-100">
+                {accounts.map((account) => (
+                  <tr key={account.id}>
+                    <td className="text-zinc-900 w-4 h-4">
+                      <span>{accounts.indexOf(account) + 1}</span>
+                    </td>
+                    <td className="text-zinc-900 w-4 h-4">{account.username}</td>
+                    <td className="text-zinc-900 w-4 h-4">{account.first_name}</td> 
+                    <td className="text-zinc-900 w-4 h-4">{account.branch}</td>
+                    <td className="text-zinc-900 w-4 h-4">{account.account_type}</td>
+                    <td className="text-zinc-900 w-4 h-4">{account.created_at}</td>
+                    <td className="flex">
+                      <ResponsiveActionsMenu 
+                        actions={actions} 
+                        onActionSelected={(action) => handleActionSelected(action, account)} // Pass the account
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-         
         </div>
       </div>
+      {/* View User Modal */}
+      {viewUserModal && selectedAccount && (
+        <Dialog open={viewUserModal} onOpenChange={(open) => {
+          setViewUserModal(open);
+          if (!open) setSelectedAccount(null); // Reset selected account when modal closes
+        }} className="animate-in fade-in-90 slide-in-from-bottom-10">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white rounded-lg p-8 w-full max-w-md">
+              <h2 className="text-xl font-bold mb-4">View User</h2>
+              <p>Username: {selectedAccount.username}</p>
+              <p>Email: {selectedAccount.email}</p>
+              <p>Access: {selectedAccount.access}</p>
+              <p>Branch: {selectedAccount.branch}</p>
+              <div className="flex justify-end">
+                <Button
+                  variant="outline"
+                  className="bg-red-500 text-white px-4 py-2 rounded-md"
+                  onClick={() => setViewUserModal(false)}
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Dialog>
+      )}
+      {/* Add User Modal */}
       {showModal && (
         <Dialog open={showModal} onOpenChange={setShowModal} className="animate-in fade-in-90 slide-in-from-bottom-10">
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">

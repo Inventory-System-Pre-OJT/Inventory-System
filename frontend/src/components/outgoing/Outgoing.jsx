@@ -101,6 +101,7 @@ const Outgoing = ({ selectAll, handleSelectAllChange, selectedRows, handleCheckb
           </Modal>
         </td>
         <td className="px-2 py-4 border border-gray-200 w-auto">{data.done_by}</td>
+        <td className="px-2 py-4 border border-gray-200 w-auto">{data.status}</td>
         <td className="px-2 py-4 border border-gray-200">
           <div className="flex flex-row gap-x-2">
             {handleFunctionalities.map((functionality, idx) => (

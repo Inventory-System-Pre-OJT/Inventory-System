@@ -37,6 +37,7 @@ export function ResponsiveActionsMenu({ actions, onActionSelected }) {
                 onActionSelected(value); // Call the action handler
                 setOpen(false);
               }}
+              className="flex items-center p-2 hover:bg-gray-200" // Add padding and hover effect
             >
               <action.icon className="mr-2 h-4 w-4 text-gray-500" />
               {action.label}
@@ -51,7 +52,7 @@ export function ResponsiveActionsMenu({ actions, onActionSelected }) {
     return (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="bg-white text-gray-800 border border-gray-300">
             <HiDotsVertical />
           </Button>
         </PopoverTrigger>
@@ -65,7 +66,7 @@ export function ResponsiveActionsMenu({ actions, onActionSelected }) {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" className="bg-white text-gray-800 border border-gray-300">
           <HiDotsVertical />
         </Button>
       </DrawerTrigger>
