@@ -5,33 +5,11 @@ import { PersonIcon, Pencil2Icon } from "@radix-ui/react-icons"; // Use TrashIco
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import Sidebar from "@/components/Sidebar";
 import { useNavigate, Link } from "react-router-dom";
-<<<<<<< HEAD
 import { ResponsiveActionsMenu } from "@/components/ui/responsive-actions-menu";
 import { HiDotsVertical } from "react-icons/hi"
 import { SlKey } from "react-icons/sl"
 import { PiTrash } from "react-icons/pi"
-const users = [
-  {
-    id: 1,
-    name: "John Doe",
-    branch: "Tarlac",
-    access: "Admin",
-    lastActive: "Now",
-    dateAdded: "Aug 13, 2023",
-  },
-  {
-    id: 2,
-    name: "Ericka Jones",
-    branch: "Tarlac",
-    access: ["Employee", "Cashier"],
-    lastActive: "Yesterday, 6:00pm",
-    dateAdded: "Aug 13, 2023",
-  },
-];
-=======
 
-
->>>>>>> ecf4b37ee25579fc4874b5e54e891dd3c8dc546b
 
 const actions = [
   {
