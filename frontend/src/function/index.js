@@ -24,6 +24,27 @@ const useMutationAsync = (request, queryKeys = []) => {
   return { mutationAsync };
 };
 
+const useUpdateVoucherStatus = () => {
+  const queryClient = useQueryClient();
+
+  const mutationAsync = useMutation(
+    async ({ id, status }) => {
+      const response = await axiosRequest("patch", `api/v1/voucher/updateStatus/${id}`, { status });
+      return response;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["voucher"]); // Invalidate to refresh data after update
+      },
+      onError: (error) => {
+        console.error("Error updating voucher status:", error);
+      },
+    }
+  );
+
+  return { mutationAsync };
+};
+
 const useExpenditureMutationAsync = (request, queryKeys = []) => {
   const queryClient = useQueryClient();
 
@@ -217,6 +238,7 @@ const useSearchVouchers = (searchQuery) => {
 
 export {
   useMutationAsync,
+  useUpdateVoucherStatus,
   FetchVoucherData,
   useUpdateVoucher,
   useDeleteVoucher,

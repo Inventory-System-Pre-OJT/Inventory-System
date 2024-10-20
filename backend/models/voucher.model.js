@@ -5,6 +5,14 @@ const voucherSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    payment_to: {
+        type: String,
+        required: true,
+    },
+    vn: {
+        type: Number,
+        required: true,
+    },
     amount: {
         type: String,
         required: true,
@@ -50,6 +58,14 @@ const voucherSchema = new mongoose.Schema({
         required: true,
     },
     approvedBy: {
+        type: String,
+        required: true,
+    },
+    receivedBy: {
+        type: String,
+        required: true,
+    },
+    status: {
         type: String,
         required: true,
     },

@@ -48,6 +48,8 @@ const tableHeadData = [
 
 const initialCreateVoucherValues = {
   no: "",
+  payment_to: "",
+  vn: "",
   amount: "",
   date: "",
   address: "",
@@ -61,10 +63,23 @@ const initialCreateVoucherValues = {
   preparedBy: "",
   accounting: "",
   approvedBy: "",
+  receivedBy: "",
 
 };
 
 const VoucherInfoFieldsData = (classes = [], subclasses = []) => [
+  {
+    name: "payment_to",
+    type: "string",
+    label: "Payment To",    
+    placeholder: "Company",
+  },
+  {
+    name: "vn",
+    type: "number",
+    label: "VN",    
+    placeholder: "12345",
+  },
   {
     name: "no",
     type: "number",
@@ -87,7 +102,7 @@ const VoucherInfoFieldsData = (classes = [], subclasses = []) => [
     name: "address",
     type: "string",
     label: "Address",
-    placeholder: "1234 Asawa Ni Marie NE",
+    placeholder: "San Leonardo",
   },
   {
     name: "descOfPayment",
@@ -111,13 +126,19 @@ const VoucherInfoFieldsData = (classes = [], subclasses = []) => [
     name: "classExp",
     type: "select",
     label: "Class",
-    options: classes?.map(cls => ({ value: cls.classExp, label: cls.classExp })),
+    options: [
+      { value: "", label: "Select Class" }, // Placeholder option
+      ...(classes?.map(cls => ({ value: cls.classExp, label: cls.classExp }))),
+    ],
   },
   {
     name: "subclass",
     type: "select",
     label: "Subclass",
-    options: subclasses?.map(sub => ({ value: sub.name, label: sub.name })),
+    options: [
+      { value: "", label: "Select Subclass" }, // Placeholder option
+      ...(subclasses?.map(sub => ({ value: sub.name, label: sub.name }))),
+    ],
   },
   {
     name: "checkNum",
@@ -143,16 +164,26 @@ const VoucherInfoFieldsData = (classes = [], subclasses = []) => [
     label: "Approved By", 
     placeholder: "Mrs Solis",
   },
+  {
+    name: "receivedBy",
+    type: "string",
+    label: "Received By", 
+    placeholder: "Mrs Solis",
+  },
+
 ];
 
 
 
 const tableHeadDataExpenditure = [
   {
-    name: "classExp",
+    name: "Class Exp",
   },
   {
-    name: "subclass",
+    name: "Subclass",
+  },
+  {
+    name: "Action",
   },
 ];
 

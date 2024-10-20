@@ -1,7 +1,7 @@
 //frontend/src/pages/Voucher.jsx
-
 import { useState, useRef, useEffect } from "react";
-import jsPDF from 'jspdf';
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 import {
   Section,
   TableHead,
@@ -21,9 +21,10 @@ import {
   FetchVoucherData,
   useUpdateVoucher,
   useDeleteVoucher,
+
 } from "../function";
 import toast from "react-hot-toast";
-import { generateVoucherNumber } from "../function/generateVoucherNumber"; // Import the function
+import { generateVoucherNumber } from "../function/generateVoucherNumber";
 import { useFetchClasses, useFetchSubclasses } from "../function/hooks";
 import SidebarV from "../components/SidebarV";
 import { UseToggle } from "../hooks";
@@ -33,6 +34,7 @@ export const Voucher = () => {
   const [openCreateVoucher, setCreateVoucher] = useState(false);
   const [openEditVoucher, setEditVoucher] = useState(false);
   const [editVoucherData, setEditVoucherData] = useState(null);
+  const [viewVoucherData, setViewVoucherData] = useState(null);  // Added for viewing voucher details
   const [activeTab, setActiveTab] = useState(0);
   const [isOpenModal, setOpenModal] = UseToggle(false);
   const [activeStep, setActiveStep] = useState(0);
@@ -62,6 +64,31 @@ export const Voucher = () => {
     },
     ["voucher"]
   );
+  const handleStatusChange = async (voucherId, newStatus) => {
+    try {
+      const response = await fetch(`/api/v1/voucher/updateStatus/${voucherId}`, {
+        method: 'PATCH', // Use PATCH method to update the voucher
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: newStatus }), // Send the new status in the body
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      if (data) {
+        toast.success("Voucher status updated successfully");
+        // Optionally refetch data or update state to reflect changes
+      }
+    } catch (error) {
+      toast.error("Error updating voucher status");
+      console.error(error);
+    }
+  };
+
   const { mutationAsync: updateVoucherMutation } = useUpdateVoucher();
   const { mutationAsync: deleteVoucherMutation } = useDeleteVoucher();
 
@@ -74,15 +101,15 @@ export const Voucher = () => {
     isLoading: subclassesLoading,
     refetch,
   } = useFetchSubclasses(classExp);
-  console.log(`Class : ${classesData}`);
-  console.log(`Sub Class : ${subclassesData}`);
 
   const handleEditClick = (voucher) => {
     setEditVoucherData(voucher);
     setEditVoucher(true);
   };
-  
-  
+
+  const handleViewClick = (voucher) => {
+    setViewVoucherData(voucher);  // Set the voucher to view mode
+  };
 
   useEffect(() => {
     if (editVoucherData) {
@@ -139,41 +166,6 @@ export const Voucher = () => {
     }
   }, [activePage]);
 
-  console.log("Rendering voucher component");
-
-  const generatePDF = (voucherData) => {
-    const doc = new jsPDF();
-
-    // Set PDF title
-    doc.setFontSize(20);
-    doc.text("Voucher Details", 10, 10);
-
-    // Add voucher details to the PDF
-    const details = [
-      { label: "No", value: voucherData.no },
-      { label: "Amount", value: voucherData.amount },
-      { label: "Date", value: voucherData.date },
-      { label: "Address", value: voucherData.address },
-      { label: "Description of Payment", value: voucherData.descOfPayment },
-      { label: "Bank Account", value: voucherData.bankAcc },
-      { label: "Check Number", value: voucherData.checkNum },
-      { label: "Invoice No", value: voucherData.invoiceNo },
-      { label: "Class", value: voucherData.classExp },
-      { label: "Subclass", value: voucherData.subclass },
-      { label: "Prepared By", value: voucherData.preparedBy },
-      { label: "Accounting", value: voucherData.accounting },
-      { label: "Approved By", value: voucherData.approvedBy },
-    ];
-
-    // Add each detail as a new line in the PDF
-    details.forEach((detail, index) => {
-      doc.setFontSize(12);
-      doc.text(`${detail.label}: ${detail.value || "N/A"}`, 10, 30 + index * 10);
-    });
-
-    // Save or print the PDF
-    doc.save(`voucher_${voucherData.no}.pdf`);
-  };
 
   const filteredVouchers = voucherData?.data?.filter((voucher) =>
     Object.values(voucher).some((value) =>
@@ -181,23 +173,69 @@ export const Voucher = () => {
     )
   );
 
+  const downloadPDF = () => {
+    const input = document.getElementById('voucher-details');
+  
+    input.style.display = 'block'; // Ensure the element is visible
+  
+    // Customize the canvas size
+    const customWidth = 1200; // Custom width in pixels
+    const customHeight = 990;  // Custom height in pixels
+  
+    html2canvas(input, {
+      scale: 2,
+      width: customWidth, // Set custom width
+      height: customHeight, // Set custom height
+      useCORS: true,
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+  
+      // Create a PDF with custom dimensions for letter size in landscape
+      const pdfWidth = 279.4; // Custom PDF width in mm (Letter width in landscape)
+      const pdfHeight = 215.9; // Custom PDF height in mm (Letter height)
+  
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: [pdfWidth, pdfHeight], // Letter size dimensions in mm
+      });
+  
+      // Calculate dimensions to fit the image inside the PDF
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+  
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const finalWidth = imgWidth * ratio;
+      const finalHeight = imgHeight * ratio;
+  
+      // Set a margin (in mm)
+      const marginLeft = 6; // Adjust this value to increase/decrease the margin
+  
+      // Add the image to the PDF with margin on the left side
+      pdf.addImage(imgData, 'PNG', marginLeft, 0, finalWidth, finalHeight);
+  
+      // Download the PDF with the voucher number as the filename
+      const voucherNo = viewVoucherData.no; // Access the voucher number
+      pdf.save(`voucher-No-${voucherNo}.pdf`); // Set the filename
+    });
+  };
 
   return (
     <div className="flex">
       <SidebarV />
       <main className="flex flex-col bg-gray-100 text-black h-full w-screen m-0 mt-14 lg:ml-64 lg:mr-10">
-        <section className="border-gray-400 p-5 w-full bg-white">
+        <section className="border-gray-400 p-5 w-full ">
           <div className="flex flex-col gap-y-3 w-full">
             <div className="flex justify-between gap-x-3 items-center w-full">
               <div
                 ref={containerRef}
-                className="flex flex-row gap-x-3 w-full border-b-2 border-green-200"
+                className="flex flex-row gap-x-3 w-full "
               >
                 <div className="relative flex flex-row gap-x-3 ">
+
                   {openCreateVoucher && (
                     <div className="absolute left-0 right-0 top-0 bottom-0 bg-white z-10 p-5">
                       <h1 className="text-2xl font-semibold">Create Voucher</h1>
-
                       <Formik
                         initialValues={{
                           ...initialCreateVoucherValues,
@@ -207,10 +245,8 @@ export const Voucher = () => {
                         }}
                         validationSchema={CreateVoucherSchema}
                         onSubmit={async (values, actions) => {
-                          console.log("Submitting values:", values); // Add this line
                           try {
-                            const response =
-                              await createVoucherMutation.mutateAsync(values);
+                            const response = await createVoucherMutation.mutateAsync(values);
                             if (response.status === 200) {
                               toast.success("Voucher created successfully");
                             }
@@ -218,55 +254,6 @@ export const Voucher = () => {
                             setCreateVoucher(false);
                           } catch (error) {
                             toast.error("Error creating voucher");
-                            console.error(error);
-                          }
-                        }}
-                      >
-                        {({ values, setFieldValue }) => {
-                          console.log("classExp:", values.classExp);
-                          console.log("subclass:", values.subclass);
-
-                          return (
-                            <Form>
-                              <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
-                                {CreateVoucherElements}
-                                <button
-                                  type="submit"
-                                  className="bg-primary text-black font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
-                                >
-                                  Create Voucher
-                                </button>
-                              </div>
-                            </Form>
-                          );
-                        }}
-                      </Formik>
-                    </div>
-                  )}
-
-                  {openEditVoucher && editVoucherData && (
-                    <div className="absolute left-0 right-0 top-0 bottom-0 bg-white z-10 p-5">
-                      <h1 className="text-2xl font-semibold">Update Voucher</h1>
-
-                      <Formik
-                        initialValues={editVoucherData}
-                        validationSchema={CreateVoucherSchema}
-                        onSubmit={async (values, actions) => {
-                          try {
-                            const response =
-                              await updateVoucherMutation.mutateAsync({
-                                id: editVoucherData._id,
-                                data: values,
-                              });
-                            if (response.status === 200) {
-                              toast.success("Voucher updated successfully");
-                            }
-                            actions.resetForm();
-                            setEditVoucher(false);
-                            setEditVoucherData(null);
-                          } catch (error) {
-                            toast.error("Error updating voucher");
-                            console.error(error);
                           }
                         }}
                       >
@@ -278,8 +265,15 @@ export const Voucher = () => {
                                 type="submit"
                                 className="bg-primary text-black font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
                               >
-                                Update Voucher
+                                Create Voucher
                               </button>
+                              <button
+                                onClick={() => setCreateVoucher(false)} // Close button
+                                className="bg-red-500 text-white font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
+                              >
+                                Close
+                              </button>
+
                             </div>
                           </Form>
                         )}
@@ -287,15 +281,232 @@ export const Voucher = () => {
                     </div>
                   )}
 
+                  {openEditVoucher && editVoucherData && (
+                    <div className="absolute left-0 right-0 top-0 bottom-0 bg-white z-10 p-5">
+                      <h1 className="text-2xl font-semibold">Update Voucher</h1>
+                      <Formik
+                        initialValues={editVoucherData}
+                        validationSchema={CreateVoucherSchema}
+                        onSubmit={async (values, actions) => {
+                          try {
+                            const response = await updateVoucherMutation.mutateAsync({
+                              id: editVoucherData._id,
+                              data: values,
+                            });
+                            if (response.status === 200) {
+                              toast.success("Voucher updated successfully");
+                            }
+                            actions.resetForm();
+                            setEditVoucher(false);
+                            setEditVoucherData(null);
+                          } catch (error) {
+                            toast.error("Error updating voucher");
+                          }
+                        }}
+                      >
+                        {({ values }) => (
+                          <Form>
+                            <div className="grid grid-cols-3 gap-5 grid-flow-dense place-content-center">
+                              {CreateVoucherElements}
+                              <button
+                                type="submit"
+                                className="bg-primary text-black font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
+                              >
+                                Update Voucher
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setEditVoucher(false); // Close button
+                                  setEditVoucherData(null); // Reset edit voucher data
+                                }}
+                                className="bg-red-500 text-white font-bold h-fit m-auto w-full p-2 mt-8 rounded-md"
+                              >
+                                Close
+                              </button>
+
+                            </div>
+                          </Form>
+                        )}
+                      </Formik>
+                    </div>
+                  )}
+
+                  {/* View Voucher Details Modal */}
+                  {viewVoucherData && (
+                    <div
+                      id="voucher-details"
+                      className="absolute left-0 right-0 top-0 bottom-0 bg-white z-10 p-5"
+                    >
+                      <h1 className="text-2xl font-bold text-white mb-4 bg-green-900 text-center p-5">
+                        HR HERBS REPUBLIC
+                      </h1>
+
+                      <table className="min-w-full bg-white border border-gray-300">
+                        <tr>
+                          <td className="p-2 text-center font-bold border-0">
+                            <div className="border border-gray-300 w-2/3 rounded-md p-2">
+                              DISBURSEMENT VOUCHER
+                            </div>
+                          </td>
+                          <td className="p-2">
+                            No:<span className="underline">{viewVoucherData.no}</span>
+                          </td>
+                        </tr>
+
+                        <tbody>
+                          <tr>
+                            <td className="p-2 border border-gray-300">
+                              <p className="font-bold text-sm">PAYMENT TO:</p>
+                              <p className="font-normal text-lg">{viewVoucherData.payment_to}</p>
+                            </td>
+                            <td className="p-2 border border-gray-300">
+                              <p className="font-bold text-sm">VN</p>
+                              <p className="font-normal text-lg">{viewVoucherData.vn}</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="p-2 border border-gray-300 font-bold">
+                              <p className="font-bold text-sm">AMOUNT</p>
+                              <p className="font-normal text-lg">{viewVoucherData.amount}</p>
+                            </td>
+                            <td className="p-2 border border-gray-300">
+                              <p className="font-bold text-sm">DATE</p>
+                              <p className="font-normal text-lg">{viewVoucherData.date}</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="p-2 border border-gray-300 font-bold" colSpan="2">
+                              <p className="font-bold text-sm">ADDRESS</p>
+                              <p className="font-normal text-lg">{viewVoucherData.address}</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="p-2 border border-gray-300 font-bold" colSpan="2">
+                              <p className="font-bold text-sm">DESCRIPTION OF PAYMENT</p>
+                              <p className="font-normal text-lg">{viewVoucherData.descOfPayment}</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="p-2 border border-gray-300 font-bold">
+                              <p className="font-bold text-sm">BANK ACCOUNT</p>
+                              <p className="font-normal text-lg">{viewVoucherData.bankAcc}</p>
+                            </td>
+                            <td className="p-2 border border-gray-300">
+                              <p className="font-bold text-sm">CHECK NUMBER</p>
+                              <p className="font-normal text-lg">{viewVoucherData.checkNum}</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="p-2 border border-gray-300 font-bold" colSpan="2">
+                              <p className="font-bold text-sm">PERFORMA INVOICE NO</p>
+                              <p className="font-normal text-lg">{viewVoucherData.invoiceNo}</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="p-2 border border-gray-300 font-bold">
+                              <p className="font-bold text-sm">CLASS</p>
+                            </td>
+                            <td className="p-2 border border-gray-300">
+                              <p className="font-bold text-sm">SUBCLASS</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="p-2 border border-gray-300 font-bold">
+                              <p className="font-normal text-lg">{viewVoucherData.classExp}</p>
+                            </td>
+                            <td className="p-2 border border-gray-300">
+                              <p className="font-normal text-lg">{viewVoucherData.subclass}</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="p-2 border border-gray-300 font-bold">
+                              <p>
+                                <br />
+                              </p>
+                              <p className="font-normal text-lg text-center">
+                                {viewVoucherData.preparedBy}
+                              </p>
+                              <div className="w-1/2 border-10 border-black p-2 mx-auto">
+                                <p className="font-bold text-sm text-center border-t  border-black">
+                                  PREPARED BY
+                                </p>
+                              </div>
+                            </td>
+                            <td className="p-2 border border-gray-300 font-bold">
+                              <p>
+                                <br />
+                              </p>
+                              <p className="font-normal text-lg text-center">
+                                {viewVoucherData.accounting}
+                              </p>
+                              <div className="w-1/2 border-10 border-black p-2 mx-auto">
+                                <p className="font-bold text-sm text-center border-t  border-black">
+                                  ACCOUNTING
+                                </p>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="p-2 border border-gray-300 font-bold">
+                              <p className="font-bold text-sm">APPROVED BY:</p>
+                              <br></br>
+                              <p className="font-normal text-lg text-center"></p>
+                              <div className="w-1/2 border-10 border-black p-2 mx-auto">
+                                <p className="font-bold text-sm text-center border-t  border-black">
+                                  LOUIE T. LACANILAO
+                                </p>
+                              </div>
+                            </td>
+                            <td className="p-2 border border-gray-300 font-bold">
+                              <p>
+                                <br />
+                                <br />
+                             
+                              </p>
+                              <p className="font-normal text-lg text-center"></p>
+                              <div className="w-1/2 border-10 border-black p-2 mx-auto">
+                                <p className="font-bold text-sm text-center border-t  border-black">
+                                  JAICEL T. LACANILAO
+                                </p>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="p-2 border border-gray-300 font-bold" colSpan="2">
+                              <p className="font-bold text-sm">RECEIVED BY:</p>
+                              <br />
+              
+                              <div className="w-1/2 border-10 border-black p-2">
+                              <p className="font-normal text-lg text-center mb-2">
+                                {viewVoucherData.receivedBy}
+                              </p>
+                                <p className="font-bold text-sm text-center border-t  border-black">
+                                  PRINTED NAME OVER SIGNATURE & VALID I.D
+                                </p>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                       {/* Close and Download buttons */}
+                       <div className="mt-4 flex justify-end space-x-2">
+                        <button onClick={downloadPDF} className="bg-blue-500 text-white p-2 rounded-md">
+                          Download PDF
+                        </button>
+                        <button
+                          onClick={() => setViewVoucherData(null)}
+                          className="bg-red-500 text-white p-2 rounded-md"
+                        >
+                          Close
+                        </button>
+                      </div>
+
+                    </div>
+                  )}
+
                   <Section style="bg-white flex flex-col gap-5 w-full overflow-x-auto">
                     <div className="flex flex-row gap-5 self-end mb-6">
-                      <select className="w-fit p-2 rounded-md bg-transparent border-2 border-gray-400">
-                        <option defaultValue>Filter Categories</option>
-                        <option value="">Product 1</option>
-                        <option value="">Product 2</option>
-                        <option value="">Product 3</option>
-                        <option value="">Product 4</option>
-                      </select>
                       <input
                         type="text"
                         placeholder="Search vouchers"
@@ -333,7 +544,8 @@ export const Voucher = () => {
                             tableRowData={voucher}
                             onEditClick={() => handleEditClick(voucher)}
                             onDeleteClick={() => handleDeleteClick(voucher._id)}
-                            onDownloadPDF={() => generatePDF(voucher)} // Pass the generatePDF function
+                            onViewClick={() => handleViewClick(voucher)}  // Added view button
+                            onStatusChange={handleStatusChange} // Function to handle status updates
                           />
                         ))}
                       </TableCont>

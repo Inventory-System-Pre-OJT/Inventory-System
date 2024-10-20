@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { createVoucher, getAllVouchers, getVoucherById, updateVoucherById, deleteVoucherById , searchVouchers} from '../controllers/voucher.controllers.js';
+import { createVoucher, getAllVouchers, getVoucherById, updateVoucherById, deleteVoucherById , searchVouchers,updateVoucherStatus} from '../controllers/voucher.controllers.js';
 
 // Create a new voucher
 router.post('/create', createVoucher);
@@ -12,6 +12,8 @@ router.get('/get', getAllVouchers);
 router.get('/get/:id', getVoucherById);
 
 router.patch('/update/:id', updateVoucherById);
+
+router.patch('/updateStatus/:id', updateVoucherStatus);
 
 // Delete a voucher by ID
 router.delete('/delete/:id', deleteVoucherById);

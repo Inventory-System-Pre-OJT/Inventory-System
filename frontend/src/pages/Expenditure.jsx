@@ -1,3 +1,4 @@
+// frontend/src/pages/Expenditure.jsx
 import { useState, useRef, useEffect } from "react";
 import {
   Section,
@@ -5,7 +6,7 @@ import {
   TableRow,
   TableCont,
   TextField,
-} from "../components";
+} from "../componentsExp";
 import {
   tableHeadDataExpenditure,
   initialCreateExpenditureValues,
@@ -75,6 +76,18 @@ export const Expenditure = () => {
     }
   };
 
+  const handleSearch = (e) => {
+    setFilter(e.target.value); // Update filter state when typing in search input
+  };
+
+  const filteredExpenditureData = expenditureData?.data?.filter((expenditure) =>
+    expenditure.classExp.toString().includes(filter) || // Assuming classExp is a number, convert to string
+    expenditure.subclasses.some((subclass) =>
+      subclass.name.toLowerCase().includes(filter.toLowerCase())
+    ) // Check if any subclass matches the filter
+  );
+
+
   const CreateExpenditureElements = ExpenditureInfoFieldsData?.map((data, index) => (
     <TextField
       key={index}
@@ -109,7 +122,7 @@ export const Expenditure = () => {
         <section className="border-gray-400 p-5 w-full bg-white">
           <div className="flex flex-col gap-y-3 w-full">
             <div className="flex justify-between gap-x-3 items-center w-full">
-              <div ref={containerRef} className='flex flex-row gap-x-3 w-full border-b-2 border-green-200'>
+              <div ref={containerRef} className='flex flex-row gap-x-3 w-full border-b-2'>
               <div className="relative flex flex-row gap-x-3 ">
       {openCreateExpenditure && (
         <div className="absolute left-0 right-0 top-0 bottom-0 bg-white z-10 p-5">
@@ -167,7 +180,7 @@ export const Expenditure = () => {
                         <button
                           type="button"
                           onClick={() => push({ name: "" })}
-                          className="bg-primary text-white p-2 rounded mt-4"
+                          className="bg-primary text-black p-2 rounded mt-4"
                         >
                           Add Subclass
                         </button>
@@ -243,7 +256,7 @@ export const Expenditure = () => {
                         <button
                           type="button"
                           onClick={() => push({ name: "" })}
-                          className="bg-primary text-white p-2 rounded mt-4"
+                          className="bg-primary text-black p-2 rounded mt-4"
                         >
                           Add Subclass
                         </button>
@@ -268,18 +281,13 @@ export const Expenditure = () => {
       
       <Section style="bg-white flex flex-col gap-5 w-full overflow-x-auto">
         <div className="flex flex-row gap-5 self-end mb-6">
-          <select className="w-fit p-2 rounded-md bg-transparent border-2 border-gray-400">
-            <option defaultValue>Filter Categories</option>
-            <option value="">Product 1</option>
-            <option value="">Product 2</option>
-            <option value="">Product 3</option>
-            <option value="">Product 4</option>
-          </select>
-          <input
-            type="text"
-            placeholder="Search"
-            className="rounded-md bg-transparent border-2 border-gray-400 p-2"
-          />
+        <input
+                    type="text"
+                    value={filter} // Set the value to the current filter
+                    onChange={handleSearch} // Call handleSearch when typing
+                    placeholder="Search"
+                    className="rounded-md bg-transparent border-2 border-gray-400 p-2"
+                  />
           <div
             className="bg-accent-dark py-1 px-2 items-center justify-center gap-1 rounded-md flex w-24 flex-row text-white font-medium"
             aria-label="Add Product"
@@ -301,19 +309,19 @@ export const Expenditure = () => {
           </div>
         ) : (
           <TableCont>
-            <TableHead tableData={tableHeadDataExpenditure} />
-            {expenditureData?.data?.map((expenditure) => (
-              <TableRow
-                key={expenditure._id}
-                tableRowData={{
-                  ...expenditure,
-                  subclasses: expenditure.subclasses.map(subclass => subclass.name).join(', ') // Join subclass names into a string
-                }}
-                onEditClick={() => handleEditClick(expenditure)}
-                onDeleteClick={() => handleDeleteClick(expenditure._id)}
-              />
-            ))}
-          </TableCont>
+          <TableHead tableData={tableHeadDataExpenditure} />
+          {filteredExpenditureData?.map((expenditure) => (
+            <TableRow
+              key={expenditure._id}
+              tableRowData={{
+                ...expenditure,
+                subclasses: expenditure.subclasses.map((subclass) => subclass.name).join(", "), // Join subclass names into a string
+              }}
+              onEditClick={() => handleEditClick(expenditure)}
+              onDeleteClick={() => handleDeleteClick(expenditure._id)}
+            />
+          ))}
+        </TableCont>
         )}
       </Section>
     </div></div></div></div></section></main></div>
